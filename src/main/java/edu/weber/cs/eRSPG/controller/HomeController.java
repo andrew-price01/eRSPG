@@ -1,15 +1,17 @@
-package edu.weber.erspg.controller;
+package edu.weber.cs.eRSPG.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 public class HomeController {
 
 	@RequestMapping("/")
-	public String home() {
+	public String home(Model model) {
  
-		
+		String test = "dummy";
 		return "home";
 	}
 }
