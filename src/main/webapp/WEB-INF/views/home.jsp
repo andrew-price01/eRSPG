@@ -3,10 +3,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="/eRSPG/css/home.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>eRSPG</title>
 </head>
 <body>
-Hello Spring!
+
+ <div class="centerdiv"> 
+	<div class="centerbuttons" >
+		<input class="buttons"  onclick="window.location.href = '/eRSPG/proposals'" style= "margin-right:15px" type="button"   value="View Proposals"/>
+		<input class="buttons" type="button"  onclick="window.location.href = '/eRSPG/proposalsubmit'" value="Submit Proposal" />
+	</div>
+</div>
+
 </body>
 </html>
