@@ -16,6 +16,7 @@
         <jstl.verson>1.2</jstl.verson>
         <spring.version>4.2.1.RELEASE</spring.version>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
+		<spring-boot.version>1.2.7.RELEASE</spring-boot.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -136,7 +137,7 @@
 			<plugin>
     			<groupId>org.springframework.boot</groupId>
     			<artifactId>spring-boot-maven-plugin</artifactId>
-    			<version>1.2.7.RELEASE</version>
+    			<version>${spring-boot.version}</version>
     			<configuration>
     				<mainClass>eRSPG.Application</mainClass>
     			</configuration>
@@ -148,6 +149,16 @@
         		</execution>
       			</executions>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>TomcatServer</server>
+                    <path>/erspg</path>
+                </configuration>
+            </plugin>
 		</plugins>
 
 	</build>
