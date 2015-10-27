@@ -67,3 +67,10 @@ crashlytics-build.properties
 
 src/main/resources/memory
 questions.db
+
+
+## Prevent eclipse change issues
+
+.classpath
+.project
+.settings/
