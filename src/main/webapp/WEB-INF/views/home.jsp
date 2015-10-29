@@ -11,8 +11,8 @@
 
  <div class="centerdiv"> 
 	<div class="centerbuttons" >
-		<input class="buttons"  onclick="window.location.href = '/eRSPG/proposals'" style= "margin-right:15px" type="button"   value="View Proposals"/>
-		<input class="buttons" type="button"  onclick="window.location.href = '/eRSPG/proposalsubmit'" value="Submit Proposal" />
+		<input class="buttons"  onclick="window.location.href = 'proposal/proposals'" style= "margin-right:15px" type="button"   value="View Proposals"/>
+		<input class="buttons" type="button"  onclick="window.location.href = 'proposal/index'" value="Submit Proposal" />
 	</div>
 </div>
 
