@@ -1,0 +1,7 @@
+form.labels-no-bold label {
+    font-weight: normal;
+}
+
+form.tall-textarea textarea {
+    height: 200px;
+}
