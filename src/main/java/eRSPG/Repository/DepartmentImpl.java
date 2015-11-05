@@ -3,8 +3,11 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import eRSPG.model.Department;
 
+@Repository
 public class DepartmentImpl implements DepartmentDAO {
 	public List<Department> findAllDepartment(){
 		//TODO: query and return a list of Proposal

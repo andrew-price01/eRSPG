@@ -3,9 +3,12 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import eRSPG.model.Proposal;
 import eRSPG.model.User;
 
+@Repository
 public class ProposalImpl implements ProposalDAO {
 
 	public List<Proposal> findAllProposals(){

@@ -3,8 +3,11 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import eRSPG.model.EssayAnswer;
 
+@Repository
 public class EssayAnswerImpl implements EssayAnswerDAO {
 	public List<EssayAnswer> findAllEssayAnswer(){
 		//TODO: query and return a list of Proposal

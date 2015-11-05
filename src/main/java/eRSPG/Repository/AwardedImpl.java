@@ -3,10 +3,13 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import eRSPG.model.Awarded;
 import eRSPG.model.Proposal;
 import eRSPG.model.User;
 
+@Repository
 public class AwardedImpl implements AwardedDAO {
 
 	public List<Awarded> findAllAwardeds(){
