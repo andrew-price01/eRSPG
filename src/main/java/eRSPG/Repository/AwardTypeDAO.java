@@ -2,16 +2,18 @@ package eRSPG.Repository;
 
 import java.util.List;
 
+import eRSPG.model.AwardType;
+
 public interface AwardTypeDAO {
 
-	List<AwardTypeImpl> findAllAwardTyps();
+	List<AwardType> findAllAwardTyps();
 
-	AwardTypeDAO findAwardType(int aid);
+	AwardType findAwardType(int aid);
 
-	int addNewAwardType(AwardTypeImpl a);
+	int addNewAwardType(AwardType a);
 
-	boolean updateAwardType(AwardTypeImpl a);
+	boolean updateAwardType(AwardType a);
 
-	boolean deleteAwardType(AwardTypeImpl a);
+	boolean deleteAwardType(AwardType a);
 
 }
