@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import static org.testng.Assert.*;
 
 /**
- * Unit tests for EssayAnswer DTO.
+ * Unit tests for EssayAnswer model.
  */
 public class EssayAnswerTest {
 

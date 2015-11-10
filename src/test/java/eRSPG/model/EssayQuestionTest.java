@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 /**
- * Unit tests for EssayQuestion DTO.
+ * Unit tests for EssayQuestion model.
  */
 public class EssayQuestionTest {
 

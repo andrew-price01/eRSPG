@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 /**
- * Unit testing for the Awarded DTO.
+ * Unit testing for the Awarded model.
  */
 public class AwardedTest {
 

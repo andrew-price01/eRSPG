@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 /**
- * Unit tests for Department DTO.
+ * Unit tests for Department model.
  */
 public class DepartmentTest {
 

@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 /**
- * Unit tests for Fund DTO.
+ * Unit tests for Fund model.
  */
 public class FundTest {
 
