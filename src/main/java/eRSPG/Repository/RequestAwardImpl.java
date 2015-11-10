@@ -17,6 +17,10 @@ public class RequestAwardImpl implements RequestAwardDAO {
 		
 	}
 	
+	public RequestAwardImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<RequestAward> findAllRequestAward(){
 		//TODO: query and return a list of Proposal
 		List<RequestAward> raList = new ArrayList();

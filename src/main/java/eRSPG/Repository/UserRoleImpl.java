@@ -5,49 +5,50 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import eRSPG.model.ProjectType;
+import eRSPG.model.UserRole;
 
-public class ProjectTypeImpl implements ProjectTypeDAO{
+@Repository
+public class UserRoleImpl implements UserRoleDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public ProjectTypeImpl(){
+	public UserRoleImpl(){
 		
 	}
 	
-	public ProjectTypeImpl(SessionFactory sf){
+	public UserRoleImpl(SessionFactory sf){
 		this.sessionFactory = sf;
 	}
 	
-	public List<ProjectType> findAllProjectType(){
+	public List<UserRole> findAllUserRole(){
 		//TODO: query and return a list of Proposal
-		List<ProjectType> ptList = new ArrayList();
-		return ptList;
+		List<UserRole> raList = new ArrayList();
+		return raList;
 	}
 	
-	public ProjectType findProjectType(int ptid){
-		ProjectType pt = new ProjectType();
+	public UserRole findUserRoleById(int raid){
+		UserRole ra = new UserRole();
 		//TODO: query for a proposal using the pid
-		return pt;
+		return ra;
 	}
 	
-	public int addNewProjectType(ProjectType pt){
+	public int addUserRole(UserRole ra){
 		//TODO: 
 		return 0;
 	}
 	
-	public boolean updateProjectType(ProjectType a){
+	public boolean updateUserRole(UserRole ra){
 		//TODO: update record query
 		boolean success = false;
 		return success;
 	}
 	
-	public boolean deleteProjectType(ProjectType p){
+	public boolean deleteUserRole(UserRole ra){
 		//TODO: delete record query
 		boolean success = false;
 		return success;
 	}
-
 }

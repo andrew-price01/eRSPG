@@ -20,6 +20,10 @@ public class AwardedImpl implements AwardedDAO {
 		
 	}
 	
+	public AwardedImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<Awarded> findAllAwardeds(){
 		//TODO: query and return a list of Proposal
 		List<Awarded> aList = new ArrayList();

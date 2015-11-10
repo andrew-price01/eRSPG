@@ -5,49 +5,50 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import eRSPG.model.ProjectType;
+import eRSPG.model.Semester;
 
-public class ProjectTypeImpl implements ProjectTypeDAO{
-	
+@Repository	
+public class SemesterImpl implements SemesterDAO {
+
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public ProjectTypeImpl(){
+	public SemesterImpl(){
 		
 	}
 	
-	public ProjectTypeImpl(SessionFactory sf){
+	public SemesterImpl(SessionFactory sf){
 		this.sessionFactory = sf;
 	}
 	
-	public List<ProjectType> findAllProjectType(){
+	public List<Semester> findAllSemester(){
 		//TODO: query and return a list of Proposal
-		List<ProjectType> ptList = new ArrayList();
-		return ptList;
+		List<Semester> raList = new ArrayList();
+		return raList;
 	}
 	
-	public ProjectType findProjectType(int ptid){
-		ProjectType pt = new ProjectType();
+	public Semester findSemesterById(int raid){
+		Semester ra = new Semester();
 		//TODO: query for a proposal using the pid
-		return pt;
+		return ra;
 	}
 	
-	public int addNewProjectType(ProjectType pt){
+	public int addSemester(Semester ra){
 		//TODO: 
 		return 0;
 	}
 	
-	public boolean updateProjectType(ProjectType a){
+	public boolean updateSemester(Semester ra){
 		//TODO: update record query
 		boolean success = false;
 		return success;
 	}
 	
-	public boolean deleteProjectType(ProjectType p){
+	public boolean deleteSemester(Semester ra){
 		//TODO: delete record query
 		boolean success = false;
 		return success;
 	}
-
 }

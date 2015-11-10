@@ -17,6 +17,10 @@ public class ParticipantImpl implements ParticipantDAO {
 		
 	}
 	
+	public ParticipantImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<Participant> findAllParicipant(){
 		//TODO: query and return a list of Proposal
 		List<Participant> pList = new ArrayList();

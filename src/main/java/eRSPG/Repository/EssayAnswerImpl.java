@@ -20,6 +20,10 @@ public class EssayAnswerImpl implements EssayAnswerDAO {
 		
 	}
 	
+	public EssayAnswerImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<EssayAnswer> findAllEssayAnswer(){
 		//TODO: query and return a list of Proposal
 		List<EssayAnswer> eaList = new ArrayList();

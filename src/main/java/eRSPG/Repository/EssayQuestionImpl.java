@@ -17,6 +17,10 @@ public class EssayQuestionImpl implements EssayQuestionDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public EssayQuestionImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<EssayQuestion> findAllEssayQuestion(){
 		//TODO: query and return a list of Proposal
 		List<EssayQuestion> eqList = new ArrayList();

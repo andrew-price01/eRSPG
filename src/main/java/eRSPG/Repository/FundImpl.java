@@ -18,6 +18,10 @@ public class FundImpl implements FundDAO {
 		
 	}
 	
+	public FundImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<Fund> findAllFund(){
 		//TODO: query and return a list of Proposal
 		List<Fund> fList = new ArrayList();

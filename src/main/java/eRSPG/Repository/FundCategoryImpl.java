@@ -17,6 +17,10 @@ public class FundCategoryImpl implements FundCategoryDAO {
 		
 	}
 	
+	public FundCategoryImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+	
 	public List<FundCategory> findAllFundCategory(){
 		//TODO: query and return a list of Proposal
 		List<FundCategory> fcList = new ArrayList();

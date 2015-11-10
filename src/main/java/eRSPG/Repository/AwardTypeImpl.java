@@ -18,6 +18,10 @@ public class AwardTypeImpl implements AwardTypeDAO {
 	public AwardTypeImpl(){
 		
 	}
+
+	public AwardTypeImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
 	
 	public List<AwardType> findAllAwardTyps(){
 		//TODO: query and return a list of Proposal
