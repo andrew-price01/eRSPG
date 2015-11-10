@@ -1,12 +1,13 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="container">
     <legend>Project Details</legend>
     <div class="row">
-        <form class="form-horizontal" method="post" action="budget">
+        <form:form class="form-horizontal" method="post"  modelAttribute="proposal">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="projectTitle">Project Title:</label>
 
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" name="projectTitle" id="projectTitle" required/>
+                    <form:input class="form-control" type="text" path="proposalTitle" id="proposalTitle" required="true"/>
                 </div>
             </div>
             <div class="form-group">
@@ -112,6 +113,6 @@
             <div><a href="budget">
                 <button class="button-block">Next</button>
             </a></div>
-        </form>
+        </form:form>
     </div>
 </div>
