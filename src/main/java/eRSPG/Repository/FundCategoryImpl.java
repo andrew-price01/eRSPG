@@ -3,9 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import eRSPG.model.FundCategory;
 
 public class FundCategoryImpl implements FundCategoryDAO {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public FundCategoryImpl(){
+		
+	}
+	
 	public List<FundCategory> findAllFundCategory(){
 		//TODO: query and return a list of Proposal
 		List<FundCategory> fcList = new ArrayList();

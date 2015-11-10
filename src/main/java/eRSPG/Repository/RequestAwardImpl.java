@@ -3,9 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import eRSPG.model.RequestAward;
 
 public class RequestAwardImpl implements RequestAwardDAO {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public RequestAwardImpl(){
+		
+	}
+	
 	public List<RequestAward> findAllRequestAward(){
 		//TODO: query and return a list of Proposal
 		List<RequestAward> raList = new ArrayList();

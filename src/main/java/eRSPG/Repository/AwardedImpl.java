@@ -3,6 +3,8 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eRSPG.model.Awarded;
@@ -11,6 +13,13 @@ import eRSPG.model.User;
 @Repository
 public class AwardedImpl implements AwardedDAO {
 
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public AwardedImpl(){
+		
+	}
+	
 	public List<Awarded> findAllAwardeds(){
 		//TODO: query and return a list of Proposal
 		List<Awarded> aList = new ArrayList();

@@ -3,9 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import eRSPG.model.Participant;
 
 public class ParticipantImpl implements ParticipantDAO {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public ParticipantImpl(){
+		
+	}
+	
 	public List<Participant> findAllParicipant(){
 		//TODO: query and return a list of Proposal
 		List<Participant> pList = new ArrayList();

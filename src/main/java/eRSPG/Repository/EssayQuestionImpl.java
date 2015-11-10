@@ -3,9 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import eRSPG.model.EssayQuestion;
 
 public class EssayQuestionImpl implements EssayQuestionDAO {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public EssayQuestionImpl() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public List<EssayQuestion> findAllEssayQuestion(){
 		//TODO: query and return a list of Proposal
 		List<EssayQuestion> eqList = new ArrayList();

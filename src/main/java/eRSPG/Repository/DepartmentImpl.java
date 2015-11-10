@@ -3,12 +3,22 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eRSPG.model.Department;
 
 @Repository
 public class DepartmentImpl implements DepartmentDAO {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public DepartmentImpl(){
+		
+	}
+	
 	public List<Department> findAllDepartment(){
 		//TODO: query and return a list of Proposal
 		List<Department> dList = new ArrayList();

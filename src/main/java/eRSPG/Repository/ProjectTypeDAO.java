@@ -2,16 +2,18 @@ package eRSPG.Repository;
 
 import java.util.List;
 
+import eRSPG.model.ProjectType;
+
 public interface ProjectTypeDAO {
 
 	List<ProjectType> findAllProjectType();
 
-	ProjectTypeDAO findProjectType(int ptid);
+	ProjectType findProjectType(int ptid);
 
-	int addNewProjectType(ProjectTypeDAO pt);
+	int addNewProjectType(ProjectType pt);
 
-	boolean updateProjectType(ProjectTypeDAO a);
+	boolean updateProjectType(ProjectType a);
 
-	boolean deleteProjectType(ProjectTypeDAO p);
+	boolean deleteProjectType(ProjectType p);
 
 }

@@ -3,9 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import eRSPG.model.EssayQuestion;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ProjectType {
+import eRSPG.model.ProjectType;
+
+public class ProjectTypeImpl implements ProjectTypeDAO{
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public ProjectTypeImpl(){
+		
+	}
+	
 	public List<ProjectType> findAllProjectType(){
 		//TODO: query and return a list of Proposal
 		List<ProjectType> ptList = new ArrayList();
@@ -34,4 +45,5 @@ public class ProjectType {
 		boolean success = false;
 		return success;
 	}
+
 }

@@ -3,7 +3,20 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class AwardTypeImpl {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public AwardTypeImpl(){
+		
+	}
+	
 	public List<AwardTypeImpl> findAllAwardTyps(){
 		//TODO: query and return a list of Proposal
 		List<AwardTypeImpl> aList = new ArrayList();
