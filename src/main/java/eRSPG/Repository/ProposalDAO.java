@@ -13,7 +13,7 @@ public interface ProposalDAO {
 
 	List<Proposal> findProposalsByUser(User user);
 
-	int addProposal(Proposal p);
+	int addNewProposal(Proposal p);
 
 	boolean updateProposal(Proposal p);
 

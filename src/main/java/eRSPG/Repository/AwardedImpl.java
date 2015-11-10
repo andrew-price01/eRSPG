@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import eRSPG.model.Awarded;
-import eRSPG.model.Proposal;
 import eRSPG.model.User;
 
 @Repository
@@ -30,8 +29,9 @@ public class AwardedImpl implements AwardedDAO {
 		return aList;
 	}
 	
-	public void createAwarded(Awarded a){
+	public int addNewAwarded(Awarded a){
 		//TODO: 
+		return 0;
 	}
 	
 	public boolean updateAwarded(Awarded a){

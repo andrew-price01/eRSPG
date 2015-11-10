@@ -3,31 +3,31 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AwardType {
-	public List<AwardType> findAllAwardTyps(){
+public class AwardTypeImpl {
+	public List<AwardTypeImpl> findAllAwardTyps(){
 		//TODO: query and return a list of Proposal
-		List<AwardType> aList = new ArrayList();
+		List<AwardTypeImpl> aList = new ArrayList();
 		return aList;
 	}
 	
-	public AwardType findAwardType(int aid){
-		AwardType a = new AwardType();
+	public AwardTypeImpl findAwardType(int aid){
+		AwardTypeImpl a = new AwardTypeImpl();
 		//TODO: query for a proposal using the pid
 		return a;
 	}
 	
-	public int createAwardType(AwardType a){
+	public int addNewAwardType(AwardTypeImpl a){
 		//TODO: query insert new AwardType and return new awardTypeID
 		return 0;
 	}
 	
-	public boolean updateAwardType(AwardType a){
+	public boolean updateAwardType(AwardTypeImpl a){
 		//TODO: update record query
 		boolean success = false;
 		return success;
 	}
 	
-	public boolean deleteAwardType(AwardType a){
+	public boolean deleteAwardType(AwardTypeImpl a){
 		//TODO: delete record query
 		boolean success = false;
 		return success;

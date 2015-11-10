@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import eRSPG.model.EssayAnswer;
+import eRSPG.model.EssayQuestion;
 
 @Repository
 public class EssayAnswerImpl implements EssayAnswerDAO {
@@ -21,7 +22,13 @@ public class EssayAnswerImpl implements EssayAnswerDAO {
 		return ea;
 	}
 	
-	public int addEssayAnswer(EssayAnswer a){
+	public EssayAnswer findEssayAnswerByQuestion(EssayQuestion eq){
+		//TODO: quesry an essay answer matching essayQuestion
+		EssayAnswer ea = new EssayAnswer();
+		return ea;
+	}
+	
+	public int addNewEssayAnswer(EssayAnswer a){
 		//TODO: 
 		return 0;
 	}

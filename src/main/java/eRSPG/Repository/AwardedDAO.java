@@ -13,7 +13,7 @@ public interface AwardedDAO {
 
 	List<Awarded> findAwardedByUser(User user);
 
-	void createAwarded(Awarded a);
+	int addNewAwarded(Awarded a);
 
 	boolean updateAwarded(Awarded a);
 

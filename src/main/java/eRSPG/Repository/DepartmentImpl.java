@@ -22,7 +22,7 @@ public class DepartmentImpl implements DepartmentDAO {
 	}
 	
 	
-	public int addDepartment(Department d){
+	public int addNewDepartment(Department d){
 		//TODO:
 		return 0;
 	}

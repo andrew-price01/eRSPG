@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface AwardTypeDAO {
 
-	List<AwardType> findAllAwardTyps();
+	List<AwardTypeImpl> findAllAwardTyps();
 
 	AwardTypeDAO findAwardType(int aid);
 
-	int addAwardType(AwardType a);
+	int addNewAwardType(AwardTypeImpl a);
 
-	boolean updateAwardType(AwardType a);
+	boolean updateAwardType(AwardTypeImpl a);
 
-	boolean deleteAwardType(AwardType a);
+	boolean deleteAwardType(AwardTypeImpl a);
 
 }

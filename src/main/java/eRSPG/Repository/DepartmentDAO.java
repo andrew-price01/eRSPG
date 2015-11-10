@@ -10,7 +10,7 @@ public interface DepartmentDAO {
 
 	Department findDepartment(int dId);
 
-	int addDepartment(Department d);
+	int addNewDepartment(Department d);
 
 	boolean updateDepartment(Department d);
 

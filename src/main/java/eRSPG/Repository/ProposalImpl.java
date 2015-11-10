@@ -29,7 +29,7 @@ public class ProposalImpl implements ProposalDAO {
 		return pList;
 	}
 	
-	public int addProposal(Proposal p){
+	public int addNewProposal(Proposal p){
 		//TODO: 
 		return 0;
 	}
