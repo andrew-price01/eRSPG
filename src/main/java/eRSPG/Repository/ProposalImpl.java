@@ -3,6 +3,8 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eRSPG.model.Proposal;
@@ -10,7 +12,12 @@ import eRSPG.model.User;
 
 @Repository
 public class ProposalImpl implements ProposalDAO {
-
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public ProposalImpl(){
+		
+	}
 	public List<Proposal> findAllProposals(){
 		//TODO: query and return a list of Proposal
 		List<Proposal> pList = new ArrayList();
