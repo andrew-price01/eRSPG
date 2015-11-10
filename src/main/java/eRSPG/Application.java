@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import eRSPG.Repository.ProposalDAO;
+import eRSPG.Repository.ProposalImpl;
+
 @EnableWebMvc
 @EnableTransactionManagement
 @SpringBootApplication
@@ -80,5 +83,12 @@ public class Application extends SpringBootServletInitializer {
      
         return transactionManager;
     }
+    
+    @Autowired
+    @Bean(name = "proposalDao")
+    public ProposalDAO getUserDao(SessionFactory sessionFactory) {
+        return new ProposalImpl(sessionFactory);
+    }
+    
     
 }
