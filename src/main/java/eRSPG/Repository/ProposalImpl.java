@@ -18,6 +18,11 @@ public class ProposalImpl implements ProposalDAO {
 	public ProposalImpl(){
 		
 	}
+	
+	public ProposalImpl(SessionFactory sf){
+		this.sessionFactory = sf;
+	}
+
 	public List<Proposal> findAllProposals(){
 		//TODO: query and return a list of Proposal
 		List<Proposal> pList = new ArrayList();
