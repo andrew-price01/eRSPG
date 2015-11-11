@@ -24,6 +24,7 @@
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<validation-api.version>1.1.0.Final</validation-api.version>
 	</properties>
 
 
@@ -137,6 +138,12 @@
 			<artifactId>testng</artifactId>
             <version>${testng.version}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation-api.version}</version>
 		</dependency>
 
 	</dependencies>
