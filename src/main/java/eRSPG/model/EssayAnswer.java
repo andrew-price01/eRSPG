@@ -1,6 +1,6 @@
 package eRSPG.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class EssayAnswer {
 	private int proposalId;
 	
 	@Column(name="updated_date")
-	private Date updatedDate;
+	private LocalDate updatedDate;
 	
 	public EssayAnswer(){
 		
@@ -62,11 +62,11 @@ public class EssayAnswer {
 		this.proposalId = proposalId;
 	}
 
-	public Date getUpdatedDate() {
+	public LocalDate getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(Date updatedDate) {
+	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 }

@@ -12,11 +12,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import eRSPG.Repository.ProposalDAO;
+import eRSPG.Repository.ProposalImpl;
 
 @EnableWebMvc
 @EnableTransactionManagement
@@ -80,5 +83,12 @@ public class Application extends SpringBootServletInitializer {
      
         return transactionManager;
     }
+    
+    @Autowired
+    @Bean(name = "proposalDao")
+    public ProposalDAO getUserDao(SessionFactory sessionFactory) {
+        return new ProposalImpl(sessionFactory);
+    }
+    
     
 }

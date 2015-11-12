@@ -29,7 +29,7 @@ public class Proposal {
 	@Column(name="proposalSubmissionDate")
 	private Date submissionDate;
 	
-	@Column(name="projectDirectot")
+	@Column(name="projectDirector")
 	private String projectDirector;
 	
 	@Column(name="departmentID")
