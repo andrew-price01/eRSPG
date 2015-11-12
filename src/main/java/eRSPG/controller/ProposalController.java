@@ -111,12 +111,18 @@ public class ProposalController {
 		return "projectIndex";
 	}
 	
-	@RequestMapping("/proposal/upload")
+	@RequestMapping(value="/proposal/upload", method=RequestMethod.Get)
 	public String uploadForm(Model model){
 		String contentPage = "proposalUpload.jsp";
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
 	}
+	
+	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
+	public String upload(Model model){
+		return "projectIndex";
+	}
+	
 	
 	@RequestMapping("/proposal/review")
 	public String reviewForm(Model model){
