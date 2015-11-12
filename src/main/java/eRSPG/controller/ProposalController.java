@@ -142,8 +142,8 @@ public class ProposalController {
                 stream.close();
                 uploadForm.setFileUpload(file);
                 uploadForm.setName(name);
-                model.addAttribute("contentPage","proposalSubmitted.jsp");
-                return "proposalIndex";
+               
+                return "redirect:/proposal/finish";
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");
