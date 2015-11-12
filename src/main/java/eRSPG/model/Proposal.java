@@ -1,6 +1,6 @@
 package eRSPG.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,13 +27,13 @@ public class Proposal {
 	private int projectTypeId;
 	
 	@Column(name="proposalSubmissionDate")
-	private Date submissionDate;
+	private LocalDateTime submissionDate;
 	
 	@Column(name="projectDirector")
 	private String projectDirector;
 	
 	@Column(name="departmentID")
-	private String departmentId;
+	private int departmentId;
 
 	@Column(name="proposalEmail")
 	private String proposalEmail;
@@ -45,13 +45,13 @@ public class Proposal {
 	private String proposalExtension;
 	
 	@Column(name="proposalReqStudentAssistance")
-	private String proposalReqStdAsst;
+	private boolean proposalReqStdAsst;
 	
 	@Column(name="proposalComplete")
-	private String proposalComplete;
+	private boolean proposalComplete;
 	
 	@Column(name="updatedDate")
-	private String updatedDate;
+	private LocalDateTime updatedDate;
 	
 	public Proposal() {
 		
@@ -97,11 +97,11 @@ public class Proposal {
 		this.projectTypeId = projectTypeId;
 	}
 
-	public Date getSubmissionDate() {
+	public LocalDateTime getSubmissionDate() {
 		return submissionDate;
 	}
 
-	public void setSubmissionDate(Date submissionDate) {
+	public void setSubmissionDate(LocalDateTime submissionDate) {
 		this.submissionDate = submissionDate;
 	}
 
@@ -113,11 +113,11 @@ public class Proposal {
 		this.projectDirector = projectDirector;
 	}
 
-	public String getDepartmentId() {
+	public int getDepartmentId() {
 		return departmentId;
 	}
 
-	public void setDepartmentId(String departmentId) {
+	public void setDepartmentId(int departmentId) {
 		this.departmentId = departmentId;
 	}
 
@@ -145,27 +145,27 @@ public class Proposal {
 		this.proposalExtension = proposalExtension;
 	}
 
-	public String getProposalReqStdAsst() {
+	public boolean isProposalReqStdAsst() {
 		return proposalReqStdAsst;
 	}
 
-	public void setProposalReqStdAsst(String proposalReqStdAsst) {
+	public void setProposalReqStdAsst(boolean proposalReqStdAsst) {
 		this.proposalReqStdAsst = proposalReqStdAsst;
 	}
 
-	public String getProposalComplete() {
+	public boolean isProposalComplete() {
 		return proposalComplete;
 	}
 
-	public void setProposalComplete(String proposalComplete) {
+	public void setProposalComplete(boolean proposalComplete) {
 		this.proposalComplete = proposalComplete;
 	}
 
-	public String getUpdatedDate() {
+	public LocalDateTime getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(String updatedDate) {
+	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 }

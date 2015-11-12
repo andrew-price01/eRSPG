@@ -3,7 +3,7 @@ package eRSPG.model;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.testng.Assert.*;
 
@@ -57,10 +57,10 @@ public class EssayAnswerTest {
 
     @Test
     public void testGetUpdatedDate() throws Exception {
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         fixture.setUpdatedDate(date);
 
         assertNotNull(fixture);
-        assertEquals(date, fixture.getUpdatedDate());
+        assertTrue(date.isEqual(fixture.getUpdatedDate()));
     }
 }

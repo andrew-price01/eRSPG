@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="container">
     <h1>Body of Proposal</h1>
 
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
 
-    <form role="form" class="labels-no-bold tall-textarea">
+    <form:form method="post" modelAttribute="bodyForm" class="labels-no-bold tall-textarea">
         <div class="form-group">
             <label for="propSummary"><strong>PROJECT SUMMARY (ABSTRACT):</strong></label>
             <textarea id="propSummary" class="form-control"></textarea>
@@ -17,10 +18,10 @@
             <textarea id="propBackground" class="form-control"></textarea>
         </div>
         <div class="form-group">
-            <label for="propHemingwayImpact">I-B. If applying for a <em>Hemingway award for Faculty Excellence</em>, please describe what the impact of
+            <label for="propHemingwayExcellence">I-B. If applying for a <em>Hemingway award for Faculty Excellence</em>, please describe what the impact of
                 your project will be on the larger community. In short, what makes this project qualify for a Hemingway
                 Award?</label>
-            <textarea id="propHemingwayImpact" class="form-control"></textarea>
+            <textarea id="propHemingwayExcellence" class="form-control"></textarea>
         </div>
         <div class="form-group">
             <label for="propHemmingwayCollaboration">I-C. If applying for a <em>Hemingway Collaborative Award</em>, explain the collaborative nature of the
@@ -83,6 +84,9 @@
             <label for="propQ7">7. For instructional improvement proposals, are course fees an appropriate place to seek additional funding?
                 Please explain.</label>
             <textarea id="propQ7" class="form-control"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="button-block pull-right">Next</button>
         </div>
     </form>
 </div>

@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="container">
-    <legend>Project Details</legend>
     <div class="row">
+        <legend>Project Details</legend>
         <form:form class="form-horizontal"  method="post"   modelAttribute="detailForm">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="proposalTitle">Project Title:</label>
