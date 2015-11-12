@@ -1,5 +1,9 @@
 package eRSPG.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +13,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.model.form.AwardTypeForm;
 import eRSPG.model.form.DetailForm;
+import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm"})
+@SessionAttributes({"detailForm","awardTypeForm","uploadForm"})
 public class ProposalController {
 	
 	@Autowired
@@ -40,12 +48,14 @@ public class ProposalController {
 			
 		DetailForm detailForm = new DetailForm();
 		AwardTypeForm awardForm = new AwardTypeForm();
+		UploadForm uploadForm = new UploadForm();
 		
 		
 		
 		//model.addAttribute("submission", savedSubmission);
 		model.addAttribute("detailForm", detailForm);
 		model.addAttribute("awardTypeForm",awardForm);
+		model.addAttribute("uploadForm", uploadForm);
 		
 		
 		return "redirect:/proposal/detail";
@@ -119,8 +129,34 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
-	public String upload(Model model){
-		return "projectIndex";
+	public  String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
+		, Model model){
+		String name="1234";
+		if (!file.isEmpty()) {
+        	try {
+                byte[] bytes = file.getBytes();
+               
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+                stream.write(bytes);
+                stream.close();
+                uploadForm.setFileUpload(file);
+                uploadForm.setName(name);
+                model.addAttribute("contentPage","proposalSubmitted.jsp");
+                return "proposalIndex";
+            } catch (Exception e) {
+            	
+            	model.addAttribute("failedUpload","failed to upload file!");
+            	model.addAttribute("contentPage","proposalUpload.jsp");
+                return "projectIndex";
+                
+            }
+        } else {
+        	model.addAttribute("failedUpload","failed to upload file!");
+        	model.addAttribute("contentPage","proposalUpload.jsp");
+            return "projectIndex";
+        }
+		//return "projectIndex";
 	}
 	
 	
