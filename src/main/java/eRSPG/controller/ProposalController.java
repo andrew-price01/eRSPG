@@ -23,9 +23,10 @@ import eRSPG.model.form.AwardTypeForm;
 import eRSPG.model.form.BudgetForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
+import eRSPG.model.form.BodyForm;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm"})
+@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm"})
 public class ProposalController {
 	
 	@Autowired
@@ -51,6 +52,7 @@ public class ProposalController {
 		AwardTypeForm awardForm = new AwardTypeForm();
 		UploadForm uploadForm = new UploadForm();
 		BudgetForm budgetForm = new BudgetForm();
+		BodyForm bodyForm = new BodyForm();
 		
 		
 		
@@ -59,17 +61,23 @@ public class ProposalController {
 		model.addAttribute("awardTypeForm",awardForm);
 		model.addAttribute("uploadForm", uploadForm);
 		model.addAttribute("budgetForm", budgetForm);
+		model.addAttribute("bodyForm", bodyForm);
 		
 		
 		return "redirect:/proposal/detail";
 	}
-	
+
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
 	public String budgetForm(Model model){
 		String contentPage = "budget.jsp";
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
 	}
+
+    @RequestMapping(value="/proposal/budget", method = RequestMethod.POST)
+    public String saveBudgetForm(Model model) {
+        return "redirect:/proposal/body";
+    }
 	
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
 	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model)
@@ -129,12 +137,62 @@ public class ProposalController {
 	}
 	
 	
-	@RequestMapping("/proposal/body")
+	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
 	public String bodyForm(Model model){
 		String contentPage = "proposalBody.jsp";
-		model.addAttribute("contentPage",contentPage);
+		model.addAttribute("contentPage", contentPage);
 		return "projectIndex";
 	}
+
+	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
+	public String saveBodyForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("contentPage", "proposalBody.jsp");
+			return "projectIndex";
+		}
+
+		return "redirect:/proposal/bodyDetails";
+	}
+
+    @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.GET)
+    public String bodyDetailsForm(Model model){
+        String contentPage = "proposalBodyDetails.jsp";
+        model.addAttribute("contentPage", contentPage);
+        return "projectIndex";
+    }
+
+    @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
+    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+    {
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalBodyDetails.jsp");
+            return "projectIndex";
+        }
+
+        return "redirect:/proposal/bodyQuestions";
+    }
+
+    @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.GET)
+    public String bodyQuestionsForm(Model model){
+        String contentPage = "proposalBodyQuestions.jsp";
+        model.addAttribute("contentPage", contentPage);
+        return "projectIndex";
+    }
+
+    @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.POST)
+    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+    {
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalBodyQuestions.jsp");
+            return "projectIndex";
+        }
+
+        return "redirect:/proposal/upload";
+    }
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.GET)
 	public String uploadForm(Model model){
