@@ -59,13 +59,16 @@ public class UserImpl implements UserDAO {
 		return ra;
 	}
 	
-	public int addUser(User ra){
+	public int addUser(User u){
 		//TODO: 
+		//sessionFactory.getCurrentSession().saveOrUpdate(u);
+		sessionFactory.getCurrentSession().save(u);
 		return 0;
 	}
 	
 	public boolean updateUser(User ra){
 		//TODO: update record query
+		
 		boolean success = false;
 		return success;
 	}

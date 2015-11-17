@@ -18,8 +18,29 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import eRSPG.Repository.AwardTypeDAO;
+import eRSPG.Repository.AwardTypeImpl;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.ProposalImpl;
+import eRSPG.model.AwardType;
+import eRSPG.model.Awarded;
+import eRSPG.model.Department;
+import eRSPG.model.EssayAnswer;
+import eRSPG.model.EssayQuestion;
+import eRSPG.model.Fund;
+import eRSPG.model.FundCategory;
+import eRSPG.model.FundType;
+import eRSPG.model.Participant;
+import eRSPG.model.ProjectType;
+import eRSPG.model.Proposal;
+import eRSPG.model.RequestAward;
+import eRSPG.model.Reviewer;
+import eRSPG.model.RoleType;
+import eRSPG.model.Semester;
+import eRSPG.model.SourceType;
+import eRSPG.model.UploadFile;
+import eRSPG.model.User;
+import eRSPG.model.UserRole;
 
 @EnableWebMvc
 @EnableTransactionManagement
@@ -61,8 +82,10 @@ public class Application extends SpringBootServletInitializer {
      
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
      
-        //sessionBuilder.addAnnotatedClasses(User.class);
-        sessionBuilder.scanPackages("eRPSG.model");
+        sessionBuilder.addAnnotatedClasses(Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
+        									FundType.class, Participant.class, ProjectType.class, Proposal.class, RequestAward.class, RoleType.class,
+        									Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
+        //sessionBuilder.scanPackages("eRPSG.model");
         sessionBuilder.addProperties(getHibernateProperties());
         return sessionBuilder.buildSessionFactory();
     }
@@ -70,7 +93,7 @@ public class Application extends SpringBootServletInitializer {
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         return properties;
     }
     
@@ -90,5 +113,9 @@ public class Application extends SpringBootServletInitializer {
         return new ProposalImpl(sessionFactory);
     }
     
-    
+    @Autowired
+    @Bean(name = "awardTypeDao")
+    public AwardTypeDAO getAwardTypeDao(SessionFactory sessionFactory) {
+        return new  AwardTypeImpl(sessionFactory);
+    }
 }

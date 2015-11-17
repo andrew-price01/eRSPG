@@ -12,8 +12,6 @@ public interface AwardTypeDAO {
 
 	int addNewAwardType(AwardType a);
 
-	boolean updateAwardType(AwardType a);
-
 	boolean deleteAwardType(AwardType a);
 
 }

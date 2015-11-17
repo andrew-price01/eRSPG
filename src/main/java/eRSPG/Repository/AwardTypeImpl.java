@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.AwardType;
 
@@ -35,15 +36,11 @@ public class AwardTypeImpl implements AwardTypeDAO {
 		return a;
 	}
 	
+	@Transactional
 	public int addNewAwardType(AwardType a){
 		//TODO: query insert new AwardType and return new awardTypeID
+		sessionFactory.getCurrentSession().saveOrUpdate(a);
 		return 0;
-	}
-	
-	public boolean updateAwardType(AwardType a){
-		//TODO: update record query
-		boolean success = false;
-		return success;
 	}
 	
 	public boolean deleteAwardType(AwardType a){
