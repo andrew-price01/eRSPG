@@ -20,11 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.model.form.AwardTypeForm;
+import eRSPG.model.form.BudgetForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm","uploadForm"})
+@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm"})
 public class ProposalController {
 	
 	@Autowired
@@ -49,6 +50,7 @@ public class ProposalController {
 		DetailForm detailForm = new DetailForm();
 		AwardTypeForm awardForm = new AwardTypeForm();
 		UploadForm uploadForm = new UploadForm();
+		BudgetForm budgetForm = new BudgetForm();
 		
 		
 		
@@ -56,16 +58,29 @@ public class ProposalController {
 		model.addAttribute("detailForm", detailForm);
 		model.addAttribute("awardTypeForm",awardForm);
 		model.addAttribute("uploadForm", uploadForm);
+		model.addAttribute("budgetForm", budgetForm);
 		
 		
 		return "redirect:/proposal/detail";
 	}
 	
-	@RequestMapping("/proposal/budget")
+	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
 	public String budgetForm(Model model){
 		String contentPage = "budget.jsp";
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
+	}
+	
+	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
+	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model)
+	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("contentPage", "budget.jsp");
+			return "projectIndex";
+		}
+
+		return "redirect:/proposal/body";
 	}
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.GET)
