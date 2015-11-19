@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
     <h1>Body of Proposal</h1>
 
@@ -44,6 +45,7 @@
             <form:textarea class="form-control" path="q7" cssErrorClass="missing-error form-control" />
         </div>
         <div>
+            <a class="pull-left" href="<s:url value='/proposal/detail/bodyDetails' />">Previous</a>
             <button type="submit" class="button-block pull-right">Next</button>
         </div>
     </form:form>

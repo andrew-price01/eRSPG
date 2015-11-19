@@ -36,15 +36,15 @@ public class ProposalController {
 	public String startForm(Model model){
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
-		
-		
+
+
 		return "projectIndex";
 	}
 	
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
-		
+
 		//ProposalSubmission savedSubmission = new ProposalSubmission();
 		//proposal.setProposalTitle("Testing");
 			
@@ -53,17 +53,17 @@ public class ProposalController {
 		UploadForm uploadForm = new UploadForm();
 		BudgetForm budgetForm = new BudgetForm();
 		BodyForm bodyForm = new BodyForm();
-		
-		
-		
+
+
+
 		//model.addAttribute("submission", savedSubmission);
 		model.addAttribute("detailForm", detailForm);
 		model.addAttribute("awardTypeForm",awardForm);
 		model.addAttribute("uploadForm", uploadForm);
 		model.addAttribute("budgetForm", budgetForm);
 		model.addAttribute("bodyForm", bodyForm);
-		
-		
+
+
 		return "redirect:/proposal/detail";
 	}
 
@@ -101,7 +101,7 @@ public class ProposalController {
 		
 		return "projectIndex";
 	}
-	
+
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.POST)
 	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model)
@@ -120,7 +120,7 @@ public class ProposalController {
 		
 		String contentPage = "proposalRewardType.jsp";
 		model.addAttribute("contentPage",contentPage);
-		
+
 		
 		return "projectIndex";
 	}
@@ -135,7 +135,7 @@ public class ProposalController {
 		}
 		return "redirect:/proposal/budget";
 	}
-	
+
 	
 	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
 	public String bodyForm(Model model){
@@ -231,7 +231,7 @@ public class ProposalController {
         }
 		//return "projectIndex";
 	}
-	
+
 	
 	@RequestMapping("/proposal/review")
 	public String reviewForm(Model model){
