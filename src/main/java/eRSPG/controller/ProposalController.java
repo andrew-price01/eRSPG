@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 
 import javax.validation.Valid;
 
+import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,16 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import eRSPG.Repository.ProposalDAO;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.BodyForm;
 
 @Controller
 @SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm"})
@@ -37,14 +32,12 @@ public class ProposalController {
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
 
-
 		return "projectIndex";
 	}
 	
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
-
 		//ProposalSubmission savedSubmission = new ProposalSubmission();
 		//proposal.setProposalTitle("Testing");
 			
@@ -53,8 +46,8 @@ public class ProposalController {
 		UploadForm uploadForm = new UploadForm();
 		BudgetForm budgetForm = new BudgetForm();
 		BodyForm bodyForm = new BodyForm();
-
-
+		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
+		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
 
 		//model.addAttribute("submission", savedSubmission);
 		model.addAttribute("detailForm", detailForm);
@@ -62,7 +55,8 @@ public class ProposalController {
 		model.addAttribute("uploadForm", uploadForm);
 		model.addAttribute("budgetForm", budgetForm);
 		model.addAttribute("bodyForm", bodyForm);
-
+        model.addAttribute("bodyDetailsForm", bodyDetailsForm);
+        model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 
 		return "redirect:/proposal/detail";
 	}
@@ -73,8 +67,6 @@ public class ProposalController {
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
 	}
-
-    
 	
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
 	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model)
@@ -98,7 +90,6 @@ public class ProposalController {
 		
 		return "projectIndex";
 	}
-
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.POST)
 	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model)
@@ -133,7 +124,6 @@ public class ProposalController {
 		return "redirect:/proposal/budget";
 	}
 
-	
 	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
 	public String bodyForm(Model model){
 		String contentPage = "proposalBody.jsp";
@@ -144,6 +134,8 @@ public class ProposalController {
 	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
 	public String saveBodyForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
 	{
+		System.out.println(result.hasErrors());
+        System.out.println(result);
 		if(result.hasErrors())
 		{
 			model.addAttribute("contentPage", "proposalBody.jsp");
@@ -161,7 +153,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
-    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model)
     {
         if(result.hasErrors())
         {
@@ -180,7 +172,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.POST)
-    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model)
     {
         if(result.hasErrors())
         {
@@ -199,7 +191,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
-	public  String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
+	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
 		, Model model){
 		String name="1234";
 		if (!file.isEmpty()) {
@@ -228,7 +220,6 @@ public class ProposalController {
         }
 		//return "projectIndex";
 	}
-
 	
 	@RequestMapping("/proposal/review")
 	public String reviewForm(Model model){
