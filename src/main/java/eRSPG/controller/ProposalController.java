@@ -74,10 +74,7 @@ public class ProposalController {
 		return "projectIndex";
 	}
 
-    @RequestMapping(value="/proposal/budget", method = RequestMethod.POST)
-    public String saveBudgetForm(Model model) {
-        return "redirect:/proposal/body";
-    }
+    
 	
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
 	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model)
