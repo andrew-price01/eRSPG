@@ -10,10 +10,8 @@ public interface DepartmentDAO {
 
 	Department findDepartment(int dId);
 
-	int addNewDepartment(Department d);
+	void addNewOrUpdateDepartment(Department d);
 
-	boolean updateDepartment(Department d);
-
-	boolean deleteDepartment(Department d);
+	void deleteDepartment(Department d);
 
 }

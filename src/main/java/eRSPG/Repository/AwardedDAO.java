@@ -13,9 +13,7 @@ public interface AwardedDAO {
 
 	List<Awarded> findAwardedByUser(User user);
 
-	int addNewAwarded(Awarded a);
-
-	boolean updateAwarded(Awarded a);
+	int addNewOrUpdateAwarded(Awarded a);
 
 	boolean deleteAwarded(Awarded a);
 

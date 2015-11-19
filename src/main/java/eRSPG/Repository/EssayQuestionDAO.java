@@ -10,10 +10,8 @@ public interface EssayQuestionDAO {
 
 	EssayQuestion findEssayQuestion(int aid);
 
-	int addNewEssayQuestion(EssayQuestion q);
+	void addNewOrUpdateEssayQuestion(EssayQuestion q);
 
-	boolean updateEssayQuestion(EssayQuestion a);
-
-	boolean deleteEssayQuestion(EssayQuestion a);
+	void deleteEssayQuestion(EssayQuestion a);
 
 }

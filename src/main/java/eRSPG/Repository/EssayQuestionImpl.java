@@ -3,9 +3,12 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+import eRSPG.model.AwardType;
 import eRSPG.model.EssayQuestion;
 
 public class EssayQuestionImpl implements EssayQuestionDAO {
@@ -21,32 +24,28 @@ public class EssayQuestionImpl implements EssayQuestionDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<EssayQuestion> findAllEssayQuestion(){
-		//TODO: query and return a list of Proposal
-		List<EssayQuestion> eqList = new ArrayList();
+		@SuppressWarnings("uncheck")
+		List<EssayQuestion> eqList = (List<EssayQuestion>) sessionFactory.getCurrentSession()
+                .createCriteria(EssayQuestion.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return eqList;
 	}
 	
+	@Transactional
 	public EssayQuestion findEssayQuestion(int aid){
-		EssayQuestion eq = new EssayQuestion();
-		//TODO: query for a proposal using the pid
+		EssayQuestion eq = sessionFactory.getCurrentSession().get(EssayQuestion.class, aid);
 		return eq;
 	}
 	
-	public int addNewEssayQuestion(EssayQuestion q){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateEssayQuestion(EssayQuestion q){
+		sessionFactory.getCurrentSession().saveOrUpdate(q);
 	}
 	
-	public boolean updateEssayQuestion(EssayQuestion a){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteEssayQuestion(EssayQuestion a){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteEssayQuestion(EssayQuestion a){
+		sessionFactory.getCurrentSession().delete(a);
 	}
 }
