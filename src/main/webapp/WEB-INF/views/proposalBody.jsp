@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
     <h1>Body of Proposal</h1>
 
@@ -28,7 +29,10 @@
             <form:textarea class="form-control" path="hemmingwayCollaboration" />
         </div>
         <div>
-            <button type="submit" class="button-block pull-right">Next</button>
+            <div>
+                <a class="pull-left" href="<s:url value='/proposal/detail/budget' />">Previous</a>
+                <button type="submit" class="button-block pull-right">Next</button>
+            </div>
         </div>
     </form:form>
 </div>
