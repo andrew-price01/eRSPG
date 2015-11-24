@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.Awarded;
-import eRSPG.model.User;
 
 @Repository
 public class AwardedImpl implements AwardedDAO {
@@ -28,6 +26,7 @@ public class AwardedImpl implements AwardedDAO {
 	
 	@Transactional
 	public List<Awarded> findAllAwardeds(){
+		@SuppressWarnings("unchecked")
 		List<Awarded> aList = (List<Awarded>) sessionFactory.getCurrentSession().createCriteria(Awarded.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return aList;
 	}
@@ -36,13 +35,6 @@ public class AwardedImpl implements AwardedDAO {
 	public Awarded findAwarded(int aid){
 		Awarded a = sessionFactory.getCurrentSession().get(Awarded.class, aid);
 		return a;
-	}
-	
-	@Transactional
-	public List<Awarded> findAwardedByUser(User user){
-		//TODO: query for proposal that relates to the user
-		List<Awarded> aList = new ArrayList();
-		return aList;
 	}
 	
 	@Transactional

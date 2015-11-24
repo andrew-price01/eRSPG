@@ -3,7 +3,6 @@ package eRSPG.Repository;
 import java.util.List;
 
 import eRSPG.model.Participant;
-import eRSPG.model.Proposal;
 
 public interface ParticipantDAO {
 

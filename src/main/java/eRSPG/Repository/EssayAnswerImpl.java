@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import eRSPG.model.AwardType;
 import eRSPG.model.EssayAnswer;
-import eRSPG.model.EssayQuestion;
 
 @Repository
 public class EssayAnswerImpl implements EssayAnswerDAO {
@@ -39,13 +36,6 @@ public class EssayAnswerImpl implements EssayAnswerDAO {
 	@Transactional
 	public EssayAnswer findEssayAnswer(int aid){
 		EssayAnswer ea = sessionFactory.getCurrentSession().get(EssayAnswer.class, aid);
-		return ea;
-	}
-	
-	@Transactional
-	public EssayAnswer findEssayAnswerByQuestion(EssayQuestion eq){
-		//TODO: quesry an essay answer matching essayQuestion
-		EssayAnswer ea = new EssayAnswer();
 		return ea;
 	}
 	

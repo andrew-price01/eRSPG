@@ -42,17 +42,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label required-field" for="mailCode">Mail Code:</label>
+                <label class="col-sm-3 control-label" for="mailCode">Mail Code:</label>
 
                 <div class="col-sm-9">
-                    <form:input class="form-control" type="text" path="proposalMailCode" required="true"/>
+                    <form:input class="form-control" type="text" path="proposalMailCode" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label required-field" for="extension">Extension:</label>
+                <label class="col-sm-3 control-label" for="extension">Extension:</label>
 
                 <div class="col-sm-9">
-                    <form:input class="form-control" type="text" path="proposalExtension" required="true"/>
+                    <form:input class="form-control" type="text" path="proposalExtension" />
                 </div>
             </div>
             <!--  div class="form-group">
@@ -67,7 +67,7 @@
             
 
             <div>
-                <button type="submit" class="button-block pull-right">Next</button>
+                <button type="submit" class="btn my-btn pull-right">Next</button>
             </div>
         </form:form>
     </div>

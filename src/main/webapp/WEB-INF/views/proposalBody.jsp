@@ -41,8 +41,10 @@
         <div>
             <div>
                 <a class="pull-left" href="<s:url value='/proposal/budget' />">Previous</a>
-                <button type="submit" class="button-block pull-right">Next</button>
+                <button type="submit" class="btn my-btn pull-right">Next</button>
             </div>
         </div>
     </form:form>
+    <br>
+    <br>
 </div>

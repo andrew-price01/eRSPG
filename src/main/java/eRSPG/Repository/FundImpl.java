@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import eRSPG.model.EssayQuestion;
 import eRSPG.model.Fund;
 
 public class FundImpl implements FundDAO {

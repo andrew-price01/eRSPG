@@ -54,7 +54,9 @@
         </div>
         <div>
             <a class="pull-left" href="<s:url value='/proposal/bodyDetails' />">Previous</a>
-            <button type="submit" class="button-block pull-right">Next</button>
+            <button type="submit" class="btn my-btn pull-right">Next</button>
         </div>
     </form:form>
+    <br>
+    <br>
 </div>

@@ -38,14 +38,6 @@ public class RequestAwardImpl implements RequestAwardDAO {
 	}
 	
 	@Transactional
-	public RequestAward findRequestRewardByProposalId(int pid){
-		RequestAward ra = new RequestAward();
-		//TODO: find RequestAward by proposal id
-		
-		return ra;
-	}
-	
-	@Transactional
 	public void addNewOrUpdateRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
