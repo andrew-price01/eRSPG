@@ -10,8 +10,6 @@ public interface RequestAwardDAO {
 
 	RequestAward findRequestRewardById(int raid);
 
-	RequestAward findRequestRewardByProposalId(int pid);
-
 	void addNewOrUpdateRequestAward(RequestAward ra);
 
 	void deleteRequestAward(RequestAward ra);

@@ -1,10 +1,8 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,8 +12,6 @@ import eRSPG.model.AwardType;
 
 @Repository
 public class AwardTypeImpl implements AwardTypeDAO {
-	
-	private Session session;
 	
 	@Autowired
 	private SessionFactory sessionFactory;

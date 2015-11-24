@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import eRSPG.model.AwardType;
 import eRSPG.model.Department;
 
 @Repository

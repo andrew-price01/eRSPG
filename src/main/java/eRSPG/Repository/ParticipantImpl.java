@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.Participant;
-import eRSPG.model.Proposal;
 
 public class ParticipantImpl implements ParticipantDAO {
 	
@@ -35,7 +34,6 @@ public class ParticipantImpl implements ParticipantDAO {
 
 	@Transactional
 	public List<Participant> findAllPariticipantByProposalId(int pid){
-		//TODO: find all participants relate to the proposal
 		@SuppressWarnings("unchecked")
 		List<Participant> pList = new ArrayList();
 		return pList;
@@ -59,8 +57,6 @@ public class ParticipantImpl implements ParticipantDAO {
 	
 	@Transactional
 	public void deleteAllParticipantByProposalId(int pid){
-		// TODO: 
-		//sessionFactory.getCurrentSession().createQuery(queryString)
 	}
 
 }

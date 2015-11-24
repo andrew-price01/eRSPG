@@ -15,7 +15,6 @@ public class EssayQuestionImpl implements EssayQuestionDAO {
 	private SessionFactory sessionFactory;
 	
 	public EssayQuestionImpl() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public EssayQuestionImpl(SessionFactory sf){

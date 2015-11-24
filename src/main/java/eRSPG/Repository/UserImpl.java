@@ -42,22 +42,22 @@ public class UserImpl implements UserDAO {
 	
 	@Transactional
 	public User findUserByEmail(String email){
-		//Testing
-		User ra = sessionFactory.getCurrentSession().get(User.class, email);
+		User ra = (User)sessionFactory.getCurrentSession().createQuery("from User u where u.email = :email").setParameter("email", email).uniqueResult();
 		return ra;
 	}
 	
 	@Transactional
 	public List<User> findAllUserByFirstName(String fn){
-		List<User> ra = new ArrayList();
-		//TODO: query for a proposal using the firstName
+		@SuppressWarnings("unchecked")
+		List<User> ra = (List<User>)sessionFactory.getCurrentSession().createQuery("from User u where u.firstName = :firstName").setParameter("firstName", fn).list();
 		return ra;
 	}
 	
 	@Transactional
 	public List<User> findAllUserByLastName(String ln){
-		List<User> ra = new ArrayList();
-		//TODO: query for a proposal using the lastName
+		@SuppressWarnings("unchecked")
+		List<User> ra = (List<User>)sessionFactory.getCurrentSession().createQuery("from User u where u.lastName = :lastName").setParameter("lastName", ln).list();
+		
 		return ra;
 	}
 	

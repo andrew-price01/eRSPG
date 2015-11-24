@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.Proposal;
-import eRSPG.model.User;
 
 @Repository
 public class ProposalImpl implements ProposalDAO {
@@ -38,13 +36,6 @@ public class ProposalImpl implements ProposalDAO {
 	public Proposal findProposal(int pid){
 		Proposal p = sessionFactory.getCurrentSession().get(Proposal.class, pid);
 		return p;
-	}
-	
-	@Transactional
-	public List<Proposal> findProposalsByUser(User user){
-		//TODO: query for proposal that relates to the user
-		List<Proposal> pList = new ArrayList();
-		return pList;
 	}
 	
 	@Transactional
