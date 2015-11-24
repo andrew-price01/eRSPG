@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>

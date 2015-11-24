@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-    <div align="center">
+    <div class="container" align="center">
     <div class="breadcrumb flat">
 			<a href="<s:url value='/proposal/detail' />">Details </a>
 			<a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
