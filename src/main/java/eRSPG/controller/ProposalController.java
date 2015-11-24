@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import eRSPG.Repository.ProposalDAO;
+import eRSPG.model.Proposal;
+import eRSPG.model.form.AwardTypeForm;
+import eRSPG.model.form.BudgetForm;
+import eRSPG.model.form.DetailForm;
+import eRSPG.model.form.UploadForm;
+import eRSPG.model.form.BodyForm;
 
 @Controller
 @SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
@@ -227,5 +233,40 @@ public class ProposalController {
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
 	}
+	
+	
+	@RequestMapping("/proposal/submit")
+	public void submit(@ModelAttribute("detailForm") DetailForm detailForm,
+						@ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
+						@ModelAttribute("bodyForm") BodyForm bodyForm,
+						@ModelAttribute("budgetForm") BudgetForm budgetForm)
+	{
+		
+		processSubmission(detailForm, awardForm, bodyForm, budgetForm);
+		
+		
+	}
+	private void processSubmission( DetailForm detailForm,
+					AwardTypeForm awardForm,
+					BodyForm bodyForm,
+					BudgetForm budgetForm)
+	{
+	
+		Proposal proposal = new Proposal();
+		proposal.setProjectDirector(detailForm.getProjectDirector());
+		proposal.setProposalComplete(true);
+		proposal.setProposalMailCode(detailForm.getProposalMailCode());
+		proposal.setProposalExtension(detailForm.getProposalExtension());
+		proposal.setProposalEmail(detailForm.getProposalEmail());
+		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
+		proposal.setProposalTitle(detailForm.getProposalTitle());
+		
+		//TODO: get budgetForm data and save to database
+		
+		
+		//TODO: save uploaded files to server
+		
+	}
+	
 	
 }
