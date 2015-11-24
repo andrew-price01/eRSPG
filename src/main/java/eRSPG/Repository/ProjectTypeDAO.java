@@ -10,10 +10,8 @@ public interface ProjectTypeDAO {
 
 	ProjectType findProjectType(int ptid);
 
-	int addNewProjectType(ProjectType pt);
+	void addNewOrUpdateProjectType(ProjectType pt);
 
-	boolean updateProjectType(ProjectType a);
-
-	boolean deleteProjectType(ProjectType p);
+	void deleteProjectType(ProjectType p);
 
 }

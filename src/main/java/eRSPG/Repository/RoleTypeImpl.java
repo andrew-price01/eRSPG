@@ -1,11 +1,12 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.RoleType;
 
@@ -23,18 +24,22 @@ public class RoleTypeImpl implements RoleTypeDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<RoleType> findAllRoleType(){
-		//TODO: query and return a list of Proposal
-		List<RoleType> raList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<RoleType> raList = (List<RoleType>) sessionFactory.getCurrentSession()
+                .createCriteria(RoleType.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return raList;
 	}
 	
+	@Transactional
 	public RoleType findRoleTypeById(int raid){
-		RoleType ra = new RoleType();
-		//TODO: query for a proposal using the pid
+		RoleType ra = sessionFactory.getCurrentSession().get(RoleType.class, raid);
 		return ra;
 	}
 	
+	@Transactional
 	public RoleType findRoleTypeByUserId(int pid){
 		RoleType ra = new RoleType();
 		//TODO: find RoleType by proposal id
@@ -42,20 +47,13 @@ public class RoleTypeImpl implements RoleTypeDAO {
 		return ra;
 	}
 	
-	public int addRoleType(RoleType ra){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateRoleType(RoleType ra){
+		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
 	
-	public boolean updateRoleType(RoleType ra){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteRoleType(RoleType ra){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteRoleType(RoleType ra){
+		sessionFactory.getCurrentSession().delete(ra);
 	}
 }

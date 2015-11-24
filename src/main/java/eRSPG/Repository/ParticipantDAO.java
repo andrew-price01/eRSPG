@@ -3,6 +3,7 @@ package eRSPG.Repository;
 import java.util.List;
 
 import eRSPG.model.Participant;
+import eRSPG.model.Proposal;
 
 public interface ParticipantDAO {
 
@@ -12,12 +13,10 @@ public interface ParticipantDAO {
 
 	Participant findParticipant(int pid);
 
-	int addNewParticipant(Participant p);
+	void addNewOrUpdateParticipant(Participant p);
 
-	boolean updateParticipant(Participant p);
+	void deleteParticipant(Participant p);
 
-	boolean deleteParticipant(Participant p);
-
-	boolean deleteAllParticipantByProposalId(int pid);
+	void deleteAllParticipantByProposalId(int pid);
 
 }

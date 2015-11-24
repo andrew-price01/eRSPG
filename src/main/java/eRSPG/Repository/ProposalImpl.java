@@ -3,9 +3,11 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.Proposal;
 import eRSPG.model.User;
@@ -23,39 +25,36 @@ public class ProposalImpl implements ProposalDAO {
 		this.sessionFactory = sf;
 	}
 
+	@Transactional
 	public List<Proposal> findAllProposals(){
-		//TODO: query and return a list of Proposal
-		List<Proposal> pList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<Proposal> pList = (List<Proposal>) sessionFactory.getCurrentSession()
+                .createCriteria(Proposal.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return pList;
 	}
 	
+	@Transactional
 	public Proposal findProposal(int pid){
-		Proposal p = new Proposal();
-		//TODO: query for a proposal using the pid
+		Proposal p = sessionFactory.getCurrentSession().get(Proposal.class, pid);
 		return p;
 	}
 	
+	@Transactional
 	public List<Proposal> findProposalsByUser(User user){
 		//TODO: query for proposal that relates to the user
 		List<Proposal> pList = new ArrayList();
 		return pList;
 	}
 	
-	public int addNewProposal(Proposal p){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateProposal(Proposal p){
+		sessionFactory.getCurrentSession().saveOrUpdate(p);
 	}
 	
-	public boolean updateProposal(Proposal p){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteProposal(Proposal p){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteProposal(Proposal p){
+		sessionFactory.getCurrentSession().delete(p);
 	}
 	
 }

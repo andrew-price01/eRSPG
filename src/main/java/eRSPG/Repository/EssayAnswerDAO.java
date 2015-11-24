@@ -13,10 +13,8 @@ public interface EssayAnswerDAO {
 	
 	EssayAnswer findEssayAnswerByQuestion(EssayQuestion eq);
 
-	int addNewEssayAnswer(EssayAnswer a);
+	void addNewOrUpdateEssayAnswer(EssayAnswer a);
 
-	boolean updateEssayAnswer(EssayAnswer a);
-
-	boolean deleteEssayAnswer(EssayAnswer a);
+	void deleteEssayAnswer(EssayAnswer a);
 
 }

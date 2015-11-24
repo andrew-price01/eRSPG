@@ -3,9 +3,11 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.User;
 
@@ -23,59 +25,49 @@ public class UserImpl implements UserDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<User> findAllUser(){
-		//TODO: query and return a list of Proposal
-		List<User> raList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<User> raList = (List<User>) sessionFactory.getCurrentSession()
+                .createCriteria(User.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return raList;
 	}
 	
+	@Transactional
 	public User findUserById(int raid){
-		User ra = new User();
-		//TODO: query for a proposal using the pid
+		User ra = sessionFactory.getCurrentSession().get(User.class, raid);
 		return ra;
 	}
 	
+	@Transactional
 	public User findUserByEmail(String email){
-		User ra = new User();
-		//TODO: query for a proposal using the pid
+		//Testing
+		User ra = sessionFactory.getCurrentSession().get(User.class, email);
 		return ra;
 	}
 	
+	@Transactional
 	public List<User> findAllUserByFirstName(String fn){
 		List<User> ra = new ArrayList();
 		//TODO: query for a proposal using the firstName
 		return ra;
 	}
 	
+	@Transactional
 	public List<User> findAllUserByLastName(String ln){
 		List<User> ra = new ArrayList();
 		//TODO: query for a proposal using the lastName
 		return ra;
 	}
 	
-	public List<User> findAllUserByFullName(String fullName){
-		List<User> ra = new ArrayList();
-		//TODO: query for a proposal using the fullName
-		return ra;
+	@Transactional
+	public void addNewOrUpdateUser(User u){
+		sessionFactory.getCurrentSession().saveOrUpdate(u);
 	}
 	
-	public int addUser(User u){
-		//TODO: 
-		//sessionFactory.getCurrentSession().saveOrUpdate(u);
-		sessionFactory.getCurrentSession().save(u);
-		return 0;
-	}
-	
-	public boolean updateUser(User ra){
-		//TODO: update record query
-		
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteUser(User ra){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteUser(User ra){
+		sessionFactory.getCurrentSession().delete(ra);
 	}
 }

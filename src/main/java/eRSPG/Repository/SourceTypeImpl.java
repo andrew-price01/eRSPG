@@ -1,11 +1,12 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.SourceType;
 
@@ -22,38 +23,35 @@ public class SourceTypeImpl implements SourceTypeDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<SourceType> findAllSourceType(){
-		//TODO: query and return a list of Proposal
-		List<SourceType> raList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<SourceType> raList = (List<SourceType>) sessionFactory.getCurrentSession()
+                .createCriteria(SourceType.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return raList;
 	}
 	
+	@Transactional
 	public SourceType findSourceTypeById(int raid){
-		SourceType ra = new SourceType();
-		//TODO: query for a proposal using the pid
+		SourceType ra = sessionFactory.getCurrentSession().get(SourceType.class, raid);
 		return ra;
 	}
 	
+	@Transactional
 	public SourceType findSourceTypeByDesc(String desc){
 		SourceType ra = new SourceType();
 		//TODO: query for a proposal using the desc
 		return ra;
 	}
 	
-	public int addSourceType(SourceType ra){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateSourceType(SourceType ra){
+		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
 	
-	public boolean updateSourceType(SourceType ra){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteSourceType(SourceType ra){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteSourceType(SourceType ra){
+		sessionFactory.getCurrentSession().delete(ra);
 	}
 }

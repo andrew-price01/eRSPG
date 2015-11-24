@@ -3,10 +3,13 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import eRSPG.model.AwardType;
 import eRSPG.model.Department;
 
 @Repository
@@ -23,33 +26,28 @@ public class DepartmentImpl implements DepartmentDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<Department> findAllDepartment(){
-		//TODO: query and return a list of Proposal
-		List<Department> dList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<Department> dList = (List<Department>) sessionFactory.getCurrentSession()
+                .createCriteria(Department.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return dList;
 	}
 	
+	@Transactional
 	public Department findDepartment(int dId){
-		Department d = new Department();
-		//TODO: query for a proposal using the pid
+		Department d = sessionFactory.getCurrentSession().get(Department.class, dId);
 		return d;
 	}
 	
-	
-	public int addNewDepartment(Department d){
-		//TODO:
-		return 0;
+	@Transactional
+	public void addNewOrUpdateDepartment(Department d){
+		sessionFactory.getCurrentSession().saveOrUpdate(d);
 	}
 	
-	public boolean updateDepartment(Department d){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteDepartment(Department d){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteDepartment(Department d){
+		sessionFactory.getCurrentSession().delete(d);
 	}
 }

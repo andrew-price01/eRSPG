@@ -16,12 +16,8 @@ public interface UserDAO {
 
 	List<User> findAllUserByLastName(String ln);
 
-	List<User> findAllUserByFullName(String fullName);
+	void addNewOrUpdateUser(User ra);
 
-	int addUser(User ra);
-
-	boolean updateUser(User ra);
-
-	boolean deleteUser(User ra);
+	void deleteUser(User ra);
 
 }

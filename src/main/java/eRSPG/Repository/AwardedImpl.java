@@ -3,9 +3,11 @@ package eRSPG.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.Awarded;
 import eRSPG.model.User;
@@ -24,38 +26,36 @@ public class AwardedImpl implements AwardedDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<Awarded> findAllAwardeds(){
-		//TODO: query and return a list of Proposal
-		List<Awarded> aList = new ArrayList();
+		List<Awarded> aList = (List<Awarded>) sessionFactory.getCurrentSession().createCriteria(Awarded.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return aList;
 	}
 	
+	@Transactional
 	public Awarded findAwarded(int aid){
-		Awarded a = new Awarded();
-		//TODO: query for a proposal using the pid
+		Awarded a = sessionFactory.getCurrentSession().get(Awarded.class, aid);
 		return a;
 	}
 	
+	@Transactional
 	public List<Awarded> findAwardedByUser(User user){
 		//TODO: query for proposal that relates to the user
 		List<Awarded> aList = new ArrayList();
 		return aList;
 	}
 	
-	public int addNewAwarded(Awarded a){
-		//TODO: 
+	@Transactional
+	public int addNewOrUpdateAwarded(Awarded a){
+		sessionFactory.getCurrentSession().saveOrUpdate(a);
 		return 0;
 	}
 	
-	public boolean updateAwarded(Awarded a){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
+	@Transactional
 	public boolean deleteAwarded(Awarded a){
-		//TODO: delete record query
+		sessionFactory.getCurrentSession().delete(a);
 		boolean success = false;
 		return success;
 	}
+
 }

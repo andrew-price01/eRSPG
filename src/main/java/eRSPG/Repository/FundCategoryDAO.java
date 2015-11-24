@@ -10,10 +10,8 @@ public interface FundCategoryDAO {
 
 	FundCategory findFundCategory(int fid);
 
-	int addFundCategory(FundCategory f);
+	void addNewOrUpdateFundCategory(FundCategory f);
 
-	boolean updateFundCategory(FundCategory fc);
-
-	boolean deleteFundCategory(FundCategory fc);
+	void deleteFundCategory(FundCategory fc);
 
 }

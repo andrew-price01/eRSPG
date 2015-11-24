@@ -30,7 +30,7 @@
         </div>
         <div>
             <div>
-                <a class="pull-left" href="<s:url value='/proposal/detail/budget' />">Previous</a>
+                <a class="pull-left" href="<s:url value='/proposal/budget' />">Previous</a>
                 <button type="submit" class="button-block pull-right">Next</button>
             </div>
         </div>

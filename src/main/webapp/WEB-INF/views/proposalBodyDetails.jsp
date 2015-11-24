@@ -6,7 +6,7 @@
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
 
-    <form:form method="post" modelAttribute="bodyForm" class="labels-no-bold tall-textarea">
+    <form:form method="post" modelAttribute="bodyDetailsForm" class="labels-no-bold tall-textarea">
         <div class="form-group">
             <label for="procedures" class="required-field"><strong>II. PROCEDURES AND METHODS.</strong> (Indicate how the goals and objectives will be met. Include a
                 discussion of the steps involved in the design, development and implementation of the project.)</label>
@@ -28,7 +28,7 @@
             <form:textarea  class="form-control" path="budgetNarrative" cssErrorClass="missing-error form-control" />
         </div>
         <div>
-            <a class="pull-left" href="<s:url value='/proposal/detail/body' />">Previous</a>
+            <a class="pull-left" href="<s:url value='/proposal/body' />">Previous</a>
             <button type="submit" class="button-block pull-right">Next</button>
         </div>
     </form:form>
