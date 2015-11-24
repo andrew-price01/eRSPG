@@ -12,10 +12,8 @@ public interface SourceTypeDAO {
 
 	SourceType findSourceTypeByDesc(String desc);
 
-	int addSourceType(SourceType ra);
+	void addNewOrUpdateSourceType(SourceType ra);
 
-	boolean updateSourceType(SourceType ra);
-
-	boolean deleteSourceType(SourceType ra);
+	void deleteSourceType(SourceType ra);
 
 }

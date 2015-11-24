@@ -10,10 +10,8 @@ public interface FundDAO {
 
 	Fund findFund(int fid);
 
-	int addNewFund(Fund f);
+	void addNewOrUpdateFund(Fund f);
 
-	boolean updateFund(Fund f);
-
-	boolean deleteFund(Fund f);
+	void deleteFund(Fund f);
 
 }

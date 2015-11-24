@@ -12,10 +12,8 @@ public interface RequestAwardDAO {
 
 	RequestAward findRequestRewardByProposalId(int pid);
 
-	int addRequestAward(RequestAward ra);
+	void addNewOrUpdateRequestAward(RequestAward ra);
 
-	boolean updateRequestAward(RequestAward ra);
-
-	boolean deleteRequestAward(RequestAward ra);
+	void deleteRequestAward(RequestAward ra);
 
 }

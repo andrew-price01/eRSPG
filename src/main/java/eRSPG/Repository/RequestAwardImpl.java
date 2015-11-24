@@ -1,10 +1,11 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.RequestAward;
 
@@ -21,18 +22,22 @@ public class RequestAwardImpl implements RequestAwardDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<RequestAward> findAllRequestAward(){
-		//TODO: query and return a list of Proposal
-		List<RequestAward> raList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<RequestAward> raList = (List<RequestAward>) sessionFactory.getCurrentSession()
+                .createCriteria(RequestAward.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return raList;
 	}
 	
+	@Transactional
 	public RequestAward findRequestRewardById(int raid){
-		RequestAward ra = new RequestAward();
-		//TODO: query for a proposal using the pid
+		RequestAward ra = sessionFactory.getCurrentSession().get(RequestAward.class, raid);
 		return ra;
 	}
 	
+	@Transactional
 	public RequestAward findRequestRewardByProposalId(int pid){
 		RequestAward ra = new RequestAward();
 		//TODO: find RequestAward by proposal id
@@ -40,20 +45,12 @@ public class RequestAwardImpl implements RequestAwardDAO {
 		return ra;
 	}
 	
-	public int addRequestAward(RequestAward ra){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateRequestAward(RequestAward ra){
+		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
 	
-	public boolean updateRequestAward(RequestAward ra){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteRequestAward(RequestAward ra){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	public void deleteRequestAward(RequestAward ra){
+		sessionFactory.getCurrentSession().delete(ra);
 	}
 }

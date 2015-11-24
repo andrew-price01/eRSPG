@@ -1,11 +1,12 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.UserRole;
 
@@ -23,32 +24,28 @@ public class UserRoleImpl implements UserRoleDAO {
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional
 	public List<UserRole> findAllUserRole(){
-		//TODO: query and return a list of Proposal
-		List<UserRole> raList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<UserRole> raList = (List<UserRole>) sessionFactory.getCurrentSession()
+                .createCriteria(UserRole.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();;
 		return raList;
 	}
 	
+	@Transactional
 	public UserRole findUserRoleById(int raid){
-		UserRole ra = new UserRole();
-		//TODO: query for a proposal using the pid
+		UserRole ra = sessionFactory.getCurrentSession().get(UserRole.class, raid);
 		return ra;
 	}
 	
-	public int addUserRole(UserRole ra){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateUserRole(UserRole ra){
+		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
 	
-	public boolean updateUserRole(UserRole ra){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteUserRole(UserRole ra){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteUserRole(UserRole ra){
+		sessionFactory.getCurrentSession().delete(ra);
 	}
 }

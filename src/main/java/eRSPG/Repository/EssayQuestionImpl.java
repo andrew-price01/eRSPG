@@ -1,6 +1,5 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import eRSPG.model.AwardType;
 import eRSPG.model.EssayQuestion;
 
 public class EssayQuestionImpl implements EssayQuestionDAO {
@@ -26,7 +24,7 @@ public class EssayQuestionImpl implements EssayQuestionDAO {
 	
 	@Transactional
 	public List<EssayQuestion> findAllEssayQuestion(){
-		@SuppressWarnings("uncheck")
+		@SuppressWarnings("unchecked")
 		List<EssayQuestion> eqList = (List<EssayQuestion>) sessionFactory.getCurrentSession()
                 .createCriteria(EssayQuestion.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();

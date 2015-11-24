@@ -10,10 +10,8 @@ public interface UserRoleDAO {
 
 	UserRole findUserRoleById(int raid);
 
-	int addUserRole(UserRole ra);
+	void addNewOrUpdateUserRole(UserRole ra);
 
-	boolean updateUserRole(UserRole ra);
-
-	boolean deleteUserRole(UserRole ra);
+	void deleteUserRole(UserRole ra);
 
 }

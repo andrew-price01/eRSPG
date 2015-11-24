@@ -10,10 +10,8 @@ public interface SemesterDAO {
 
 	Semester findSemesterById(int raid);
 
-	int addSemester(Semester ra);
+	void addNewOrUpdateSemester(Semester ra);
 
-	boolean updateSemester(Semester ra);
-
-	boolean deleteSemester(Semester ra);
+	void deleteSemester(Semester ra);
 
 }

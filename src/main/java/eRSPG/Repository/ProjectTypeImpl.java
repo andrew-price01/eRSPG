@@ -1,10 +1,11 @@
 package eRSPG.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import eRSPG.model.ProjectType;
 
@@ -21,33 +22,29 @@ public class ProjectTypeImpl implements ProjectTypeDAO{
 		this.sessionFactory = sf;
 	}
 	
+	@Transactional 
 	public List<ProjectType> findAllProjectType(){
-		//TODO: query and return a list of Proposal
-		List<ProjectType> ptList = new ArrayList();
+		@SuppressWarnings("unchecked")
+		List<ProjectType> ptList = (List<ProjectType>) sessionFactory.getCurrentSession()
+                .createCriteria(ProjectType.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		return ptList;
 	}
 	
+	@Transactional
 	public ProjectType findProjectType(int ptid){
-		ProjectType pt = new ProjectType();
-		//TODO: query for a proposal using the pid
+		ProjectType pt = sessionFactory.getCurrentSession().get(ProjectType.class, ptid);
 		return pt;
 	}
 	
-	public int addNewProjectType(ProjectType pt){
-		//TODO: 
-		return 0;
+	@Transactional
+	public void addNewOrUpdateProjectType(ProjectType pt){
+		sessionFactory.getCurrentSession().saveOrUpdate(pt);
 	}
 	
-	public boolean updateProjectType(ProjectType a){
-		//TODO: update record query
-		boolean success = false;
-		return success;
-	}
-	
-	public boolean deleteProjectType(ProjectType p){
-		//TODO: delete record query
-		boolean success = false;
-		return success;
+	@Transactional
+	public void deleteProjectType(ProjectType p){
+		sessionFactory.getCurrentSession().delete(p);
 	}
 
 }
