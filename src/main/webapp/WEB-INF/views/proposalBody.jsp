@@ -1,7 +1,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
-    <h1>Body of Proposal</h1>
+
+	<div class="breadcrumb flat">
+			<a href="<s:url value='/proposal/detail' />">Details </a>
+			<a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
+			<a href="<s:url value='/proposal/budget' />" >Budget</a>
+			<a href="<s:url value='/proposal/body' />" class="active">Body</a>
+			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
+			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
+			<a href="<s:url value='/proposal/upload' />">Upload</a>
+	</div>
+    <legend><h2 style="text-align:center;">Body of Proposal</h2></legend>
 
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
