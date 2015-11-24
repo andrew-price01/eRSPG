@@ -27,7 +27,7 @@ import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.BodyForm;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm"})
+@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	@Autowired
