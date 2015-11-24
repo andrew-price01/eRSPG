@@ -9,36 +9,51 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "FILES_UPLOAD")
 public class UploadFile {
-    private long id;
-    private String fileName;
-    private byte[] data;
- 
     @Id
     @GeneratedValue
-    @Column(name = "FILE_ID")
-    public long getId() {
+    @Column(name = "fileId")
+    private int id;
+
+    @Column(name = "proposalId")
+    private int proposalId;
+
+    @Column(name = "fileName")
+    private String fileName;
+
+    @Column(name = "path")
+    private String path;
+
+    public UploadFile() {}
+
+    public int getId() {
         return id;
     }
- 
-    public void setId(long id) {
+
+    public void setId(int id) {
         this.id = id;
     }
- 
-    @Column(name = "FILE_NAME")
+
+    public int getProposalId() {
+        return proposalId;
+    }
+
+    public void setProposalId(int proposalId) {
+        this.proposalId = proposalId;
+    }
+
     public String getFileName() {
         return fileName;
     }
- 
+
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
- 
-    @Column(name = "FILE_DATA")
-    public byte[] getData() {
-        return data;
+
+    public String getPath() {
+        return path;
     }
- 
-    public void setData(byte[] data) {
-        this.data = data;
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

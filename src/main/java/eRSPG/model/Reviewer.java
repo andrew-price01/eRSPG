@@ -1,6 +1,6 @@
 package eRSPG.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class Reviewer {
 	private String reviewComment;
 	
 	@Column(name="updatedAt")
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 	
 	public Reviewer(){
 		
@@ -73,11 +73,11 @@ public class Reviewer {
 		this.reviewComment = reviewComment;
 	}
 
-	public Date getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 	

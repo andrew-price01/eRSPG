@@ -7,12 +7,15 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
     <title>eRSPG Proposal Submission</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/header.jsp"/>
 <jsp:include page="${contentPage}"  />
 </body>
 </html>

@@ -1,6 +1,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
     <div align="center">
-        <h1>Spring MVC - File Upload to Database Demo</h1>
+    <div class="breadcrumb flat">
+			<a href="<s:url value='/proposal/detail' />">Details </a>
+			<a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
+			<a href="<s:url value='/proposal/budget' />" >Budget</a>
+			<a href="<s:url value='/proposal/body' />" >Body</a>
+			<a href="<s:url value='/proposal/bodyDetails' />" >Body Details</a>
+			<a href="<s:url value='/proposal/bodyQuestions' />" >Questions</a>
+			<a href="<s:url value='/proposal/upload' />" class="active">Upload</a>
+	</div>
+<!--         <h1>Spring MVC - File Upload to Database Demo</h1> -->
+         <legend><h2 style="text-align:center;">File Upload</h2></legend>
         <form:form method="post" enctype="multipart/form-data" modelAttribute="UploadForm">
             <table border="0">
                 <tr>

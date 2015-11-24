@@ -1,12 +1,22 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="container">
-	<legend>Award Type</legend>
+
+		<div class="breadcrumb flat">
+			<a href="<s:url value='/proposal/detail' />">Details</a>
+			<a href="<s:url value='/proposal/detail/awardType' />" class="active">Award Type</a>
+			<a href="<s:url value='/proposal/budget' />" >Budget</a>
+			<a href="<s:url value='/proposal/body' />">Body</a>
+			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
+			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
+			<a href="<s:url value='/proposal/upload' />">Upload</a>
+		</div>
+	<legend><h2 style="text-align:center;">Award Type</h2></legend>
 	<form:form class="form-horizontal" method="post"
 		modelAttribute="awardTypeForm">
 
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Are You Applying For:</label>
+			<label class="col-sm-3 control-label required-field">Are You Applying For:</label>
 
 			<div class="col-sm-9">
 				<div class="checkbox">
@@ -49,7 +59,7 @@
 		</div>
 
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Project Type:</label>
+			<label class="col-sm-3 control-label required-field">Project Type:</label>
 
 			<div class="col-sm-9">
 				<div class="radio">

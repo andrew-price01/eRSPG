@@ -1,6 +1,6 @@
 package eRSPG.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,10 +21,10 @@ public class UserRole {
 	private int roleTypeId;
 	
 	@Column(name="rovoked")
-	private Date revoked;
+	private LocalDateTime revoked;
 	
 	@Column(name="updateAt")
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 	
 	public UserRole(){
 		
@@ -54,19 +54,19 @@ public class UserRole {
 		this.roleTypeId = roleTypeId;
 	}
 
-	public Date getRevoked() {
+	public LocalDateTime getRevoked() {
 		return revoked;
 	}
 
-	public void setRevoked(Date revoked) {
+	public void setRevoked(LocalDateTime revoked) {
 		this.revoked = revoked;
 	}
 
-	public Date getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 	
