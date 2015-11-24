@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import eRSPG.Repository.ProposalDAO;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm"})
+@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	@Autowired
