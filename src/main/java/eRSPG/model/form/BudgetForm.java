@@ -35,87 +35,87 @@ public class BudgetForm {
 	private String c4;
 	private String cBen;
 	
-	private Double source1_a_1;
-	private Double source2_a_1;
-	private Double source3_a_1;
-	private Double requested_a_1;
+	private double source1_a_1;
+	private double source2_a_1;
+	private double source3_a_1;
+	private double requested_a_1;
 	
-	private Double source1_b_1;
-	private Double source2_b_1;
-	private Double source3_b_1;
-	private Double requested_b_1;
+	private double source1_b_1;
+	private double source2_b_1;
+	private double source3_b_1;
+	private double requested_b_1;
 	
-	private Double source1_c_1;
-	private Double source2_c_1;
-	private Double source3_c_1;
-	private Double requested_c_1;
+	private double source1_c_1;
+	private double source2_c_1;
+	private double source3_c_1;
+	private double requested_c_1;
 	
 	
-	private Double source1_a_ben;
-	private Double source2_a_ben;
-	private Double source3_a_ben;
-	private Double requested_a_ben;
+	private double source1_a_ben;
+	private double source2_a_ben;
+	private double source3_a_ben;
+	private double requested_a_ben;
 	
-	private Double source1_b_ben;
-	private Double source2_b_ben;
-	private Double source3_b_ben;
-	private Double requested_b_ben;
+	private double source1_b_ben;
+	private double source2_b_ben;
+	private double source3_b_ben;
+	private double requested_b_ben;
 	
-	private Double source1_c_ben;
-	private Double source2_c_ben;
-	private Double source3_c_ben;
-	private Double requested_c_ben;
+	private double source1_c_ben;
+	private double source2_c_ben;
+	private double source3_c_ben;
+	private double requested_c_ben;
 	
-	private Double source1_a_2;
-	private Double source2_a_2;
-	private Double source3_a_2;
-	private Double requested_a_2;
+	private double source1_a_2;
+	private double source2_a_2;
+	private double source3_a_2;
+	private double requested_a_2;
 	
-	private Double source1_b_2;
-	private Double source2_b_2;
-	private Double source3_b_2;
-	private Double requested_b_2;
+	private double source1_b_2;
+	private double source2_b_2;
+	private double source3_b_2;
+	private double requested_b_2;
 	
-	private Double source1_c_2;
-	private Double source2_c_2;
-	private Double source3_c_2;
-	private Double requested_c_2;
+	private double source1_c_2;
+	private double source2_c_2;
+	private double source3_c_2;
+	private double requested_c_2;
 	
-	private Double source1_a_3;
-	private Double source2_a_3;
-	private Double source3_a_3;
-	private Double requested_a_3;
+	private double source1_a_3;
+	private double source2_a_3;
+	private double source3_a_3;
+	private double requested_a_3;
 	
-	private Double source1_b_3;
-	private Double source2_b_3;
-	private Double source3_b_3;
-	private Double requested_b_3;
+	private double source1_b_3;
+	private double source2_b_3;
+	private double source3_b_3;
+	private double requested_b_3;
 	
-	private Double source1_c_3;
-	private Double source2_c_3;
-	private Double source3_c_3;
-	private Double requested_c_3;
+	private double source1_c_3;
+	private double source2_c_3;
+	private double source3_c_3;
+	private double requested_c_3;
 	
-	private Double source1_a_4;
-	private Double source2_a_4;
-	private Double source3_a_4;
-	private Double requested_a_4;
+	private double source1_a_4;
+	private double source2_a_4;
+	private double source3_a_4;
+	private double requested_a_4;
 	
-	private Double source1_b_4;
-	private Double source2_b_4;
-	private Double source3_b_4;
-	private Double requested_b_4;
+	private double source1_b_4;
+	private double source2_b_4;
+	private double source3_b_4;
+	private double requested_b_4;
 	
-	private Double source1_c_4;
-	private Double source2_c_4;
-	private Double source3_c_4;
-	private Double requested_c_4;
+	private double source1_c_4;
+	private double source2_c_4;
+	private double source3_c_4;
+	private double requested_c_4;
 	
-	private Double source1Total;
-	private Double source2Total;
-	private Double source3Total;
-	private Double requestedTotal;
-	private Double grandTotal;
+	private double source1Total;
+	private double source2Total;
+	private double source3Total;
+	private double requestedTotal;
+	private double grandTotal;
 
 	public String getA1() {
 		return a1;
@@ -237,523 +237,523 @@ public class BudgetForm {
 		this.cBen = cBen;
 	}
 
-	public Double getSource1_a_1() {
+	public double getSource1_a_1() {
 		return source1_a_1;
 	}
 
-	public void setSource1_a_1(Double source1_a_1) {
+	public void setSource1_a_1(double source1_a_1) {
 		this.source1_a_1 = source1_a_1;
 	}
 
-	public Double getSource2_a_1() {
+	public double getSource2_a_1() {
 		return source2_a_1;
 	}
 
-	public void setSource2_a_1(Double source2_a_1) {
+	public void setSource2_a_1(double source2_a_1) {
 		this.source2_a_1 = source2_a_1;
 	}
 
-	public Double getSource3_a_1() {
+	public double getSource3_a_1() {
 		return source3_a_1;
 	}
 
-	public void setSource3_a_1(Double source3_a_1) {
+	public void setSource3_a_1(double source3_a_1) {
 		this.source3_a_1 = source3_a_1;
 	}
 
-	public Double getRequested_a_1() {
+	public double getRequested_a_1() {
 		return requested_a_1;
 	}
 
-	public void setRequested_a_1(Double requested_a_1) {
+	public void setRequested_a_1(double requested_a_1) {
 		this.requested_a_1 = requested_a_1;
 	}
 
-	public Double getSource1_b_1() {
+	public double getSource1_b_1() {
 		return source1_b_1;
 	}
 
-	public void setSource1_b_1(Double source1_b_1) {
+	public void setSource1_b_1(double source1_b_1) {
 		this.source1_b_1 = source1_b_1;
 	}
 
-	public Double getSource2_b_1() {
+	public double getSource2_b_1() {
 		return source2_b_1;
 	}
 
-	public void setSource2_b_1(Double source2_b_1) {
+	public void setSource2_b_1(double source2_b_1) {
 		this.source2_b_1 = source2_b_1;
 	}
 
-	public Double getSource3_b_1() {
+	public double getSource3_b_1() {
 		return source3_b_1;
 	}
 
-	public void setSource3_b_1(Double source3_b_1) {
+	public void setSource3_b_1(double source3_b_1) {
 		this.source3_b_1 = source3_b_1;
 	}
 
-	public Double getRequested_b_1() {
+	public double getRequested_b_1() {
 		return requested_b_1;
 	}
 
-	public void setRequested_b_1(Double requested_b_1) {
+	public void setRequested_b_1(double requested_b_1) {
 		this.requested_b_1 = requested_b_1;
 	}
 
-	public Double getSource1_c_1() {
+	public double getSource1_c_1() {
 		return source1_c_1;
 	}
 
-	public void setSource1_c_1(Double source1_c_1) {
+	public void setSource1_c_1(double source1_c_1) {
 		this.source1_c_1 = source1_c_1;
 	}
 
-	public Double getSource2_c_1() {
+	public double getSource2_c_1() {
 		return source2_c_1;
 	}
 
-	public void setSource2_c_1(Double source2_c_1) {
+	public void setSource2_c_1(double source2_c_1) {
 		this.source2_c_1 = source2_c_1;
 	}
 
-	public Double getSource3_c_1() {
+	public double getSource3_c_1() {
 		return source3_c_1;
 	}
 
-	public void setSource3_c_1(Double source3_c_1) {
+	public void setSource3_c_1(double source3_c_1) {
 		this.source3_c_1 = source3_c_1;
 	}
 
-	public Double getRequested_c_1() {
+	public double getRequested_c_1() {
 		return requested_c_1;
 	}
 
-	public void setRequested_c_1(Double requested_c_1) {
+	public void setRequested_c_1(double requested_c_1) {
 		this.requested_c_1 = requested_c_1;
 	}
 
-	public Double getSource1_a_ben() {
+	public double getSource1_a_ben() {
 		return source1_a_ben;
 	}
 
-	public void setSource1_a_ben(Double source1_a_ben) {
+	public void setSource1_a_ben(double source1_a_ben) {
 		this.source1_a_ben = source1_a_ben;
 	}
 
-	public Double getSource2_a_ben() {
+	public double getSource2_a_ben() {
 		return source2_a_ben;
 	}
 
-	public void setSource2_a_ben(Double source2_a_ben) {
+	public void setSource2_a_ben(double source2_a_ben) {
 		this.source2_a_ben = source2_a_ben;
 	}
 
-	public Double getSource3_a_ben() {
+	public double getSource3_a_ben() {
 		return source3_a_ben;
 	}
 
-	public void setSource3_a_ben(Double source3_a_ben) {
+	public void setSource3_a_ben(double source3_a_ben) {
 		this.source3_a_ben = source3_a_ben;
 	}
 
-	public Double getRequested_a_ben() {
+	public double getRequested_a_ben() {
 		return requested_a_ben;
 	}
 
-	public void setRequested_a_ben(Double requested_a_ben) {
+	public void setRequested_a_ben(double requested_a_ben) {
 		this.requested_a_ben = requested_a_ben;
 	}
 
-	public Double getSource1_b_ben() {
+	public double getSource1_b_ben() {
 		return source1_b_ben;
 	}
 
-	public void setSource1_b_ben(Double source1_b_ben) {
+	public void setSource1_b_ben(double source1_b_ben) {
 		this.source1_b_ben = source1_b_ben;
 	}
 
-	public Double getSource2_b_ben() {
+	public double getSource2_b_ben() {
 		return source2_b_ben;
 	}
 
-	public void setSource2_b_ben(Double source2_b_ben) {
+	public void setSource2_b_ben(double source2_b_ben) {
 		this.source2_b_ben = source2_b_ben;
 	}
 
-	public Double getSource3_b_ben() {
+	public double getSource3_b_ben() {
 		return source3_b_ben;
 	}
 
-	public void setSource3_b_ben(Double source3_b_ben) {
+	public void setSource3_b_ben(double source3_b_ben) {
 		this.source3_b_ben = source3_b_ben;
 	}
 
-	public Double getRequested_b_ben() {
+	public double getRequested_b_ben() {
 		return requested_b_ben;
 	}
 
-	public void setRequested_b_ben(Double requested_b_ben) {
+	public void setRequested_b_ben(double requested_b_ben) {
 		this.requested_b_ben = requested_b_ben;
 	}
 
-	public Double getSource1_c_ben() {
+	public double getSource1_c_ben() {
 		return source1_c_ben;
 	}
 
-	public void setSource1_c_ben(Double source1_c_ben) {
+	public void setSource1_c_ben(double source1_c_ben) {
 		this.source1_c_ben = source1_c_ben;
 	}
 
-	public Double getSource2_c_ben() {
+	public double getSource2_c_ben() {
 		return source2_c_ben;
 	}
 
-	public void setSource2_c_ben(Double source2_c_ben) {
+	public void setSource2_c_ben(double source2_c_ben) {
 		this.source2_c_ben = source2_c_ben;
 	}
 
-	public Double getSource3_c_ben() {
+	public double getSource3_c_ben() {
 		return source3_c_ben;
 	}
 
-	public void setSource3_c_ben(Double source3_c_ben) {
+	public void setSource3_c_ben(double source3_c_ben) {
 		this.source3_c_ben = source3_c_ben;
 	}
 
-	public Double getRequested_c_ben() {
+	public double getRequested_c_ben() {
 		return requested_c_ben;
 	}
 
-	public void setRequested_c_ben(Double requested_c_ben) {
+	public void setRequested_c_ben(double requested_c_ben) {
 		this.requested_c_ben = requested_c_ben;
 	}
 
-	public Double getSource1_a_2() {
+	public double getSource1_a_2() {
 		return source1_a_2;
 	}
 
-	public void setSource1_a_2(Double source1_a_2) {
+	public void setSource1_a_2(double source1_a_2) {
 		this.source1_a_2 = source1_a_2;
 	}
 
-	public Double getSource2_a_2() {
+	public double getSource2_a_2() {
 		return source2_a_2;
 	}
 
-	public void setSource2_a_2(Double source2_a_2) {
+	public void setSource2_a_2(double source2_a_2) {
 		this.source2_a_2 = source2_a_2;
 	}
 
-	public Double getSource3_a_2() {
+	public double getSource3_a_2() {
 		return source3_a_2;
 	}
 
-	public void setSource3_a_2(Double source3_a_2) {
+	public void setSource3_a_2(double source3_a_2) {
 		this.source3_a_2 = source3_a_2;
 	}
 
-	public Double getRequested_a_2() {
+	public double getRequested_a_2() {
 		return requested_a_2;
 	}
 
-	public void setRequested_a_2(Double requested_a_2) {
+	public void setRequested_a_2(double requested_a_2) {
 		this.requested_a_2 = requested_a_2;
 	}
 
-	public Double getSource1_b_2() {
+	public double getSource1_b_2() {
 		return source1_b_2;
 	}
 
-	public void setSource1_b_2(Double source1_b_2) {
+	public void setSource1_b_2(double source1_b_2) {
 		this.source1_b_2 = source1_b_2;
 	}
 
-	public Double getSource2_b_2() {
+	public double getSource2_b_2() {
 		return source2_b_2;
 	}
 
-	public void setSource2_b_2(Double source2_b_2) {
+	public void setSource2_b_2(double source2_b_2) {
 		this.source2_b_2 = source2_b_2;
 	}
 
-	public Double getSource3_b_2() {
+	public double getSource3_b_2() {
 		return source3_b_2;
 	}
 
-	public void setSource3_b_2(Double source3_b_2) {
+	public void setSource3_b_2(double source3_b_2) {
 		this.source3_b_2 = source3_b_2;
 	}
 
-	public Double getRequested_b_2() {
+	public double getRequested_b_2() {
 		return requested_b_2;
 	}
 
-	public void setRequested_b_2(Double requested_b_2) {
+	public void setRequested_b_2(double requested_b_2) {
 		this.requested_b_2 = requested_b_2;
 	}
 
-	public Double getSource1_c_2() {
+	public double getSource1_c_2() {
 		return source1_c_2;
 	}
 
-	public void setSource1_c_2(Double source1_c_2) {
+	public void setSource1_c_2(double source1_c_2) {
 		this.source1_c_2 = source1_c_2;
 	}
 
-	public Double getSource2_c_2() {
+	public double getSource2_c_2() {
 		return source2_c_2;
 	}
 
-	public void setSource2_c_2(Double source2_c_2) {
+	public void setSource2_c_2(double source2_c_2) {
 		this.source2_c_2 = source2_c_2;
 	}
 
-	public Double getSource3_c_2() {
+	public double getSource3_c_2() {
 		return source3_c_2;
 	}
 
-	public void setSource3_c_2(Double source3_c_2) {
+	public void setSource3_c_2(double source3_c_2) {
 		this.source3_c_2 = source3_c_2;
 	}
 
-	public Double getRequested_c_2() {
+	public double getRequested_c_2() {
 		return requested_c_2;
 	}
 
-	public void setRequested_c_2(Double requested_c_2) {
+	public void setRequested_c_2(double requested_c_2) {
 		this.requested_c_2 = requested_c_2;
 	}
 
-	public Double getSource1_a_3() {
+	public double getSource1_a_3() {
 		return source1_a_3;
 	}
 
-	public void setSource1_a_3(Double source1_a_3) {
+	public void setSource1_a_3(double source1_a_3) {
 		this.source1_a_3 = source1_a_3;
 	}
 
-	public Double getSource2_a_3() {
+	public double getSource2_a_3() {
 		return source2_a_3;
 	}
 
-	public void setSource2_a_3(Double source2_a_3) {
+	public void setSource2_a_3(double source2_a_3) {
 		this.source2_a_3 = source2_a_3;
 	}
 
-	public Double getSource3_a_3() {
+	public double getSource3_a_3() {
 		return source3_a_3;
 	}
 
-	public void setSource3_a_3(Double source3_a_3) {
+	public void setSource3_a_3(double source3_a_3) {
 		this.source3_a_3 = source3_a_3;
 	}
 
-	public Double getRequested_a_3() {
+	public double getRequested_a_3() {
 		return requested_a_3;
 	}
 
-	public void setRequested_a_3(Double requested_a_3) {
+	public void setRequested_a_3(double requested_a_3) {
 		this.requested_a_3 = requested_a_3;
 	}
 
-	public Double getSource1_b_3() {
+	public double getSource1_b_3() {
 		return source1_b_3;
 	}
 
-	public void setSource1_b_3(Double source1_b_3) {
+	public void setSource1_b_3(double source1_b_3) {
 		this.source1_b_3 = source1_b_3;
 	}
 
-	public Double getSource2_b_3() {
+	public double getSource2_b_3() {
 		return source2_b_3;
 	}
 
-	public void setSource2_b_3(Double source2_b_3) {
+	public void setSource2_b_3(double source2_b_3) {
 		this.source2_b_3 = source2_b_3;
 	}
 
-	public Double getSource3_b_3() {
+	public double getSource3_b_3() {
 		return source3_b_3;
 	}
 
-	public void setSource3_b_3(Double source3_b_3) {
+	public void setSource3_b_3(double source3_b_3) {
 		this.source3_b_3 = source3_b_3;
 	}
 
-	public Double getRequested_b_3() {
+	public double getRequested_b_3() {
 		return requested_b_3;
 	}
 
-	public void setRequested_b_3(Double requested_b_3) {
+	public void setRequested_b_3(double requested_b_3) {
 		this.requested_b_3 = requested_b_3;
 	}
 
-	public Double getSource1_c_3() {
+	public double getSource1_c_3() {
 		return source1_c_3;
 	}
 
-	public void setSource1_c_3(Double source1_c_3) {
+	public void setSource1_c_3(double source1_c_3) {
 		this.source1_c_3 = source1_c_3;
 	}
 
-	public Double getSource2_c_3() {
+	public double getSource2_c_3() {
 		return source2_c_3;
 	}
 
-	public void setSource2_c_3(Double source2_c_3) {
+	public void setSource2_c_3(double source2_c_3) {
 		this.source2_c_3 = source2_c_3;
 	}
 
-	public Double getSource3_c_3() {
+	public double getSource3_c_3() {
 		return source3_c_3;
 	}
 
-	public void setSource3_c_3(Double source3_c_3) {
+	public void setSource3_c_3(double source3_c_3) {
 		this.source3_c_3 = source3_c_3;
 	}
 
-	public Double getRequested_c_3() {
+	public double getRequested_c_3() {
 		return requested_c_3;
 	}
 
-	public void setRequested_c_3(Double requested_c_3) {
+	public void setRequested_c_3(double requested_c_3) {
 		this.requested_c_3 = requested_c_3;
 	}
 
-	public Double getSource1_a_4() {
+	public double getSource1_a_4() {
 		return source1_a_4;
 	}
 
-	public void setSource1_a_4(Double source1_a_4) {
+	public void setSource1_a_4(double source1_a_4) {
 		this.source1_a_4 = source1_a_4;
 	}
 
-	public Double getSource2_a_4() {
+	public double getSource2_a_4() {
 		return source2_a_4;
 	}
 
-	public void setSource2_a_4(Double source2_a_4) {
+	public void setSource2_a_4(double source2_a_4) {
 		this.source2_a_4 = source2_a_4;
 	}
 
-	public Double getSource3_a_4() {
+	public double getSource3_a_4() {
 		return source3_a_4;
 	}
 
-	public void setSource3_a_4(Double source3_a_4) {
+	public void setSource3_a_4(double source3_a_4) {
 		this.source3_a_4 = source3_a_4;
 	}
 
-	public Double getRequested_a_4() {
+	public double getRequested_a_4() {
 		return requested_a_4;
 	}
 
-	public void setRequested_a_4(Double requested_a_4) {
+	public void setRequested_a_4(double requested_a_4) {
 		this.requested_a_4 = requested_a_4;
 	}
 
-	public Double getSource1_b_4() {
+	public double getSource1_b_4() {
 		return source1_b_4;
 	}
 
-	public void setSource1_b_4(Double source1_b_4) {
+	public void setSource1_b_4(double source1_b_4) {
 		this.source1_b_4 = source1_b_4;
 	}
 
-	public Double getSource2_b_4() {
+	public double getSource2_b_4() {
 		return source2_b_4;
 	}
 
-	public void setSource2_b_4(Double source2_b_4) {
+	public void setSource2_b_4(double source2_b_4) {
 		this.source2_b_4 = source2_b_4;
 	}
 
-	public Double getSource3_b_4() {
+	public double getSource3_b_4() {
 		return source3_b_4;
 	}
 
-	public void setSource3_b_4(Double source3_b_4) {
+	public void setSource3_b_4(double source3_b_4) {
 		this.source3_b_4 = source3_b_4;
 	}
 
-	public Double getRequested_b_4() {
+	public double getRequested_b_4() {
 		return requested_b_4;
 	}
 
-	public void setRequested_b_4(Double requested_b_4) {
+	public void setRequested_b_4(double requested_b_4) {
 		this.requested_b_4 = requested_b_4;
 	}
 
-	public Double getSource1_c_4() {
+	public double getSource1_c_4() {
 		return source1_c_4;
 	}
 
-	public void setSource1_c_4(Double source1_c_4) {
+	public void setSource1_c_4(double source1_c_4) {
 		this.source1_c_4 = source1_c_4;
 	}
 
-	public Double getSource2_c_4() {
+	public double getSource2_c_4() {
 		return source2_c_4;
 	}
 
-	public void setSource2_c_4(Double source2_c_4) {
+	public void setSource2_c_4(double source2_c_4) {
 		this.source2_c_4 = source2_c_4;
 	}
 
-	public Double getSource3_c_4() {
+	public double getSource3_c_4() {
 		return source3_c_4;
 	}
 
-	public void setSource3_c_4(Double source3_c_4) {
+	public void setSource3_c_4(double source3_c_4) {
 		this.source3_c_4 = source3_c_4;
 	}
 
-	public Double getRequested_c_4() {
+	public double getRequested_c_4() {
 		return requested_c_4;
 	}
 
-	public void setRequested_c_4(Double requested_c_4) {
+	public void setRequested_c_4(double requested_c_4) {
 		this.requested_c_4 = requested_c_4;
 	}
 
-	public Double getSource1Total() {
+	public double getSource1Total() {
 		return source1Total;
 	}
 
-	public void setSource1Total(Double source1Total) {
+	public void setSource1Total(double source1Total) {
 		this.source1Total = source1Total;
 	}
 
-	public Double getSource2Total() {
+	public double getSource2Total() {
 		return source2Total;
 	}
 
-	public void setSource2Total(Double source2Total) {
+	public void setSource2Total(double source2Total) {
 		this.source2Total = source2Total;
 	}
 
-	public Double getSource3Total() {
+	public double getSource3Total() {
 		return source3Total;
 	}
 
-	public void setSource3Total(Double source3Total) {
+	public void setSource3Total(double source3Total) {
 		this.source3Total = source3Total;
 	}
 
-	public Double getRequestedTotal() {
+	public double getRequestedTotal() {
 		return requestedTotal;
 	}
 
-	public void setRequestedTotal(Double requestedTotal) {
+	public void setRequestedTotal(double requestedTotal) {
 		this.requestedTotal = requestedTotal;
 	}
 
-	public Double getGrandTotal() {
+	public double getGrandTotal() {
 		return grandTotal;
 	}
 
-	public void setGrandTotal(Double grandTotal) {
+	public void setGrandTotal(double grandTotal) {
 		this.grandTotal = grandTotal;
 	}
 

@@ -1,6 +1,7 @@
 package eRSPG.model.form;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,7 +14,7 @@ public class AwardTypeForm {
 	private int projectTypeID;
 	
 	@NotEmpty(message="Please select at least one award type")
-	private ArrayList<Integer> awardTypes;
+	private List<Integer> awardTypes;
 
 	
 
@@ -25,11 +26,11 @@ public class AwardTypeForm {
 		this.projectTypeID = projectTypeID;
 	}
 
-	public ArrayList<Integer> getAwardTypes() {
+	public List<Integer> getAwardTypes() {
 		return awardTypes;
 	}
 
-	public void setAwardTypes(ArrayList<Integer> awardTypes) {
+	public void setAwardTypes(List<Integer> awardTypes) {
 		this.awardTypes = awardTypes;
 	}
 	
