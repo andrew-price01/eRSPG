@@ -3,12 +3,10 @@ package eRSPG.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 
-import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,16 +19,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import eRSPG.Repository.AwardTypeDAO;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
 import eRSPG.model.form.AwardTypeForm;
+import eRSPG.model.form.BodyDetailsForm;
+import eRSPG.model.form.BodyForm;
+import eRSPG.model.form.BodyQuestionsForm;
 import eRSPG.model.form.BudgetForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.BodyForm;
 
 @Controller
 @SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
@@ -262,6 +261,10 @@ public class ProposalController {
 					BudgetForm budgetForm)
 	{
 	
+		LocalDateTime time = LocalDateTime.now();
+		
+	    
+	    
 		Proposal proposal = new Proposal();
 		proposal.setProjectDirector(detailForm.getProjectDirector());
 		proposal.setProposalComplete(true);
@@ -272,6 +275,7 @@ public class ProposalController {
 		proposal.setProposalTitle(detailForm.getProposalTitle());
 		proposal.setSemesterId(1);
 		proposal.setProposalYear(2017);
+		proposal.setSubmissionDate(time);
 		
 		
 		
