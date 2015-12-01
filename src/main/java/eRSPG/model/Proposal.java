@@ -53,6 +53,17 @@ public class Proposal {
 	@Column(name="updatedDate")
 	private LocalDateTime updatedDate;
 	
+	@Column(name="proposalParticipants")
+	private String proposalParticipants;
+	
+	public String getProposalParticipants() {
+		return proposalParticipants;
+	}
+
+	public void setProposalParticipants(String proposalParticipants) {
+		this.proposalParticipants = proposalParticipants;
+	}
+
 	public Proposal() {
 		
 	}
