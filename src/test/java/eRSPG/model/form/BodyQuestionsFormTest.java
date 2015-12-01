@@ -11,7 +11,7 @@ import static org.testng.Assert.*;
 public class BodyQuestionsFormTest {
 
     private BodyQuestionsForm fixture;
-    private String text = "This is a testable line of text.";
+    private static final String text = "This is a testable line of text.";
 
     @BeforeMethod
     public void setUp() throws Exception {
