@@ -22,6 +22,8 @@ import eRSPG.Repository.AwardTypeDAO;
 import eRSPG.Repository.AwardTypeImpl;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.ProposalImpl;
+import eRSPG.Repository.RequestAwardDAO;
+import eRSPG.Repository.RequestAwardImpl;
 import eRSPG.model.AwardType;
 import eRSPG.model.Awarded;
 import eRSPG.model.Department;
@@ -117,5 +119,12 @@ public class Application extends SpringBootServletInitializer {
     @Bean(name = "awardTypeDao")
     public AwardTypeDAO getAwardTypeDao(SessionFactory sessionFactory) {
         return new  AwardTypeImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "requestAwardDao")
+    public RequestAwardDAO getRequestAwardDao(SessionFactory sessionFactory){
+    	
+    	return new RequestAwardImpl(sessionFactory);
     }
 }

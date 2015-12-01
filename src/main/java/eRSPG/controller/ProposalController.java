@@ -3,6 +3,8 @@ package eRSPG.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -15,11 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import eRSPG.Repository.AwardTypeDAO;
 import eRSPG.Repository.ProposalDAO;
+import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.model.Proposal;
+import eRSPG.model.RequestAward;
 import eRSPG.model.form.AwardTypeForm;
 import eRSPG.model.form.BudgetForm;
 import eRSPG.model.form.DetailForm;
@@ -32,6 +38,9 @@ public class ProposalController {
 	
 	@Autowired
 	private ProposalDAO proposalDao;
+	
+	@Autowired
+	private RequestAwardDAO requestAwardDao;
 	
 	@RequestMapping("/proposal/index")
 	public String startForm(Model model){
@@ -236,13 +245,14 @@ public class ProposalController {
 	
 	
 	@RequestMapping("/proposal/submit")
-	public void submit(@ModelAttribute("detailForm") DetailForm detailForm,
+	public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
 						@ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
 						@ModelAttribute("bodyForm") BodyForm bodyForm,
 						@ModelAttribute("budgetForm") BudgetForm budgetForm)
 	{
 		
 		processSubmission(detailForm, awardForm, bodyForm, budgetForm);
+		return "Successfully Submitted";
 		
 		
 	}
@@ -260,6 +270,35 @@ public class ProposalController {
 		proposal.setProposalEmail(detailForm.getProposalEmail());
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
 		proposal.setProposalTitle(detailForm.getProposalTitle());
+		proposal.setSemesterId(1);
+		proposal.setProposalYear(2017);
+		
+		
+		
+		proposalDao.addNewOrUpdateProposal(proposal);
+		
+		int proposalID = proposal.getProposalId();
+		
+		//List<RequestAward> requestAwardList = new ArrayList<>();
+		
+		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
+		{
+			RequestAward requestAward = new RequestAward();
+			requestAward.setProposalId(proposalID);
+			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
+			
+			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//TODO: get budgetForm data and save to database
 		
