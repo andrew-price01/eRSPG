@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 @Table(name="proposal")
 public class Proposal {
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="proposalID")
 	private int proposalId;
 	
@@ -23,7 +26,7 @@ public class Proposal {
 	@Column(name="proposalYear")
 	private int proposalYear ;
 
-	@Column(name="proposalTypeID")
+	@Column(name="projectTypeID")
 	private int projectTypeId;
 	
 	@Column(name="proposalSubmissionDate")
