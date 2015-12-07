@@ -274,8 +274,11 @@ public class ProposalController {
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
 		proposal.setProposalTitle(detailForm.getProposalTitle());
 		proposal.setSemesterId(1);
+		proposal.setProjectTypeId(awardForm.getProjectTypeID());
+		proposal.setDepartmentId(1);
 		proposal.setProposalYear(2017);
 		proposal.setSubmissionDate(time);
+		proposal.setUpdatedDate(time);
 		
 		
 		
