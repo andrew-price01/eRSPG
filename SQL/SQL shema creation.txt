@@ -271,6 +271,29 @@ VALUES("travel");
 INSERT INTO FundType(fundTypeName)
 VALUES("other");
 
+INSERT INTO EssayQuestion(question)
+VALUES("PROJECT SUMMARY (ABSTRACT)");
+
+INSERT INTO EssayQuestion(question)
+VALUES("BACKGROUND AND OBJECTIVES OF RESEARCH/PROJECT. (Describe the nature and significance of the problem and provide a brief review of the relevant literature and expected outcomes. Include a bibliography as an appendix, if appropriate.)");
+
+INSERT INTO EssayQuestion(question)
+VALUES("If applying for a Hemingway award for Faculty Excellence, please describe what the impact of your project will be on the larger community. In short, what makes this project qualify for a Hemingway Award?");
+
+INSERT INTO EssayQuestion(question)
+VALUES("If applying for a Hemingway Collaborative Award, explain the collaborative nature of the project. What faculty and disciplines are involved?");
+
+INSERT INTO EssayQuestion(question)
+VALUES("PROCEDURES AND METHODS. (Indicate how the goals and objectives will be met. Include a discussion of the steps involved in the design, development and implementation of the project).");
+
+INSERT INTO EssayQuestion(question)
+VALUES("TIME-LINE. (Provide a time frame for the completion of the project.)");
+
+INSERT INTO EssayQuestion(question)
+VALUES("EVALUATION AND DISSEMINATION. (Include a plan for evaluating or documenting outcomes as well as a plan for the dissemination of project results.");
+
+INSERT INTO EssayQuestion(question)
+VALUES("PROVIDE A BUDGET NARRATIVE that clearly explains any budget items that are not self-explanatory, including justification for the number of hours requested (if any) as reassigned time or stipend.");
 
 INSERT INTO EssayQuestion(question)
 VALUES("What RSPG funding have you applied for or have been awarded in the past 5 years. For awarded projects, please provide information regarding these projects including (1) the project title, (2) the status of the project, and (3) the outcome(s) of the project. Please indicate whether a final report has been submitted for each RSPG award. (It is recommended that a copy of the final report be included as an appendix.)");
