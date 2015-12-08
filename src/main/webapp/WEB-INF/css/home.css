@@ -26,3 +26,8 @@
 	height: 50px;
 	width: 140px;
 }
+
+.radio-inline {
+    margin-right: 50px;
+    left: 50px;
+}

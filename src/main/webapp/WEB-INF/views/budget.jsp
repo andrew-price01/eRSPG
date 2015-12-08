@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
+
 <head>
 <style>
 .radio-inline {
@@ -62,14 +63,20 @@ function check_digit(e,obj,intsize,deczize) {
         return true;
     }          
     if((keycode>=32 && keycode <=45) || keycode==47 || (keycode>=58 && keycode<=127)) {
-         return false;
+    	alert("Please enter only positive money values.");
+    	return false;
+         
     }
     if(fieldval == "0" && keycode == 48 ) {
-        return false;
+    	alert("Please enter only positive money values.");
+    	return false;
+        
     }
     if(fieldval.indexOf(".") != -1) { 
         if(keycode == 46) {
-            return false;
+        	alert("Please enter only positive money values.");
+        	return false;
+           
         }
         var splitfield = fieldval.split(".");
         if(splitfield[1].length >= deczize && keycode != 8 && keycode != 0 )
