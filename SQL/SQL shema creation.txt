@@ -72,7 +72,7 @@ CREATE TABLE SourceType (
 
 CREATE TABLE FundCategory (
         fundCategoryID      smallint not null AUTO_INCREMENT        PRIMARY KEY,
-    fundCategoryDesc        varchar(50)
+    fundCategoryName        varchar(100)
 );
 
 
@@ -123,7 +123,8 @@ CREATE TABLE Fund (
     sourceTypeID        smallint not null,
     fundCategoryID      smallint not null,
     fundAmount              double      not null,
-    comments                longtext
+    comments                longtext,
+    description				longtext
 );
 
 
@@ -203,7 +204,7 @@ path            nvarchar(1000),
 );
 
 INSERT INTO Department(departmentName)
-VALUES('Computer Science')
+VALUES('Computer Science');
 
 
 INSERT INTO Semester( semesterName)
@@ -256,20 +257,26 @@ INSERT INTO AwardType(awardName)
 VALUES("Hemingway Adjunct Faculty Grant");
 
 
-INSERT INTO FundType(fundTypeName)
+INSERT INTO FundCategory(fundCategoryName)
 VALUES("Personnel Resources");
 
-INSERT INTO FundType(fundTypeName)
+INSERT INTO FundCategory(fundCategoryName)
 VALUES("Benefits for personnel resources");
 
-INSERT INTO FundType(fundTypeName)
+INSERT INTO FundCategory(fundCategoryName)
 VALUES("equipment and resources");
 
-INSERT INTO FundType(fundTypeName)
+INSERT INTO FundCategory(fundCategoryName)
 VALUES("travel");
 
-INSERT INTO FundType(fundTypeName)
+INSERT INTO FundCategory(fundCategoryName)
 VALUES("other");
+
+INSERT INTO FundType(fundTypeName)
+VALUES("committed");
+
+INSERT INTO FundType(fundTypeName)
+VALUES("requested");
 
 INSERT INTO EssayQuestion(question)
 VALUES("PROJECT SUMMARY (ABSTRACT)");
