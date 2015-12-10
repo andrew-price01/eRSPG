@@ -22,6 +22,6 @@ public class FileUploadImpl  implements FileUploadDAO {
     @Override
     @Transactional
     public void save(UploadFile uploadFile) {
-        sessionFactory.getCurrentSession().save(uploadFile);
+    	sessionFactory.getCurrentSession().saveOrUpdate(uploadFile);
     }
 }

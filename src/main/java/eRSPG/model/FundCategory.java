@@ -12,7 +12,7 @@ public class FundCategory {
 	@Column(name="fundCategoryID")
 	private int fundCategoryId;
 	
-	@Column(name="fundCategoryDesc")
+	@Column(name="fundCategoryName")
 	private String fundCategoryDesc;
 	
 	public FundCategory(){

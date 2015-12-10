@@ -1,6 +1,11 @@
 package eRSPG.model.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotEmpty;
+
+import eRSPG.model.EssayAnswer;
 
 /**
  * Models the form inputs for the proposal body.
@@ -76,5 +81,69 @@ public class BodyQuestionsForm {
 
     public void setQ7(String q7) {
         this.q7 = q7;
+    }
+    
+    private EssayAnswer generateAnswer(String response, int essayQuestionID)
+    {
+    	EssayAnswer answer = new EssayAnswer();
+    	answer.setAnswer(response);
+    	answer.setQuestionId(essayQuestionID);
+    	
+    	return answer;
+    }
+    
+    public List<EssayAnswer> generateEssayAnswers()
+    {
+    	List<EssayAnswer> answerList = new ArrayList<>();
+    	
+    	if(!(q1 == null) && !(q1.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q1,9);
+    		
+    		answerList.add(answer);
+    		
+    	}
+    	
+    	if(!(q2 == null) && !(q2.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q2,10);
+    		
+    		answerList.add(answer);
+    	}
+    	if(!(q3 == null) && !(q3.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q3,11);
+    		
+    		answerList.add(answer);
+    		
+    	}
+    	if(!(q4 == null) && !(q4.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q4,12);
+    		
+    		answerList.add(answer);
+    		
+    	}
+    	if(!(q5 == null) && !(q5.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q5,13);
+    		
+    		answerList.add(answer);
+    	}
+    	if(!(q6 == null) && !(q6.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q6,14);
+    		
+    		answerList.add(answer);
+    	}
+    	if(!(q7 == null) && !(q7.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(q7,15);
+    		
+    		answerList.add(answer);
+    	}
+    	
+    	
+    	return answerList;
     }
 }

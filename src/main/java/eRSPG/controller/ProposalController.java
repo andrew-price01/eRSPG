@@ -3,7 +3,12 @@ package eRSPG.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -19,20 +24,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import eRSPG.Repository.DepartmentDAO;
+import eRSPG.Repository.EssayAnswerDAO;
+import eRSPG.Repository.FileUploadDAO;
+import eRSPG.Repository.FundDAO;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.RequestAwardDAO;
+import eRSPG.Repository.SemesterDAO;
+import eRSPG.model.Department;
+import eRSPG.model.EssayAnswer;
+import eRSPG.model.Fund;
 import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
+import eRSPG.model.Semester;
+import eRSPG.model.UploadFile;
 import eRSPG.model.form.AwardTypeForm;
 import eRSPG.model.form.BodyDetailsForm;
 import eRSPG.model.form.BodyForm;
 import eRSPG.model.form.BodyQuestionsForm;
 import eRSPG.model.form.BudgetForm;
+import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	@Autowired
@@ -40,6 +56,23 @@ public class ProposalController {
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
+	
+	@Autowired
+	private DepartmentDAO departmentDAO;
+	
+	@Autowired
+	private SemesterDAO semesterDAO;
+	
+	@Autowired
+	private FundDAO fundDAO;
+	
+	@Autowired
+	private EssayAnswerDAO essayAnswerDAO;
+	
+	@Autowired
+	private FileUploadDAO fileUploadDAO;
+	
+	final String uploadDirectory = "C:/eRSPG/fileAttachments/";
 	
 	@RequestMapping("/proposal/index")
 	public String startForm(Model model){
@@ -54,7 +87,8 @@ public class ProposalController {
 	{
 		//ProposalSubmission savedSubmission = new ProposalSubmission();
 		//proposal.setProposalTitle("Testing");
-			
+		
+		DepartmentForm deptForm = new DepartmentForm();
 		DetailForm detailForm = new DetailForm();
 		AwardTypeForm awardForm = new AwardTypeForm();
 		UploadForm uploadForm = new UploadForm();
@@ -64,6 +98,7 @@ public class ProposalController {
 		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
 
 		//model.addAttribute("submission", savedSubmission);
+		model.addAttribute("departmentForm", deptForm);
 		model.addAttribute("detailForm", detailForm);
 		model.addAttribute("awardTypeForm",awardForm);
 		model.addAttribute("uploadForm", uploadForm);
@@ -72,7 +107,7 @@ public class ProposalController {
         model.addAttribute("bodyDetailsForm", bodyDetailsForm);
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 
-		return "redirect:/proposal/detail";
+		return "redirect:/proposal/department";
 	}
 
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
@@ -93,6 +128,54 @@ public class ProposalController {
 
 		return "redirect:/proposal/body";
 	}
+	
+	@RequestMapping(value="/proposal/department", method=RequestMethod.GET)
+	public String departmentForm(Model model)
+	{
+		String contentPage = "proposalDepartment.jsp";
+		model.addAttribute("contentPage",contentPage );
+		
+		Map<Integer, String> departmentList = new HashMap<>();
+		Map<Integer, String> semesterList = new HashMap<>();
+		
+		
+		model.addAttribute("deptList",departmentList);
+		model.addAttribute("semesterList",semesterList);
+		
+		List<Department> deptDBList = departmentDAO.findAllDepartment();
+		
+		for (Department department : deptDBList) {
+			
+			departmentList.put(department.getDepartmentId(), department.getDepartmentName());
+		}
+		
+		List<Semester> semesterDBList = semesterDAO.findAllSemester();
+		
+		for (Semester semester : semesterDBList) {
+			semesterList.put(semester.getSemesterId(), semester.getSemesterName());
+		}
+		
+		
+		
+		return "projectIndex";
+	}
+	
+	@RequestMapping(value="/proposal/department", method=RequestMethod.POST)
+	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model)
+	{
+		//String contentPage = "proposalDepartment.jsp";
+		//model.addAttribute("contentPage",contentPage );
+		
+		if(result.hasErrors())
+		{
+			model.addAttribute("contentPage", "proposalDepartment.jsp");
+			return "projectIndex";
+		}
+		
+		return "redirect:/proposal/detail";
+	}
+	
+	
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.GET)
 	public String proposalForm(Model model){
@@ -212,14 +295,17 @@ public class ProposalController {
         	try {
                 byte[] bytes = file.getBytes();
                
-                BufferedOutputStream stream =
+               /* BufferedOutputStream stream =
                         new BufferedOutputStream(new FileOutputStream(new File(name)));
                 stream.write(bytes);
                 stream.close();
                 uploadForm.setFileUpload(file);
-                uploadForm.setName(name);
+                */
+                uploadForm.setName(file.getOriginalFilename());
+                
+                uploadForm.setBytes(bytes);
                
-                return "redirect:/proposal/finish";
+                return "redirect:/proposal/submit";
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");
@@ -247,10 +333,15 @@ public class ProposalController {
 	public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
 						@ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
 						@ModelAttribute("bodyForm") BodyForm bodyForm,
-						@ModelAttribute("budgetForm") BudgetForm budgetForm)
+						@ModelAttribute("budgetForm") BudgetForm budgetForm,
+						@ModelAttribute("departmentForm") DepartmentForm deptForm,
+						@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
+						@ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+						@ModelAttribute("uploadForm") UploadForm uploadForm)
 	{
 		
-		processSubmission(detailForm, awardForm, bodyForm, budgetForm);
+		processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
+							,uploadForm);
 		return "Successfully Submitted";
 		
 		
@@ -258,7 +349,11 @@ public class ProposalController {
 	private void processSubmission( DetailForm detailForm,
 					AwardTypeForm awardForm,
 					BodyForm bodyForm,
-					BudgetForm budgetForm)
+					BudgetForm budgetForm,
+					DepartmentForm deptForm,
+					BodyQuestionsForm bodyQuestForm,
+					BodyDetailsForm bodyDetailsForm,
+					UploadForm uploadForm)
 	{
 	
 		LocalDateTime time = LocalDateTime.now();
@@ -273,12 +368,13 @@ public class ProposalController {
 		proposal.setProposalEmail(detailForm.getProposalEmail());
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
 		proposal.setProposalTitle(detailForm.getProposalTitle());
-		proposal.setSemesterId(1);
+		proposal.setSemesterId(deptForm.getSemesterID());
 		proposal.setProjectTypeId(awardForm.getProjectTypeID());
-		proposal.setDepartmentId(1);
-		proposal.setProposalYear(2017);
+		proposal.setDepartmentId(deptForm.getDepartmentID());
+		proposal.setProposalYear(deptForm.getYear());
 		proposal.setSubmissionDate(time);
 		proposal.setUpdatedDate(time);
+		
 		
 		
 		
@@ -298,19 +394,69 @@ public class ProposalController {
 			
 		}
 		
+
 		
+		List<Fund> fundList = budgetForm.generateFundObjects();
 		
+		// iterate through the all fund objects and set the proposal id
+		for (Fund fund : fundList) {
+			fund.setProposalId(proposalID);
+			fundDAO.addNewOrUpdateFund(fund);
+		}
 		
+		// save essay question answers
+		List<EssayAnswer> answerList = bodyForm.generateEssayAnswers();
 		
+		List<EssayAnswer> bodyQuestionsAnswers = bodyQuestForm.generateEssayAnswers();
 		
+		List<EssayAnswer> bodyDetailAnswers = bodyDetailsForm.generateEssayAnswers();
 		
+		answerList.addAll(bodyQuestionsAnswers);
+		answerList.addAll(bodyDetailAnswers);
 		
-		
-		
-		//TODO: get budgetForm data and save to database
-		
+		for (EssayAnswer essayAnswer : answerList) {
+			
+			essayAnswer.setProposalId(proposalID);
+			essayAnswer.setUpdatedDate(time);
+			essayAnswerDAO.addNewOrUpdateEssayAnswer(essayAnswer);
+		}
 		
 		//TODO: save uploaded files to server
+		
+		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
+		
+		File file = new File(this.uploadDirectory + fileName);
+		
+		if(file.exists())
+		{
+			file.delete();
+			
+		}
+		try
+		{
+			file.createNewFile();
+			OutputStream output = new FileOutputStream(file);
+			output.write(uploadForm.getBytes());
+			output.close();
+			
+			List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
+			
+			for (UploadFile uploadFile : uploadFiles) {
+				uploadFile.setProposalId(proposalID);
+				uploadFile.setPath(this.uploadDirectory + fileName);
+				uploadFile.setFileName(uploadForm.getName());
+				
+				fileUploadDAO.save(uploadFile);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		//TODO: clear session form data
 		
 	}
 	

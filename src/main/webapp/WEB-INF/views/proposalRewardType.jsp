@@ -26,32 +26,30 @@
 				<div class="checkbox">
 					<label><form:checkbox path="awardTypes" value="2" />Instructional
 						Improvement Grant (Fall and Spring Semesters) The Signature of the
-						College</label>
-				</div>
-				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="3" />Curriculum
+						College Curriculum
 						Chair is required for instructional improvement proposals (for new
 						or experimental courses)</label>
 				</div>
+				
 				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="4" />Hemingway
+					<label><form:checkbox path="awardTypes" value="3" />Hemingway
 						Faculty Vitality Grant (Fall semester, and mid-late Spring
 						semester)</label>
 				</div>
 				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="5" />Hemingway
+					<label><form:checkbox path="awardTypes" value="4" />Hemingway
 						New Faculty Grant (Mid-late Spring semester)</label>
 				</div>
 				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="6" />Hemingway
+					<label><form:checkbox path="awardTypes" value="5" />Hemingway
 						Excellence Award (Early-mid Spring semester)</label>
 				</div>
 				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="7" />Hemingway
+					<label><form:checkbox path="awardTypes" value="6" />Hemingway
 						Collaborative Award (Early-mid Spring semester)</label>
 				</div>
 				<div class="checkbox">
-					<label><form:checkbox path="awardTypes" value="2" />Hemingway
+					<label><form:checkbox path="awardTypes" value="7" />Hemingway
 						Adjunct Faculty Grant (Mid-late Spring 2012)</label>
 				</div>
 			</div>

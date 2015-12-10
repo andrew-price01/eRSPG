@@ -1,7 +1,12 @@
 package eRSPG.model.form;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
+
+import eRSPG.model.Fund;
 
 
 public class BudgetForm {
@@ -757,10 +762,292 @@ public class BudgetForm {
 		this.grandTotal = grandTotal;
 	}
 
+	/*
+	 * helper function to create each fund objects for each row as is displayed
+	 * on the budget form
+	 */
+	private List<Fund> generateBudgetRowFund(String description, double source1, double source2, double source3
+												, double requested, int fundCategoryID)
+	{
+		List<Fund> fundList = new ArrayList<>();
+		
+		Fund fundSource1 = new Fund();
+		Fund fundSource2 = new Fund();
+		Fund fundSource3 = new Fund();
+		Fund fundRequested= new Fund();
+		
+		
+		
+		fundSource1.setSourceTypeId(1);
+		fundSource1.setFundTypeId(1);
+		fundSource1.setFundCategoryId(1);
+		fundSource1.setFundAmount(source1);
+		fundSource1.setDescription(description);
+		
+		fundSource2.setSourceTypeId(2);
+		fundSource2.setFundTypeId(1);
+		fundSource2.setFundCategoryId(1);
+		fundSource2.setFundAmount(source2);
+		fundSource2.setDescription(description);
+		
+		fundSource3.setSourceTypeId(3);
+		fundSource3.setFundTypeId(1);
+		fundSource3.setFundCategoryId(1);
+		fundSource3.setFundAmount(source3);
+		fundSource3.setDescription(description);
+		
+		fundRequested.setSourceTypeId(4);
+		fundRequested.setFundTypeId(1);
+		fundRequested.setFundCategoryId(1);
+		fundRequested.setFundAmount(requested);
+		fundRequested.setDescription(description);
+		
+		fundList.add(fundSource1);
+		fundList.add(fundSource2);
+		fundList.add(fundSource3);
+		fundList.add(fundRequested);
+		
+		return fundList;
+	}
 	
 	
-	
-	
+	public List<Fund> generateFundObjects()
+	{
+		List<Fund> fundList = new ArrayList<>();
+		
+		if(!(a1 == null) && !(a1.isEmpty()))
+		{
+			String description = this.getA1();
+			double source1Amount = this.getSource1_a_1();
+			double source2Amount = this.getSource2_a_1();
+			double source3Amount = this.getSource3_a_1();
+			double requestedAmount = this.getRequested_a_1();
+			int fundCategoryID = 1;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+			
+			
+		}
+		
+		if(!(a2 == null) && !(a2.isEmpty()))
+		{
+			String description = this.getA2();
+			double source1Amount = this.getSource1_a_2();
+			double source2Amount = this.getSource2_a_2();
+			double source3Amount = this.getSource3_a_2();
+			double requestedAmount = this.getRequested_a_2();
+			int fundCategoryID = 3;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+			
+		}
+		
+		if(!(a3 == null) && !(a3.isEmpty()))
+		{
+			String description = this.getA3();
+			double source1Amount = this.getSource1_a_3();
+			double source2Amount = this.getSource2_a_3();
+			double source3Amount = this.getSource3_a_3();
+			double requestedAmount = this.getRequested_a_3();
+			int fundCategoryID = 4;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(a4 == null) && !(a4.isEmpty()))
+		{
+			String description = this.getA4();
+			double source1Amount = this.getSource1_a_4();
+			double source2Amount = this.getSource2_a_4();
+			double source3Amount = this.getSource3_a_4();
+			double requestedAmount = this.getRequested_a_4();
+			int fundCategoryID = 5;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+			
+		}
+		
+		if(!(aBen == null) && !(aBen.isEmpty()))
+		{
+			String description = this.getaBen();
+			double source1Amount = this.getSource1_a_ben();
+			double source2Amount = this.getSource2_a_ben();
+			double source3Amount = this.getSource3_a_ben();
+			double requestedAmount = this.getRequested_a_ben();
+			int fundCategoryID = 2;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(b1 == null) && !(b1.isEmpty()))
+		{
+			String description = this.getB1();
+			double source1Amount = this.getSource1_b_1();
+			double source2Amount = this.getSource2_b_1();
+			double source3Amount = this.getSource3_b_1();
+			double requestedAmount = this.getRequested_b_1();
+			int fundCategoryID = 1;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(b2 == null) && !(b2.isEmpty()))
+		{
+			String description = this.getB2();
+			double source1Amount = this.getSource1_b_2();
+			double source2Amount = this.getSource2_b_2();
+			double source3Amount = this.getSource3_b_2();
+			double requestedAmount = this.getRequested_b_2();
+			int fundCategoryID = 3;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(b3 == null) && !(b3.isEmpty()))
+		{
+			String description = this.getB3();
+			double source1Amount = this.getSource1_b_3();
+			double source2Amount = this.getSource2_b_3();
+			double source3Amount = this.getSource3_b_3();
+			double requestedAmount = this.getRequested_b_3();
+			int fundCategoryID = 4;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(b4 == null) && !(b4.isEmpty()))
+		{
+			String description = this.getB4();
+			double source1Amount = this.getSource1_b_4();
+			double source2Amount = this.getSource2_b_4();
+			double source3Amount = this.getSource3_b_4();
+			double requestedAmount = this.getRequested_b_4();
+			int fundCategoryID = 5;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(bBen == null) && !(bBen.isEmpty()))
+		{
+			String description = this.getbBen();
+			double source1Amount = this.getSource1_b_ben();
+			double source2Amount = this.getSource2_b_ben();
+			double source3Amount = this.getSource3_b_ben();
+			double requestedAmount = this.getRequested_b_ben();
+			int fundCategoryID = 2;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(c1 == null) && !(c1.isEmpty()))
+		{
+			String description = this.getC1();
+			double source1Amount = this.getSource1_c_1();
+			double source2Amount = this.getSource2_c_1();
+			double source3Amount = this.getSource3_c_1();
+			double requestedAmount = this.getRequested_c_1();
+			int fundCategoryID = 1;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(c2 == null) && !(c2.isEmpty()))
+		{
+			String description = this.getC2();
+			double source1Amount = this.getSource1_c_2();
+			double source2Amount = this.getSource2_c_2();
+			double source3Amount = this.getSource3_c_2();
+			double requestedAmount = this.getRequested_c_2();
+			int fundCategoryID = 3;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(c3 == null) && !(c3.isEmpty()))
+		{
+			String description = this.getC3();
+			double source1Amount = this.getSource1_c_3();
+			double source2Amount = this.getSource2_c_3();
+			double source3Amount = this.getSource3_c_3();
+			double requestedAmount = this.getRequested_c_3();
+			int fundCategoryID = 4;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(c4 == null) && !(c4.isEmpty()))
+		{
+			String description = this.getC4();
+			double source1Amount = this.getSource1_c_4();
+			double source2Amount = this.getSource2_c_4();
+			double source3Amount = this.getSource3_c_4();
+			double requestedAmount = this.getRequested_c_4();
+			int fundCategoryID = 5;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		if(!(cBen == null) && !(cBen.isEmpty()))
+		{
+			String description = this.getcBen();
+			double source1Amount = this.getSource1_c_ben();
+			double source2Amount = this.getSource2_c_ben();
+			double source3Amount = this.getSource3_c_ben();
+			double requestedAmount = this.getRequested_c_ben();
+			int fundCategoryID = 2;
+			
+			List<Fund> rows = this.generateBudgetRowFund(description, source1Amount, source2Amount, source3Amount, requestedAmount, 
+					fundCategoryID);
+			
+			fundList.addAll(rows);
+		}
+		
+		
+		
+		return fundList;
+	}
 	
 
 }

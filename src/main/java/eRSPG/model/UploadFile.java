@@ -3,14 +3,15 @@ package eRSPG.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "FILES_UPLOAD")
+@Table(name = "file_upload")
 public class UploadFile {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "fileId")
     private int id;
 

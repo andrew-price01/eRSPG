@@ -20,10 +20,19 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import eRSPG.Repository.AwardTypeDAO;
 import eRSPG.Repository.AwardTypeImpl;
+import eRSPG.Repository.DepartmentDAO;
+import eRSPG.Repository.DepartmentImpl;
+import eRSPG.Repository.EssayAnswerDAO;
+import eRSPG.Repository.EssayAnswerImpl;
+import eRSPG.Repository.FileUploadDAO;
+import eRSPG.Repository.FileUploadImpl;
+import eRSPG.Repository.FundImpl;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.ProposalImpl;
 import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.Repository.RequestAwardImpl;
+import eRSPG.Repository.SemesterDAO;
+import eRSPG.Repository.SemesterImpl;
 import eRSPG.model.AwardType;
 import eRSPG.model.Awarded;
 import eRSPG.model.Department;
@@ -111,7 +120,7 @@ public class Application extends SpringBootServletInitializer {
     
     @Autowired
     @Bean(name = "proposalDao")
-    public ProposalDAO getUserDao(SessionFactory sessionFactory) {
+    public ProposalDAO getProposalDao(SessionFactory sessionFactory) {
         return new ProposalImpl(sessionFactory);
     }
     
@@ -126,5 +135,40 @@ public class Application extends SpringBootServletInitializer {
     public RequestAwardDAO getRequestAwardDao(SessionFactory sessionFactory){
     	
     	return new RequestAwardImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "departmentDAO")
+    public DepartmentDAO getDepartmentDao(SessionFactory sessionFactory){
+    	
+    	return new DepartmentImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "semesterDAO")
+    public SemesterDAO getSemesterDao(SessionFactory sessionFactory){
+    	
+    	return new SemesterImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "fundDAO")
+    public FundImpl getFundDao(SessionFactory sessionFactory){
+    	
+    	return new FundImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "essayAnswerDAO")
+    public EssayAnswerDAO getEssayAnswerDao(SessionFactory sessionFactory){
+    	
+    	return new EssayAnswerImpl(sessionFactory);
+    }
+    
+    @Autowired
+    @Bean(name= "fileUploadDAO")
+    public FileUploadDAO getFileUploadDao(SessionFactory sessionFactory){
+    	
+    	return new FileUploadImpl(sessionFactory);
     }
 }

@@ -1,6 +1,11 @@
 package eRSPG.model.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotEmpty;
+
+import eRSPG.model.EssayAnswer;
 
 /**
  * Models the form inputs for the proposal body.
@@ -46,5 +51,50 @@ public class BodyDetailsForm {
 
     public void setBudgetNarrative(String budgetNarrative) {
         this.budgetNarrative = budgetNarrative;
+    }
+    
+    private EssayAnswer generateAnswer(String response, int essayQuestionID)
+    {
+    	EssayAnswer answer = new EssayAnswer();
+    	answer.setAnswer(response);
+    	answer.setQuestionId(essayQuestionID);
+    	
+    	return answer;
+    }
+    
+    public List<EssayAnswer> generateEssayAnswers()
+    {
+    	List<EssayAnswer> answerList = new ArrayList<>();
+    	
+    	if(!(procedures == null) && !(procedures.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(procedures,5);
+    		
+    		answerList.add(answer);
+    	}
+    	
+    	if(!(timeLine == null) && !(timeLine.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(timeLine,6);
+    		
+    		answerList.add(answer);
+    	}
+    	
+    	if(!(evaluation == null) && !(evaluation.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(evaluation,7);
+    		
+    		answerList.add(answer);
+    	}
+    	
+    	if(!(budgetNarrative == null) && !(budgetNarrative.isEmpty()))
+    	{
+    		EssayAnswer answer = generateAnswer(budgetNarrative,8);
+    		
+    		answerList.add(answer);
+    	}
+    	
+    	
+    	return answerList;
     }
 }
