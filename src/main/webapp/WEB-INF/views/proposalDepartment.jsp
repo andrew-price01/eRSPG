@@ -6,7 +6,7 @@
 		year = new Date().getFullYear();
 	</script>
 	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/detail' />" class="active">Details
+		<a href="<s:url value='/proposal/department' />" class="active">Details
 		</a> <a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
 		<a href="<s:url value='/proposal/budget' />">Budget</a> <a
 			href="<s:url value='/proposal/body' />">Body</a> <a

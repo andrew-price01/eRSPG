@@ -211,7 +211,24 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/detail/awardType", method=RequestMethod.GET)
-	public String awardTypeForm( Model model){
+	public String awardTypeForm(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute("awardTypeForm") AwardTypeForm awardForm, Model model){
+		
+		String semester = "Spring";
+		if(deptForm.getSemesterID() == 1)
+		{
+			semester = "Spring";
+		}
+		else if(deptForm.getSemesterID() == 2)
+		{
+			semester = "Fall";
+			
+		}
+		else if(deptForm.getSemesterID() == 3)
+		{
+			semester = "Summer";
+		}
+		
+		model.addAttribute("semester",semester);
 		
 		String contentPage = "proposalRewardType.jsp";
 		model.addAttribute("contentPage",contentPage);
@@ -221,10 +238,27 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/detail/awardType", method=RequestMethod.POST)
-	public String saveAwardType(@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model)
+	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model)
 	{
 		if(result.hasErrors())
 		{
+			String semester = "Spring";
+			if(deptForm.getSemesterID() == 1)
+			{
+				semester = "Spring";
+			}
+			else if(deptForm.getSemesterID() == 2)
+			{
+				semester = "Fall";
+				
+			}
+			else if(deptForm.getSemesterID() == 3)
+			{
+				semester = "Summer";
+			}
+			
+			model.addAttribute("semester",semester);
+			
 			model.addAttribute("contentPage", "proposalRewardType.jsp");
 			return "projectIndex";
 		}
@@ -232,19 +266,49 @@ public class ProposalController {
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
-	public String bodyForm(Model model){
+	public String bodyForm(@ModelAttribute AwardTypeForm awardForm,Model model){
+		
+		boolean collaborative = false;
+		boolean excellence = false;
+		
+		if(awardForm.getAwardTypes().contains(6)){
+			collaborative = true;
+		}
+		if(awardForm.getAwardTypes().contains(5))
+		{
+			excellence = true;
+		}
+		model.addAttribute("excellence", excellence);
+		model.addAttribute("collaborative",collaborative);
+		
 		String contentPage = "proposalBody.jsp";
 		model.addAttribute("contentPage", contentPage);
 		return "projectIndex";
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
-	public String saveBodyForm(@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
 	{
-		System.out.println(result.hasErrors());
-        System.out.println(result);
+		//System.out.println(result.hasErrors());
+       // System.out.println(result);
+		
+		
+		
 		if(result.hasErrors())
 		{
+			boolean collaborative = false;
+			boolean excellence = false;
+			
+			if(awardForm.getAwardTypes().contains(6)){
+				collaborative = true;
+			}
+			if(awardForm.getAwardTypes().contains(5))
+			{
+				excellence = true;
+			}
+			model.addAttribute("excellence", excellence);
+			model.addAttribute("collaborative",collaborative);
+			
 			model.addAttribute("contentPage", "proposalBody.jsp");
 			return "projectIndex";
 		}
@@ -300,7 +364,7 @@ public class ProposalController {
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
 	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
 		, Model model){
-		String name="1234";
+		
 		if (!file.isEmpty()) {
         	try {
                 byte[] bytes = file.getBytes();

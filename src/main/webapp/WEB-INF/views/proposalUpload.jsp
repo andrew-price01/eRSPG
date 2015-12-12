@@ -3,7 +3,7 @@
 
 <div class="container">
 	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/detail' />">Details</a> <a
+		<a href="<s:url value='/proposal/department' />">Details</a> <a
 			href="<s:url value='/proposal/detail/awardType' />">Award Type</a> <a
 			href="<s:url value='/proposal/budget' />">Budget</a> <a
 			href="<s:url value='/proposal/body' />">Body</a> <a
@@ -27,6 +27,7 @@
 				
 			</table>
 			<div>
+					<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyQuestions" />"'>Previous</button>
 					<button type="submit" class="btn my-btn pull-right">Next</button>
 
 				</div>
