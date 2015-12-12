@@ -51,6 +51,11 @@ import eRSPG.model.form.UploadForm;
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
+	/**
+	 * Dependency injection for data access objects.
+	 * 
+	 */
+	
 	@Autowired
 	private ProposalDAO proposalDao;
 	
@@ -72,7 +77,7 @@ public class ProposalController {
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
 	
-	final String uploadDirectory = "C:/eRSPG/fileAttachments/";
+	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
 	@RequestMapping("/proposal/index")
 	public String startForm(Model model){
@@ -85,8 +90,7 @@ public class ProposalController {
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
-		//ProposalSubmission savedSubmission = new ProposalSubmission();
-		//proposal.setProposalTitle("Testing");
+		
 		
 		DepartmentForm deptForm = new DepartmentForm();
 		DetailForm detailForm = new DetailForm();
@@ -97,7 +101,9 @@ public class ProposalController {
 		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
 		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
 
-		//model.addAttribute("submission", savedSubmission);
+		/*
+		 * Add all the form objects to the session
+		 */
 		model.addAttribute("departmentForm", deptForm);
 		model.addAttribute("detailForm", detailForm);
 		model.addAttribute("awardTypeForm",awardForm);
@@ -138,6 +144,8 @@ public class ProposalController {
 		Map<Integer, String> departmentList = new HashMap<>();
 		Map<Integer, String> semesterList = new HashMap<>();
 		
+		//retrieve list of departments from database and store in model for access
+		// in view.
 		
 		model.addAttribute("deptList",departmentList);
 		model.addAttribute("semesterList",semesterList);
@@ -148,6 +156,9 @@ public class ProposalController {
 			
 			departmentList.put(department.getDepartmentId(), department.getDepartmentName());
 		}
+		
+		// retrieve list of semester from database and store in model for access
+		// in view.
 		
 		List<Semester> semesterDBList = semesterDAO.findAllSemester();
 		
@@ -182,8 +193,7 @@ public class ProposalController {
 		
 		String contentPage = "proposalDetail.jsp";
 		model.addAttribute("contentPage",contentPage);
-		//Proposal proposal = new Proposal();
-		//model.addAttribute("proposal",proposal);
+		
 		
 		return "projectIndex";
 	}
@@ -295,12 +305,7 @@ public class ProposalController {
         	try {
                 byte[] bytes = file.getBytes();
                
-               /* BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(name)));
-                stream.write(bytes);
-                stream.close();
-                uploadForm.setFileUpload(file);
-                */
+               
                 uploadForm.setName(file.getOriginalFilename());
                 
                 uploadForm.setBytes(bytes);
@@ -313,7 +318,8 @@ public class ProposalController {
                 return "projectIndex";
                 
             }
-        } else {
+        } 
+		else {
         	model.addAttribute("failedUpload","failed to upload file!");
         	model.addAttribute("contentPage","proposalUpload.jsp");
             return "projectIndex";
@@ -377,12 +383,12 @@ public class ProposalController {
 		
 		
 		
-		
+		//save proposal to database
 		proposalDao.addNewOrUpdateProposal(proposal);
 		
 		int proposalID = proposal.getProposalId();
 		
-		//List<RequestAward> requestAwardList = new ArrayList<>();
+		
 		
 		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
 		{
@@ -421,7 +427,8 @@ public class ProposalController {
 			essayAnswerDAO.addNewOrUpdateEssayAnswer(essayAnswer);
 		}
 		
-		//TODO: save uploaded files to server
+		//create the file on the server 
+		
 		
 		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
 		
@@ -446,6 +453,7 @@ public class ProposalController {
 				uploadFile.setPath(this.uploadDirectory + fileName);
 				uploadFile.setFileName(uploadForm.getName());
 				
+				// store saved file locations to  database
 				fileUploadDAO.save(uploadFile);
 			}
 		}
