@@ -45,6 +45,4 @@
             </div>
         </div>
     </form:form>
-    <br>
-    <br>
 </div>

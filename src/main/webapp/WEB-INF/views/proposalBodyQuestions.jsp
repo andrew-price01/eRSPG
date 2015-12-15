@@ -57,6 +57,4 @@
             <button type="submit" class="btn my-btn pull-right">Next</button>
         </div>
     </form:form>
-    <br>
-    <br>
 </div>

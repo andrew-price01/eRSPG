@@ -1,7 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
-	<div class="breadcrumb flat">
+  
+    	<div class="breadcrumb flat">
 			<a href="<s:url value='/proposal/detail' />" class="active">Details </a>
 			<a href="<s:url value='/proposal/detail/awardType' />" >Award Type</a>
 			<a href="<s:url value='/proposal/budget' />" >Budget</a>
@@ -9,9 +10,8 @@
 			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
 			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
 			<a href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
-
-    <div class="row">
+		</div>
+    
         <legend><h2 style="text-align:center;">Project Details</h2></legend>
         <form:form class="form-horizontal"  method="post"   modelAttribute="detailForm">
             <div class="form-group">
@@ -70,5 +70,4 @@
                 <button type="submit" class="btn my-btn pull-right">Next</button>
             </div>
         </form:form>
-    </div>
 </div>

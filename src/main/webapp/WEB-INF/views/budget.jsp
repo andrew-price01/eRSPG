@@ -1,6 +1,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-
+<head>
+<style>
+.radio-inline {
+    margin-right: 50px;
+    left: 50px;
+}
+</style>
+</head>
 <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>
 <script type="text/javascript"><!--
 //update all totals in table
@@ -96,13 +103,13 @@ function check_digit(e,obj,intsize,deczize) {
 	<form:form method="post" name="form" modelAttribute="budgetForm">
 		<div class="form-group">
 			<label class="required-field">Does this proposal request funds to use an <u>undergraduate student assistant(s)</u>?</label>
-			<div class="radio">
+			<div class="radio-inline">
 		  		<label>
 		    		<form:radiobutton path="studentAssistants" value="true" />
 		    		Yes
 		  		</label>
 			</div>
-			<div class="radio">
+			<div class="radio-inline">
 				<label>
 		    		<form:radiobutton path="studentAssistants" value="false" />
 		    		No
@@ -281,6 +288,4 @@ function check_digit(e,obj,intsize,deczize) {
            	<button type="submit" class="btn my-btn pull-right">Next</button>
         </div>
         </form:form>
-	<br>
-	<br>
 </div>
