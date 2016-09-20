@@ -34,7 +34,7 @@
             <form:textarea class="form-control" path="q3" cssErrorClass="missing-error form-control" />
         </div>
         <div class="form-group">
-            <label for="q4" class="required-field">4. Is the type of project your department or college would normally fund? Please explain?</label>
+            <label for="q4" class="required-field">4. Is this the type of project your department or college would normally fund? Please explain?</label>
             <form:textarea class="form-control" path="q4" cssErrorClass="missing-error form-control" />
         </div>
         <div class="form-group">
