@@ -7,7 +7,7 @@
 	</script>
 	<div class="breadcrumb flat">
 		<a href="<s:url value='/proposal/department' />" class="active">Details
-		</a> <a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
+		</a> <a href="<s:url value='/proposal/awardType' />">Award Type</a>
 		<a href="<s:url value='/proposal/budget' />">Budget</a> <a
 			href="<s:url value='/proposal/body' />">Body</a> <a
 			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
@@ -63,12 +63,7 @@
 
 
 		<div>
-			<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/detail/awardType" />"'>Next</button>
-
+			<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Next</button>
 		</div>
-        
-		<%--<div>
-            <a class="btn my-btn pull-right" href='<s:url value="/proposal/detail/awardType" />'>Next</a>
-        </div>--%>
 	</form:form>
 </div>

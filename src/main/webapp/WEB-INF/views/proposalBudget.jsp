@@ -95,7 +95,7 @@ function check_digit(e,obj,intsize,deczize) {
 
 	<div class="breadcrumb flat">
 			<a href="<s:url value='/proposal/department' />">Details </a>
-			<a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
+			<a href="<s:url value='/proposal/awardType' />">Award Type</a>
 			<a href="<s:url value='/proposal/budget' />" class="active">Budget</a>
 			<a href="<s:url value='/proposal/body' />">Body</a>
 			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
@@ -291,7 +291,7 @@ function check_digit(e,obj,intsize,deczize) {
 	</div>
 	
 	<div>
-		<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/detail/awardType" />"'>Previous</button>
+		<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Previous</button>
 		<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/body" />"'>Next</button>
 	</div>
 	</form:form>

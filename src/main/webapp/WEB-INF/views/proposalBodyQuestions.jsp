@@ -3,7 +3,7 @@
 <div class="container">
 	<div class="breadcrumb flat">
 			<a href="<s:url value='/proposal/department' />">Details </a>
-			<a href="<s:url value='/proposal/detail/awardType' />">Award Type</a>
+			<a href="<s:url value='/proposal/awardType' />">Award Type</a>
 			<a href="<s:url value='/proposal/budget' />" >Budget</a>
 			<a href="<s:url value='/proposal/body' />" >Body</a>
 			<a href="<s:url value='/proposal/bodyDetails' />" >Body Details</a>

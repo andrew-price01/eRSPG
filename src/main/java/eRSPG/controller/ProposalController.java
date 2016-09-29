@@ -118,7 +118,7 @@ public class ProposalController {
 
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
 	public String budgetForm(Model model){
-		String contentPage = "budget.jsp";
+		String contentPage = "proposalBudget.jsp";
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
 	}
@@ -128,7 +128,7 @@ public class ProposalController {
 	{
 		if(result.hasErrors())
 		{
-			model.addAttribute("contentPage", "budget.jsp");
+			model.addAttribute("contentPage", "proposalBudget.jsp");
 			return "projectIndex";
 		}
 
@@ -207,10 +207,10 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/detail/awardType";
+		return "redirect:/proposal/awardType";
 	}
 	
-	@RequestMapping(value="/proposal/detail/awardType", method=RequestMethod.GET)
+	@RequestMapping(value="/proposal/awardType", method=RequestMethod.GET)
 	public String awardTypeForm(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute("awardTypeForm") AwardTypeForm awardForm, Model model){
 		
 		String semester = "Spring";
@@ -230,14 +230,14 @@ public class ProposalController {
 		
 		model.addAttribute("semester",semester);
 		
-		String contentPage = "proposalRewardType.jsp";
+		String contentPage = "proposalAwardType.jsp";
 		model.addAttribute("contentPage",contentPage);
 
 		
 		return "projectIndex";
 	}
 	
-	@RequestMapping(value="/proposal/detail/awardType", method=RequestMethod.POST)
+	@RequestMapping(value="/proposal/awardType", method=RequestMethod.POST)
 	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model)
 	{
 		if(result.hasErrors())
@@ -259,7 +259,7 @@ public class ProposalController {
 			
 			model.addAttribute("semester",semester);
 			
-			model.addAttribute("contentPage", "proposalRewardType.jsp");
+			model.addAttribute("contentPage", "proposalAwardType.jsp");
 			return "projectIndex";
 		}
 		return "redirect:/proposal/budget";
