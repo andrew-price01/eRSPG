@@ -63,8 +63,12 @@
 
 
 		<div>
-			<button type="submit" class="btn my-btn pull-right">Next</button>
+			<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/detail/awardType" />"'>Next</button>
 
 		</div>
+        
+		<%--<div>
+            <a class="btn my-btn pull-right" href='<s:url value="/proposal/detail/awardType" />'>Next</a>
+        </div>--%>
 	</form:form>
 </div>

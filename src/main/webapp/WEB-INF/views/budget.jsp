@@ -290,9 +290,9 @@ function check_digit(e,obj,intsize,deczize) {
 		</div>
 	</div>
 	
-		<div>
-			<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/detail/awardType" />"'>Previous</button>
-           	<button type="submit" class="btn my-btn pull-right">Next</button>
-        </div>
-        </form:form>
+	<div>
+		<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/detail/awardType" />"'>Previous</button>
+		<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/body" />"'>Next</button>
+	</div>
+	</form:form>
 </div>

@@ -99,9 +99,19 @@
 			</div>
 			<form:errors path="projectTypeID" />
 		</div>
-		<div>
+		<%-- <div>
 			<a class="pull-left" href="<s:url value='/proposal/detail' />">Previous</a>
 			<button type="submit" class="btn my-btn pull-right">Next</button>
-		</div>
+		</div> --%>
+	
+		<div>
+			<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/department" />"'>Previous</button>
+           	<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Next</button>
+        </div>
+        
+		<%-- <div>
+            <a class="btn my-btn pull-left" href='<s:url value="/proposal/budget" />'>Previous</a>
+            <a class="btn my-btn pull-right" href='<s:url value="/proposal/department" />'>Next</a>
+        </div> --%>
 	</form:form>
 </div>

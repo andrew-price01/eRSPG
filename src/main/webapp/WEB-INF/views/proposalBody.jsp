@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -62,7 +63,7 @@
 		<div>
 			<div>
 				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Previous</button>
-				<button type="submit" class="btn my-btn pull-right">Next</button>
+				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Next</button>
 			</div>
 		</div>
 	</form:form>

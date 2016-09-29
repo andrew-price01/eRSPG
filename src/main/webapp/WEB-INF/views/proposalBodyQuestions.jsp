@@ -54,7 +54,7 @@
         </div>
         <div>
             <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Previous</button>
-            <button type="submit" class="btn my-btn pull-right">Next</button>
+            <button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
         </div>
     </form:form>
 </div>
