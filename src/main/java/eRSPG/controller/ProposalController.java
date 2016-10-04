@@ -271,6 +271,9 @@ public class ProposalController {
 		boolean collaborative = false;
 		boolean excellence = false;
 		
+		if(awardForm.getAwardTypes() == null)
+			return "projectIndex";
+		
 		if(awardForm.getAwardTypes().contains(6)){
 			collaborative = true;
 		}
