@@ -271,6 +271,7 @@ public class ProposalController {
 		boolean collaborative = false;
 		boolean excellence = false;
 		
+		// TODO: Null pointer
 		if(awardForm.getAwardTypes() == null)
 			return "projectIndex";
 		
