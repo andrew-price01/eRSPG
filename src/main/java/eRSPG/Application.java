@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+//import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
@@ -52,8 +53,6 @@ import eRSPG.model.SourceType;
 import eRSPG.model.UploadFile;
 import eRSPG.model.User;
 import eRSPG.model.UserRole;
-
-//test change for testing push this is from Riley.
 
 @EnableWebMvc
 @EnableTransactionManagement
