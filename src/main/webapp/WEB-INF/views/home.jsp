@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
-    <title>eRSPG Proposal Submission</title>
+    <title>eRSPG</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
