@@ -272,13 +272,10 @@ public class ProposalController {
 		boolean excellence = false;
 		
 		// TODO: Null pointer
-		if(awardForm.getAwardTypes() == null)
-			return "projectIndex";
-		
-		if(awardForm.getAwardTypes().contains(6)){
+		if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(6)){
 			collaborative = true;
 		}
-		if(awardForm.getAwardTypes().contains(5))
+		if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(5))
 		{
 			excellence = true;
 		}
