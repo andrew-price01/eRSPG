@@ -271,16 +271,16 @@ public class ProposalController {
 		boolean collaborative = false;
 		boolean excellence = false;
 		
-		if(awardForm.getAwardTypes() == null)
-			return "projectIndex";
-		
-		if(awardForm.getAwardTypes().contains(6)){
-			collaborative = true;
-		}
-		if(awardForm.getAwardTypes().contains(5))
-		{
-			excellence = true;
-		}
+//		if(awardForm.getAwardTypes() == null)
+//			return "projectIndex";
+//
+//		if(awardForm.getAwardTypes().contains(6)){
+//			collaborative = true;
+//		}
+//		if(awardForm.getAwardTypes().contains(5))
+//		{
+//			excellence = true;
+//		}
 		model.addAttribute("excellence", excellence);
 		model.addAttribute("collaborative",collaborative);
 		
