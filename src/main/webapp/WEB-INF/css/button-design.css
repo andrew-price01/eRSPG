@@ -5,9 +5,16 @@
 .my-btn{
     background: rgb(73, 35, 101);
     color: #ffffff;
+    min-width: 67px;
 }
 .my-btn:hover { 
   border-color: rgb(127, 86, 197); 
   background-color: rgb(127, 86, 197); 
   color: #ffffff;
+}
+
+.button-row {
+	text-align: center;
+	width: 100%;
+	margin-top: 24px;
 }

@@ -62,7 +62,11 @@
 
 
 
-		<div>
+		<div class="button-row">
+			<!-- Placeholder to help align buttons -->
+			<button type="button" class="btn my-btn pull-left" style="visibility: hidden;">Null</button>
+			
+			<button type="button" class="btn my-btn">Save</button>
 			<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Next</button>
 		</div>
 	</form:form>
