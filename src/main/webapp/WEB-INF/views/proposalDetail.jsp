@@ -66,8 +66,9 @@
             
             
 
-            <div>
-                <button type="submit" class="btn my-btn pull-right">Next</button>
+            <div class="button-row">
+                <button type="button" class="btn my-btn pull-right">Next</button>
+                <button type="button" class="btn my-btn pull-center">Save</button>
                 <button type="button" class="btn my-btn pull-left" onclick='window.location.href="department"'>Previous</button>
             </div>
         </form:form>

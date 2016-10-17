@@ -61,8 +61,9 @@
 			</div>
 		</c:if>
 		<div>
-			<div>
+			<div class="button-row">
 				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Previous</button>
+				<button type="button" class="btn my-btn">Save</button>
 				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Next</button>
 			</div>
 		</div>

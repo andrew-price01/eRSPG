@@ -52,8 +52,9 @@
                 Please explain.</label>
             <form:textarea class="form-control" path="q7" cssErrorClass="missing-error form-control" />
         </div>
-        <div>
+        <div class="button-row">
             <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Previous</button>
+            <button type="button" class="btn my-btn">Save</button>
             <button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
         </div>
     </form:form>
