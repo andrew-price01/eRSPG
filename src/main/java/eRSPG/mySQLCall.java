@@ -20,7 +20,7 @@ public class mySQLCall {
             System.out.printf("Driver is loaded");
 
             //Establish the connection to the DB
-            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/erspg", "root", "password");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/erspg", "erspg_admin", "P@$$w0rd");
             System.out.println("Connection established.");
 
             //Executing SQL Statements
