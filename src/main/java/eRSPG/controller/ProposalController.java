@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,17 +39,9 @@ import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
 import eRSPG.model.Semester;
 import eRSPG.model.UploadFile;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
-import eRSPG.model.form.BodyQuestionsForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DepartmentForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "startForm"})
 public class ProposalController {
 	
 	/**
@@ -83,6 +76,29 @@ public class ProposalController {
 	public String startForm(Model model){
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
+
+		DepartmentForm deptForm = new DepartmentForm();
+		DetailForm detailForm = new DetailForm();
+		AwardTypeForm awardForm = new AwardTypeForm();
+		UploadForm uploadForm = new UploadForm();
+		BudgetForm budgetForm = new BudgetForm();
+		BodyForm bodyForm = new BodyForm();
+		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
+		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
+		StartForm startForm = new StartForm();
+
+		/*
+		 * Add all the form objects to the session
+		 */
+		model.addAttribute("departmentForm", deptForm);
+		model.addAttribute("detailForm", detailForm);
+		model.addAttribute("awardTypeForm",awardForm);
+		model.addAttribute("uploadForm", uploadForm);
+		model.addAttribute("budgetForm", budgetForm);
+		model.addAttribute("bodyForm", bodyForm);
+		model.addAttribute("bodyDetailsForm", bodyDetailsForm);
+		model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
+		model.addAttribute("startForm", startForm);
 
 		return "projectIndex";
 	}
