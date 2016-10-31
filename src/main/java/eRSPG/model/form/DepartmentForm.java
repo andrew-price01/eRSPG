@@ -22,6 +22,9 @@ public class DepartmentForm {
 	}
 
 	public int getYear() {
+		if (year == 0)
+			year = new java.util.Date().getYear() + 1900;
+		
 		return year;
 	}
 

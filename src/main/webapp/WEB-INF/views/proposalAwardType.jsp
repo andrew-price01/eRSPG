@@ -6,7 +6,9 @@
 
 		<div class="breadcrumb flat">
 			<a href="<s:url value='/proposal/department' />">Details</a>
-			<a href="<s:url value='/proposal/detail/awardType' />" class="active">Award Type</a>
+			<%-- <a href="<s:url value='/proposal/department' />">Department</a>
+			<a href="<s:url value='/proposal/detail' />">Details</a> --%>
+			<a href="<s:url value='/proposal/awardType' />" class="active">Award Type</a>
 			<a href="<s:url value='/proposal/budget' />" >Budget</a>
 			<a href="<s:url value='/proposal/body' />">Body</a>
 			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
@@ -14,7 +16,7 @@
 			<a href="<s:url value='/proposal/upload' />">Upload</a>
 		</div>
 	<legend><h2 style="text-align:center;">Award Type</h2></legend>
-	<form:form class="form-horizontal" method="post"
+	<form:form class="form-horizontal" method="post" action="awardType"
 		modelAttribute="awardTypeForm">
 
 		<div class="form-group">
@@ -107,7 +109,7 @@
 		<div class="button-row">
 			<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/department" />"'>Previous</button>
 			<button type="button" class="btn my-btn">Save</button>
-           	<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Next</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Next</button>
         </div>
         
 		<%-- <div>

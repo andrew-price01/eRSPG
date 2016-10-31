@@ -13,7 +13,7 @@
 		</div>
     
         <legend><h2 style="text-align:center;">Project Details</h2></legend>
-        <form:form class="form-horizontal"  method="post"   modelAttribute="detailForm">
+        <form:form class="form-horizontal"  method="post" action="bodyDetails"   modelAttribute="detailForm">
             <div class="form-group">
                 <label class="col-sm-3 control-label required-field" for="proposalTitle">Project Title:</label>
 

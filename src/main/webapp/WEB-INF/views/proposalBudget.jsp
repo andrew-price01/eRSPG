@@ -107,7 +107,7 @@ function check_digit(e,obj,intsize,deczize) {
 	
 	<legend><h2 style="text-align:center;">Budget</h2></legend>
 	
-	<form:form method="post" name="form" modelAttribute="budgetForm">
+	<form:form method="post" name="form" action="budget" modelAttribute="budgetForm">
 		<div class="form-group">
 			<label class="required-field">Does this proposal request funds to use an <u>undergraduate student assistant(s)</u>?</label>
 			<div class="radio-inline">
@@ -293,7 +293,7 @@ function check_digit(e,obj,intsize,deczize) {
 	<div class="button-row">
 		<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Previous</button>
 		<button type="button" class="btn my-btn">Save</button>
-		<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/body" />"'>Next</button>
+		<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/body" />"'>Next</button>
 	</div>
 	</form:form>
 </div>

@@ -208,10 +208,10 @@ VALUES('Computer Science');
 
 
 INSERT INTO Semester( semesterName)
-VALUES("Spring");
+VALUES("Fall");
 
 INSERT INTO Semester( semesterName)
-VALUES("Fall");
+VALUES("Spring");
 
 INSERT INTO Semester( semesterName)
 VALUES("Summer");
