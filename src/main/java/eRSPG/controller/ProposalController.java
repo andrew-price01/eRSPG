@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import eRSPG.Repository.*;
 import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,13 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import eRSPG.Repository.DepartmentDAO;
-import eRSPG.Repository.EssayAnswerDAO;
-import eRSPG.Repository.FileUploadDAO;
-import eRSPG.Repository.FundDAO;
-import eRSPG.Repository.ProposalDAO;
-import eRSPG.Repository.RequestAwardDAO;
-import eRSPG.Repository.SemesterDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -69,41 +63,37 @@ public class ProposalController {
 	
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
+
+    @Autowired
+    private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
-	@RequestMapping("/proposal/index")
+	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
 	public String startForm(Model model){
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
 
-		DepartmentForm deptForm = new DepartmentForm();
-		DetailForm detailForm = new DetailForm();
-		AwardTypeForm awardForm = new AwardTypeForm();
-		UploadForm uploadForm = new UploadForm();
-		BudgetForm budgetForm = new BudgetForm();
-		BodyForm bodyForm = new BodyForm();
-		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
-		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
-		StartForm startForm = new StartForm();
-
-		/*
-		 * Add all the form objects to the session
-		 */
-		model.addAttribute("departmentForm", deptForm);
-		model.addAttribute("detailForm", detailForm);
-		model.addAttribute("awardTypeForm",awardForm);
-		model.addAttribute("uploadForm", uploadForm);
-		model.addAttribute("budgetForm", budgetForm);
-		model.addAttribute("bodyForm", bodyForm);
-		model.addAttribute("bodyDetailsForm", bodyDetailsForm);
-		model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
-		model.addAttribute("startForm", startForm);
-
 		return "projectIndex";
 	}
-	
-	@RequestMapping("/proposal/start")
+
+    @RequestMapping(value="/proposal/index", method=RequestMethod.POST)
+    public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result,Model model)
+    {
+        //String contentPage = "proposalStart.jsp";
+        //model.addAttribute("contentPage",contentPage );
+
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalStart.jsp");
+            return "projectIndex";
+        }
+
+        return "redirect:/proposal/start";
+    }
+
+
+    @RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
 		

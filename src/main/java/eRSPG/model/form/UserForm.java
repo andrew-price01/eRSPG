@@ -2,7 +2,7 @@ package eRSPG.model.form;
 
 import javax.validation.constraints.NotNull;
 
-public class StartForm {
+public class UserForm {
 
     @NotNull
     private String firstName;
@@ -12,9 +12,6 @@ public class StartForm {
 
     @NotNull
     private String userEmail;
-
-    @NotNull
-    private String userPassword;
 
     public String getFirstName() {
         return firstName;
@@ -37,10 +34,4 @@ public class StartForm {
     public void setUserEmail() {
         this.userEmail = userEmail;
     }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword() { this.userPassword = userPassword; }
 }
