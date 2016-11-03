@@ -15,7 +15,7 @@
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
 
-    <form:form method="post" modelAttribute="bodyDetailsForm" class="labels-no-bold tall-textarea">
+    <form:form method="post" modelAttribute="bodyDetailsForm" action="bodyQuestions" class="labels-no-bold tall-textarea">
         <div class="form-group">
             <label for="procedures" class="required-field"><strong>II. PROCEDURES AND METHODS.</strong> (Indicate how the goals and objectives will be met. Include a
                 discussion of the steps involved in the design, development and implementation of the project.)</label>

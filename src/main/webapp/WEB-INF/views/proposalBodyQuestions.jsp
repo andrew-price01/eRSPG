@@ -14,7 +14,7 @@
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
 
-    <form:form method="post" modelAttribute="bodyQuestionsForm" class="labels-no-bold tall-textarea">
+    <form:form method="post" modelAttribute="bodyQuestionsForm" action="bodyQuestions" class="labels-no-bold tall-textarea">
         <p><strong>VI. ANSWER THE FOLLOWING QUESTIONS:</strong></p>
         <div class="form-group">
             <label for="q1" class="required-field">1. What RSPG funding have you applied for or have been awarded in the past 5 years. For awarded projects,
@@ -55,7 +55,7 @@
         <div class="button-row">
             <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Previous</button>
             <button type="button" class="btn my-btn">Save</button>
-            <button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
+            <button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
         </div>
     </form:form>
 </div>

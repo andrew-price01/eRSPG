@@ -20,14 +20,14 @@
 
 	</legend>
 
-	<form:form class="form-horizontal" method="post"
+	<form:form class="form-horizontal" method="post" action="department"
 		modelAttribute="departmentForm">
 		<div class="form-group">
 			<label class="col-sm-3 control-label required-field"
 				for="departmentID">Department: </label>
 			<div class="col-sm-9">
 				<form:select items="${deptList}" path="departmentID">
-					
+
 				</form:select>
 
 			</div>
@@ -53,7 +53,8 @@
 			<label class="col-sm-3 control-label required-field" for="year">Year:
 			</label>
 			<div class="col-sm-9">
-				<form:input type="number" min="2000" path="year" value="2015" />
+				<% int currentYear = new java.util.Date().getYear() + 1900; %>
+				<form:input type="number" min="<%= currentYear - 5 %>" max="<%= currentYear + 10 %>" path="year" />
 			</div>
 
 		</div>
@@ -66,8 +67,11 @@
 			<!-- Placeholder to help align buttons -->
 			<button type="button" class="btn my-btn pull-left" style="visibility: hidden;">Null</button>
 			
-			<button type="button" class="btn my-btn">Save</button>
-			<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Next</button>
+			<button type="button" class="btn my-btn" onclick="<%
+				System.out.println("Save");
+				System.out.println("departmentID = " + request.getParameter("departmentID"));
+			%>; window.location.href="<s:url value="/proposal/department" />"'>Save</button>
+			<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Next</button>
 		</div>
 	</form:form>
 </div>

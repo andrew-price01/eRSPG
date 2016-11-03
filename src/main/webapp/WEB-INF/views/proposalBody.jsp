@@ -22,7 +22,7 @@
 		single-spaced pages. Supporting documents or materials should be
 		included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
 
-	<form:form method="post" modelAttribute="bodyForm"
+	<form:form method="post" modelAttribute="bodyForm" action="body"
 		class="labels-no-bold tall-textarea">
 		<div class="form-group">
 			<label for="summary" class="required-field"><strong>PROJECT
@@ -64,7 +64,7 @@
 			<div class="button-row">
 				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Previous</button>
 				<button type="button" class="btn my-btn">Save</button>
-				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Next</button>
+				<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Next</button>
 			</div>
 		</div>
 	</form:form>

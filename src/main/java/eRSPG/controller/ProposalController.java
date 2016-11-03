@@ -188,8 +188,9 @@ public class ProposalController {
 			model.addAttribute("contentPage", "proposalDepartment.jsp");
 			return "projectIndex";
 		}
-		
-		return "redirect:/proposal/detail";
+
+		//return "redirect:/proposal/detail";
+		return "redirect:/proposal/awardType";
 	}
 	
 	
@@ -276,18 +277,6 @@ public class ProposalController {
 		
 		boolean collaborative = false;
 		boolean excellence = false;
-		
-
-//		if(awardForm.getAwardTypes() == null)
-//			return "projectIndex";
-//
-//		if(awardForm.getAwardTypes().contains(6)){
-//			collaborative = true;
-//		}
-//		if(awardForm.getAwardTypes().contains(5))
-//		{
-//			excellence = true;
-//		}
 
 		// TODO: Null pointer
 		if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(6)){
@@ -393,7 +382,8 @@ public class ProposalController {
                 uploadForm.setName(file.getOriginalFilename());
                 
                 uploadForm.setBytes(bytes);
-               
+
+                //return "redirect:/proposal/review";
                 return "redirect:/proposal/submit";
             } catch (Exception e) {
             	
