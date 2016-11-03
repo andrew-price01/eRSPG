@@ -12,8 +12,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import eRSPG.Repository.*;
-import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import eRSPG.Repository.DepartmentDAO;
+import eRSPG.Repository.EssayAnswerDAO;
+import eRSPG.Repository.FileUploadDAO;
+import eRSPG.Repository.FundDAO;
+import eRSPG.Repository.ProposalDAO;
+import eRSPG.Repository.RequestAwardDAO;
+import eRSPG.Repository.SemesterDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -33,9 +38,17 @@ import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
 import eRSPG.model.Semester;
 import eRSPG.model.UploadFile;
+import eRSPG.model.form.AwardTypeForm;
+import eRSPG.model.form.BodyDetailsForm;
+import eRSPG.model.form.BodyForm;
+import eRSPG.model.form.BodyQuestionsForm;
+import eRSPG.model.form.BudgetForm;
+import eRSPG.model.form.DepartmentForm;
+import eRSPG.model.form.DetailForm;
+import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "startForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	/**
@@ -63,37 +76,18 @@ public class ProposalController {
 	
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
-
-    @Autowired
-    private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
-	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
+	@RequestMapping("/proposal/index")
 	public String startForm(Model model){
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
 
 		return "projectIndex";
 	}
-
-    @RequestMapping(value="/proposal/index", method=RequestMethod.POST)
-    public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result,Model model)
-    {
-        //String contentPage = "proposalStart.jsp";
-        //model.addAttribute("contentPage",contentPage );
-
-        if(result.hasErrors())
-        {
-            model.addAttribute("contentPage", "proposalStart.jsp");
-            return "projectIndex";
-        }
-
-        return "redirect:/proposal/start";
-    }
-
-
-    @RequestMapping("/proposal/start")
+	
+	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
 		
