@@ -105,11 +105,13 @@
 			<a class="pull-left" href="<s:url value='/proposal/detail' />">Previous</a>
 			<button type="submit" class="btn my-btn pull-right">Next</button>
 		</div> --%>
-	
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
+		
 		<div class="button-row">
-			<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/department" />"'>Previous</button>
-			<button type="button" class="btn my-btn">Save</button>
-           	<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Next</button>
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("proposal/department", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Next</button>
         </div>
         
 		<%-- <div>

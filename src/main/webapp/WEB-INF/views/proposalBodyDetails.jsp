@@ -36,10 +36,13 @@
                 stipend.</label>
             <form:textarea  class="form-control" path="budgetNarrative" cssErrorClass="missing-error form-control" />
         </div>
-        <div class="button-row">
-            <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/body" />"'>Previous</button>
-            <button type="button" class="btn my-btn">Save</button>
-            <button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyQuestions" />"'>Next</button>
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
+		
+		<div class="button-row">
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/body", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/bodyDetails", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/bodyQuestions", "<s:url value="/" />")'>Next</button>
         </div>
     </form:form>
 </div>

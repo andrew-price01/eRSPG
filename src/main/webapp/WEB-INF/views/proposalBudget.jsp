@@ -289,11 +289,13 @@ function check_digit(e,obj,intsize,deczize) {
 			</table>
 		</div>
 	</div>
+		
+	<input type="hidden" name="nextPage" id="nextPage" value="0" />
 	
 	<div class="button-row">
-		<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Previous</button>
-		<button type="button" class="btn my-btn">Save</button>
-		<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/body" />"'>Next</button>
-	</div>
+		<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/awardType", "<s:url value="/" />")'>Previous</button>
+		<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Save</button>
+          	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/body", "<s:url value="/" />")'>Next</button>
+       </div>
 	</form:form>
 </div>

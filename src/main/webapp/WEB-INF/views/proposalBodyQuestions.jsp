@@ -52,10 +52,13 @@
                 Please explain.</label>
             <form:textarea class="form-control" path="q7" cssErrorClass="missing-error form-control" />
         </div>
-        <div class="button-row">
-            <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Previous</button>
-            <button type="button" class="btn my-btn">Save</button>
-            <button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
+		
+		<div class="button-row">
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/bodyDetails", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("/proposal/bodyQuestions", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/upload", "<s:url value="/" />")'>Next</button>
         </div>
     </form:form>
 </div>

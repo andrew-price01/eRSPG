@@ -87,6 +87,10 @@ public class ProposalController {
 		return "projectIndex";
 	}
 	
+	public String getNextPage(@RequestParam("nextPage") String nextPage) {
+		return nextPage;
+	}
+	
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
@@ -172,7 +176,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/department", method=RequestMethod.POST)
-	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model)
+	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
 	{
 		//String contentPage = "proposalDepartment.jsp";
 		//model.addAttribute("contentPage",contentPage );
@@ -182,9 +186,12 @@ public class ProposalController {
 			model.addAttribute("contentPage", "proposalDepartment.jsp");
 			return "projectIndex";
 		}
+		
+		System.out.println(nextPage);
 
 		//return "redirect:/proposal/detail";
-		return "redirect:/proposal/awardType";
+		//return "redirect:/proposal/awardType";
+		return "redirect:/" + nextPage;
 	}
 	
 	
@@ -200,7 +207,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.POST)
-	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model)
+	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
 		{
@@ -208,7 +215,8 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/awardType";
+		//return "redirect:/proposal/awardType";
+		return "redirect:/" + nextPage;
 	}
 	
 	@RequestMapping(value="/proposal/awardType", method=RequestMethod.GET)
@@ -239,7 +247,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/awardType", method=RequestMethod.POST)
-	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model)
+	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
 		{
@@ -263,7 +271,8 @@ public class ProposalController {
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
 			return "projectIndex";
 		}
-		return "redirect:/proposal/budget";
+		//return "redirect:/proposal/budget";
+		return "redirect:/" + nextPage;
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
@@ -290,7 +299,7 @@ public class ProposalController {
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
-	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		//System.out.println(result.hasErrors());
        // System.out.println(result);
@@ -316,7 +325,8 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/bodyDetails";
+		//return "redirect:/proposal/bodyDetails";
+		return "redirect:/" + nextPage;
 	}
 
     @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.GET)
@@ -327,7 +337,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
-    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model)
+    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
         {
@@ -335,7 +345,8 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        return "redirect:/proposal/bodyQuestions";
+        //return "redirect:/proposal/bodyQuestions";
+		return "redirect:/" + nextPage;
     }
 
     @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.GET)
@@ -346,7 +357,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.POST)
-    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model)
+    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
         {
@@ -354,7 +365,8 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        return "redirect:/proposal/upload";
+        //return "redirect:/proposal/upload";
+		return "redirect:/" + nextPage;
     }
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.GET)
@@ -366,7 +378,7 @@ public class ProposalController {
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
 	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
-		, Model model){
+		, Model model, @RequestParam("nextPage") String nextPage){
 		
 		if (!file.isEmpty()) {
         	try {
@@ -378,7 +390,8 @@ public class ProposalController {
                 uploadForm.setBytes(bytes);
 
                 //return "redirect:/proposal/review";
-                return "redirect:/proposal/submit";
+                //return "redirect:/proposal/submit";
+        		return "redirect:/" + nextPage;
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");
