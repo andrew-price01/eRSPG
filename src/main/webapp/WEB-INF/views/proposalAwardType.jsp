@@ -3,18 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="container">
-
-		<div class="breadcrumb flat">
-			<a href="<s:url value='/proposal/department' />">Details</a>
-			<%-- <a href="<s:url value='/proposal/department' />">Department</a>
-			<a href="<s:url value='/proposal/detail' />">Details</a> --%>
-			<a href="<s:url value='/proposal/awardType' />" class="active">Award Type</a>
-			<a href="<s:url value='/proposal/budget' />" >Budget</a>
-			<a href="<s:url value='/proposal/body' />">Body</a>
-			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
-			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
-			<a href="<s:url value='/proposal/upload' />">Upload</a>
-		</div>
+	<% String pageName = "awardType"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
 	<legend><h2 style="text-align:center;">Award Type</h2></legend>
 	<form:form class="form-horizontal" method="post" action="awardType"
 		modelAttribute="awardTypeForm">

@@ -5,15 +5,9 @@
 	<script type="text/javascript">
 		year = new Date().getFullYear();
 	</script>
-	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/department' />" class="active">Details
-		</a> <a href="<s:url value='/proposal/awardType' />">Award Type</a>
-		<a href="<s:url value='/proposal/budget' />">Budget</a> <a
-			href="<s:url value='/proposal/body' />">Body</a> <a
-			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
-			href="<s:url value='/proposal/bodyQuestions' />">Questions</a> <a
-			href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
+	
+	<% String pageName = "department"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
 
 	<legend>
 		<h2 style="text-align: center;">Project Details</h2>

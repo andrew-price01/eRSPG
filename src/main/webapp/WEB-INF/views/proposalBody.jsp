@@ -4,16 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="container">
-
-	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/department' />">Details </a> <a
-			href="<s:url value='/proposal/awardType' />">Award Type</a> <a
-			href="<s:url value='/proposal/budget' />">Budget</a> <a
-			href="<s:url value='/proposal/body' />" class="active">Body</a> <a
-			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
-			href="<s:url value='/proposal/bodyQuestions' />">Questions</a> <a
-			href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
+	<% String pageName = "body"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
 	<legend>
 		<h2 style="text-align: center;">Body of Proposal</h2>
 	</legend>

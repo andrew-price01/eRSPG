@@ -91,20 +91,9 @@ function check_digit(e,obj,intsize,deczize) {
 
 
 <div class="container">
-
-
-	<div class="breadcrumb flat">
-			<a href="<s:url value='/proposal/department' />">Details </a>
-			<a href="<s:url value='/proposal/awardType' />">Award Type</a>
-			<a href="<s:url value='/proposal/budget' />" class="active">Budget</a>
-			<a href="<s:url value='/proposal/body' />">Body</a>
-			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
-			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
-			<a href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
-
-	
-	
+	<% String pageName = "budget"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+		
 	<legend><h2 style="text-align:center;">Budget</h2></legend>
 	
 	<form:form method="post" name="form" action="budget" modelAttribute="budgetForm">
@@ -126,175 +115,175 @@ function check_digit(e,obj,intsize,deczize) {
 		</div>
 		
 
-	<br>
-	<div class="form-group">
-		<div class="table-responsive">
-			<table class="table table-bordered table-condensed">
-		    	<tbody>
-		    		<tr>
-		            <th></th>
-			            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #1</th>
-			            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #2</th>
-			            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #3</th>
-			            <th	class="text-center" style="background-color: rgb(87,80,71); color:white">Funds <u>Requested</u> from <strong>RSPG</strong></th>
-			            <th	class="text-center" style="background-color: rgb(87,80,71); color:white">GRAND TOTAL</th>
-		        	</tr>
-		        	<tr>
-		           		<td colspan="6"><strong> 1) PERSONNEL RESOURCES (assistants, consultants, released time)</strong></td>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="a)" path="a1"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_1"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="b)" path="b1"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_1"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="c)" path="c1"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_1"></th>
-		        	</tr>
-		        	<tr>
-		           		<td colspan="6"><strong> BENEFITS for Personnel Resources(8.5% for student employees, 15% for full-time faculty
-											requesting reassigned time, 22% for full-time faculty and staff requesting a stipend)
-		           		</strong></td>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="a)" path="aBen"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_ben" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_ben"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="b)" path="bBen"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_ben" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_ben"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="c)" path="cBen"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_ben"></th>
-		        	</tr>
-		        	<tr>
-		           		<td colspan="6"><strong> 2) EQUIPMENT AND MATERIALS</strong></td>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="a)" path="a2"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_2"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="b)" path="b2"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_2" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_2"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="c)" path="c2"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_2"></th>
-		        	</tr>
-		        	<tr>
-		           		<td colspan="6"><strong> 3) TRAVEL</strong></td>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="a)" path="a3"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_3"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="b)" path="b3"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_3"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="c)" path="c3"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_3"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_3" onchange="updateRequested()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_3"></th>
-		        	</tr>
-		        	<tr>
-		        		<td colspan="6"><strong> 4) OTHER</strong></td>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="a)" path="a4"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_4"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="b)" path="b4"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_4"></th>
-		        	</tr>
-		        	<tr>
-			           	<td><form:input type="text" class="form-control" placeholder="c)" path="c4"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
-			           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_4"></th>
-		        	</tr>
-		        	
-		        	<tr>
-			           	<td style="vertical-align:middle;">TOTALS</td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1Total" readonly="true" /></td>
-			           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2Total" readonly="true"/></td>
-			          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3Total" readonly="true" /></td>
-			          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requestedTotal" readonly="true"/></td>
-			          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="grandTotal" readonly="true"/></td>
-		        	</tr>
-		        </tbody>
-			</table>
+		<br>
+		<div class="form-group">
+			<div class="table-responsive">
+				<table class="table table-bordered table-condensed">
+			    	<tbody>
+			    		<tr>
+			            <th></th>
+				            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #1</th>
+				            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #2</th>
+				            <th class="text-center" style="background-color: rgb(87,80,71); color:white">Funds Committed from Source #3</th>
+				            <th	class="text-center" style="background-color: rgb(87,80,71); color:white">Funds <u>Requested</u> from <strong>RSPG</strong></th>
+				            <th	class="text-center" style="background-color: rgb(87,80,71); color:white">GRAND TOTAL</th>
+			        	</tr>
+			        	<tr>
+			           		<td colspan="6"><strong> 1) PERSONNEL RESOURCES (assistants, consultants, released time)</strong></td>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="a)" path="a1"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_1"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="b)" path="b1"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_1"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="c)" path="c1"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_1" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_1"></th>
+			        	</tr>
+			        	<tr>
+			           		<td colspan="6"><strong> BENEFITS for Personnel Resources(8.5% for student employees, 15% for full-time faculty
+												requesting reassigned time, 22% for full-time faculty and staff requesting a stipend)
+			           		</strong></td>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="a)" path="aBen"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_ben" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_ben"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="b)" path="bBen"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_ben" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_ben"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="c)" path="cBen"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_ben" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_ben"></th>
+			        	</tr>
+			        	<tr>
+			           		<td colspan="6"><strong> 2) EQUIPMENT AND MATERIALS</strong></td>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="a)" path="a2"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_2"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="b)" path="b2"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_2" onchange="updateTotals()"  onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_2"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="c)" path="c2"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_2"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_2" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_2"></th>
+			        	</tr>
+			        	<tr>
+			           		<td colspan="6"><strong> 3) TRAVEL</strong></td>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="a)" path="a3"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_3"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="b)" path="b3"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_3"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="c)" path="c3"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_3"  onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_3" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_3" onchange="updateRequested()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_3"></th>
+			        	</tr>
+			        	<tr>
+			        		<td colspan="6"><strong> 4) OTHER</strong></td>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="a)" path="a4"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_a_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_a_4"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="b)" path="b4"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_b_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_b_4"></th>
+			        	</tr>
+			        	<tr>
+				           	<td><form:input type="text" class="form-control" placeholder="c)" path="c4"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);" /></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requested_c_4" onchange="updateTotals()" onkeypress="return check_digit(event,this,10,2);"/></td>
+				           	<th class="text-right" style="vertical-align:middle;" id="grantTotal_c_4"></th>
+			        	</tr>
+			        	
+			        	<tr>
+				           	<td style="vertical-align:middle;">TOTALS</td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source1Total" readonly="true" /></td>
+				           	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source2Total" readonly="true"/></td>
+				          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="source3Total" readonly="true" /></td>
+				          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="requestedTotal" readonly="true"/></td>
+				          	<td><form:input type="text" class="form-control" placeholder="0" style="text-align: right" path="grandTotal" readonly="true"/></td>
+			        	</tr>
+			        </tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+			
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
 		
-	<input type="hidden" name="nextPage" id="nextPage" value="0" />
-	
-	<div class="button-row">
-		<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/awardType", "<s:url value="/" />")'>Previous</button>
-		<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Save</button>
+		<div class="button-row">
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/awardType", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Save</button>
           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/body", "<s:url value="/" />")'>Next</button>
        </div>
 	</form:form>
