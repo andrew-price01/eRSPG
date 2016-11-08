@@ -4,16 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="container">
-
-	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/detail' />">Details </a> <a
-			href="<s:url value='/proposal/awardType' />">Award Type</a> <a
-			href="<s:url value='/proposal/budget' />">Budget</a> <a
-			href="<s:url value='/proposal/body' />" class="active">Body</a> <a
-			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
-			href="<s:url value='/proposal/bodyQuestions' />">Questions</a> <a
-			href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
+	<% String pageName = "body"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
 	<legend>
 		<h2 style="text-align: center;">Body of Proposal</h2>
 	</legend>
@@ -61,11 +54,13 @@
 			</div>
 		</c:if>
 		<div>
+			<input type="hidden" name="nextPage" id="nextPage" value="0" />
+			
 			<div class="button-row">
-				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Previous</button>
-				<button type="button" class="btn my-btn">Save</button>
-				<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Next</button>
-			</div>
+				<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/budget", "<s:url value="/" />")'>Previous</button>
+				<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/body", "<s:url value="/" />")'>Save</button>
+	           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/bodyDetails", "<s:url value="/" />")'>Next</button>
+	        </div>
 		</div>
 	</form:form>
 </div>

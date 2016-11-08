@@ -5,15 +5,9 @@
 	<script type="text/javascript">
 		year = new Date().getFullYear();
 	</script>
-	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/department' />" class="active">Details
-		</a> <a href="<s:url value='/proposal/awardType' />">Award Type</a>
-		<a href="<s:url value='/proposal/budget' />">Budget</a> <a
-			href="<s:url value='/proposal/body' />">Body</a> <a
-			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
-			href="<s:url value='/proposal/bodyQuestions' />">Questions</a> <a
-			href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
+	
+	<% String pageName = "department"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
 
 	<legend>
 		<h2 style="text-align: center;">Project Details</h2>
@@ -58,20 +52,30 @@
 			</div>
 
 		</div>
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
 
 
 
 
+		
+		<script>
+			function asyncSubmit(dest) {
+			    var xhttp = new XMLHttpRequest();
+
+			    xhttp.open("POST", "<s:url value="/proposal/department" />", true);
+			    xhttp.send();
+				
+				window.location.href="<s:url value="/proposal/awardType" />"
+			}
+		</script>
 
 		<div class="button-row">
 			<!-- Placeholder to help align buttons -->
 			<button type="button" class="btn my-btn pull-left" style="visibility: hidden;">Null</button>
 			
-			<button type="button" class="btn my-btn" onclick="<%
-				System.out.println("Save");
-				System.out.println("departmentID = " + request.getParameter("departmentID"));
-			%>; window.location.href="<s:url value="/proposal/department" />"'>Save</button>
-			<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/awardType" />"'>Next</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/department", "<s:url value="/" />")'>Save</button>
+			<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'>Next</button>
 		</div>
 	</form:form>
 </div>

@@ -12,8 +12,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import eRSPG.Repository.*;
-import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import eRSPG.Repository.DepartmentDAO;
+import eRSPG.Repository.EssayAnswerDAO;
+import eRSPG.Repository.FileUploadDAO;
+import eRSPG.Repository.FundDAO;
+import eRSPG.Repository.ProposalDAO;
+import eRSPG.Repository.RequestAwardDAO;
+import eRSPG.Repository.SemesterDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -33,9 +38,17 @@ import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
 import eRSPG.model.Semester;
 import eRSPG.model.UploadFile;
+import eRSPG.model.form.AwardTypeForm;
+import eRSPG.model.form.BodyDetailsForm;
+import eRSPG.model.form.BodyForm;
+import eRSPG.model.form.BodyQuestionsForm;
+import eRSPG.model.form.BudgetForm;
+import eRSPG.model.form.DepartmentForm;
+import eRSPG.model.form.DetailForm;
+import eRSPG.model.form.UploadForm;
 
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "startForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	/**
@@ -63,37 +76,22 @@ public class ProposalController {
 	
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
-
-    @Autowired
-    private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
-	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
+	@RequestMapping("/proposal/index")
 	public String startForm(Model model){
 		String contentPage = "proposalStart.jsp";
 		model.addAttribute("contentPage",contentPage);
 
 		return "projectIndex";
 	}
-
-    @RequestMapping(value="/proposal/index", method=RequestMethod.POST)
-    public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result,Model model)
-    {
-        //String contentPage = "proposalStart.jsp";
-        //model.addAttribute("contentPage",contentPage );
-
-        if(result.hasErrors())
-        {
-            model.addAttribute("contentPage", "proposalStart.jsp");
-            return "projectIndex";
-        }
-
-        return "redirect:/proposal/start";
-    }
-
-
-    @RequestMapping("/proposal/start")
+	
+	public String getNextPage(@RequestParam("nextPage") String nextPage) {
+		return nextPage;
+	}
+	
+	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
 		
@@ -178,7 +176,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/department", method=RequestMethod.POST)
-	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model)
+	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
 	{
 		//String contentPage = "proposalDepartment.jsp";
 		//model.addAttribute("contentPage",contentPage );
@@ -188,9 +186,12 @@ public class ProposalController {
 			model.addAttribute("contentPage", "proposalDepartment.jsp");
 			return "projectIndex";
 		}
+		
+		System.out.println(nextPage);
 
 		//return "redirect:/proposal/detail";
-		return "redirect:/proposal/awardType";
+		//return "redirect:/proposal/awardType";
+		return "redirect:/" + nextPage;
 	}
 	
 	
@@ -206,7 +207,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.POST)
-	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model)
+	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
 		{
@@ -214,7 +215,8 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/awardType";
+		//return "redirect:/proposal/awardType";
+		return "redirect:/" + nextPage;
 	}
 	
 	@RequestMapping(value="/proposal/awardType", method=RequestMethod.GET)
@@ -245,7 +247,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/awardType", method=RequestMethod.POST)
-	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model)
+	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
 		{
@@ -269,7 +271,8 @@ public class ProposalController {
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
 			return "projectIndex";
 		}
-		return "redirect:/proposal/budget";
+		//return "redirect:/proposal/budget";
+		return "redirect:/" + nextPage;
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
@@ -296,7 +299,7 @@ public class ProposalController {
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
-	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model)
+	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		//System.out.println(result.hasErrors());
        // System.out.println(result);
@@ -322,7 +325,8 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/bodyDetails";
+		//return "redirect:/proposal/bodyDetails";
+		return "redirect:/" + nextPage;
 	}
 
     @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.GET)
@@ -333,7 +337,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
-    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model)
+    public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
         {
@@ -341,7 +345,8 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        return "redirect:/proposal/bodyQuestions";
+        //return "redirect:/proposal/bodyQuestions";
+		return "redirect:/" + nextPage;
     }
 
     @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.GET)
@@ -352,7 +357,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.POST)
-    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model)
+    public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
         {
@@ -360,7 +365,8 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        return "redirect:/proposal/upload";
+        //return "redirect:/proposal/upload";
+		return "redirect:/" + nextPage;
     }
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.GET)
@@ -372,7 +378,7 @@ public class ProposalController {
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
 	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
-		, Model model){
+		, Model model, @RequestParam("nextPage") String nextPage){
 		
 		if (!file.isEmpty()) {
         	try {
@@ -384,7 +390,8 @@ public class ProposalController {
                 uploadForm.setBytes(bytes);
 
                 //return "redirect:/proposal/review";
-                return "redirect:/proposal/submit";
+                //return "redirect:/proposal/submit";
+        		return "redirect:/" + nextPage;
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");

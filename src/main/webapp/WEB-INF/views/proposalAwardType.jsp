@@ -3,18 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="container">
-
-		<div class="breadcrumb flat">
-			<a href="<s:url value='/proposal/department' />">Details</a>
-			<%-- <a href="<s:url value='/proposal/department' />">Department</a>
-			<a href="<s:url value='/proposal/detail' />">Details</a> --%>
-			<a href="<s:url value='/proposal/awardType' />" class="active">Award Type</a>
-			<a href="<s:url value='/proposal/budget' />" >Budget</a>
-			<a href="<s:url value='/proposal/body' />">Body</a>
-			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
-			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
-			<a href="<s:url value='/proposal/upload' />">Upload</a>
-		</div>
+	<% String pageName = "awardType"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
 	<legend><h2 style="text-align:center;">Award Type</h2></legend>
 	<form:form class="form-horizontal" method="post" action="awardType"
 		modelAttribute="awardTypeForm">
@@ -105,11 +96,13 @@
 			<a class="pull-left" href="<s:url value='/proposal/detail' />">Previous</a>
 			<button type="submit" class="btn my-btn pull-right">Next</button>
 		</div> --%>
-	
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
+		
 		<div class="button-row">
-			<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/department" />"'>Previous</button>
-			<button type="button" class="btn my-btn">Save</button>
-           	<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/budget" />"'>Next</button>
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("proposal/department", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Next</button>
         </div>
         
 		<%-- <div>

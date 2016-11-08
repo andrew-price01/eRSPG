@@ -1,15 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
-	<div class="breadcrumb flat">
-			<a href="<s:url value='/proposal/department' />">Details </a>
-			<a href="<s:url value='/proposal/awardType' />">Award Type</a>
-			<a href="<s:url value='/proposal/budget' />" >Budget</a>
-			<a href="<s:url value='/proposal/body' />" >Body</a>
-			<a href="<s:url value='/proposal/bodyDetails' />" >Body Details</a>
-			<a href="<s:url value='/proposal/bodyQuestions' />" class="active">Questions</a>
-			<a href="<s:url value='/proposal/upload' />">Upload</a>
-	</div>
+	<% String pageName = "bodyQuestions"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
     <legend><h2 style="text-align:center;">Body of Proposal</h2></legend>
     <p>The abstract and Sections I-A through VI should not exceed 3 single-spaced pages. Supporting documents or
         materials should be included as addenda. PROPOSALS SHOULD BE WRITTEN CLEARLY AND SIMPLY.</p>
@@ -52,10 +46,13 @@
                 Please explain.</label>
             <form:textarea class="form-control" path="q7" cssErrorClass="missing-error form-control" />
         </div>
-        <div class="button-row">
-            <button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyDetails" />"'>Previous</button>
-            <button type="button" class="btn my-btn">Save</button>
-            <button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Next</button>
+		
+		<input type="hidden" name="nextPage" id="nextPage" value="0" />
+		
+		<div class="button-row">
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/bodyDetails", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("/proposal/bodyQuestions", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/upload", "<s:url value="/" />")'>Next</button>
         </div>
     </form:form>
 </div>
