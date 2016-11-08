@@ -128,7 +128,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
-	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model)
+	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
 		{
@@ -136,7 +136,8 @@ public class ProposalController {
 			return "projectIndex";
 		}
 
-		return "redirect:/proposal/body";
+		//return "redirect:/proposal/body";
+		return "redirect:/" + nextPage;
 	}
 	
 	@RequestMapping(value="/proposal/department", method=RequestMethod.GET)
