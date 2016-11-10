@@ -31,6 +31,7 @@ import eRSPG.Repository.FundDAO;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.Repository.SemesterDAO;
+import eRSPG.Repository.UserDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -76,16 +77,11 @@ public class ProposalController {
 	
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
+
+	@Autowired
+	private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
-	@RequestMapping("/proposal/index")
-	public String startForm(Model model){
-		String contentPage = "proposalStart.jsp";
-		model.addAttribute("contentPage",contentPage);
-
-		return "projectIndex";
-	}
 	
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
@@ -118,6 +114,27 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 
 		return "redirect:/proposal/department";
+	}
+
+	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
+	public String startForm(Model model){
+		String contentPage = "proposalStart.jsp";
+		model.addAttribute("contentPage",contentPage);
+
+		return "projectIndex";
+	}
+
+	@RequestMapping(value="/proposal/index", method=RequestMethod.POST)
+	public String saveStartForm(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("contentPage", "proposalBudget.jsp");
+			return "projectIndex";
+		}
+
+		//return "redirect:/proposal/body";
+		return "redirect:/" + nextPage;
 	}
 
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)

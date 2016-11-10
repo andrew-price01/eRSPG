@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import eRSPG.Repository.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import eRSPG.Repository.AwardTypeDAO;
-import eRSPG.Repository.AwardTypeImpl;
-import eRSPG.Repository.DepartmentDAO;
-import eRSPG.Repository.DepartmentImpl;
-import eRSPG.Repository.EssayAnswerDAO;
-import eRSPG.Repository.EssayAnswerImpl;
-import eRSPG.Repository.FileUploadDAO;
-import eRSPG.Repository.FileUploadImpl;
-import eRSPG.Repository.FundImpl;
-import eRSPG.Repository.ProposalDAO;
-import eRSPG.Repository.ProposalImpl;
-import eRSPG.Repository.RequestAwardDAO;
-import eRSPG.Repository.RequestAwardImpl;
-import eRSPG.Repository.SemesterDAO;
-import eRSPG.Repository.SemesterImpl;
 import eRSPG.model.AwardType;
 import eRSPG.model.Awarded;
 import eRSPG.model.Department;
@@ -169,7 +155,11 @@ public class Application extends SpringBootServletInitializer {
     @Autowired
     @Bean(name= "fileUploadDAO")
     public FileUploadDAO getFileUploadDao(SessionFactory sessionFactory){
-    	
-    	return new FileUploadImpl(sessionFactory);
+
+        return new FileUploadImpl(sessionFactory);
     }
+
+    @Autowired
+    @Bean(name= "userDAO")
+    public UserDAO getUserDao(SessionFactory sessionFactory){ return new UserImpl(sessionFactory); }
 }
