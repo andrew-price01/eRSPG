@@ -50,7 +50,7 @@ import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
 
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
 public class ProposalController {
 	
 	/**
