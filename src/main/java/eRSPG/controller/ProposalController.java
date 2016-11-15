@@ -31,6 +31,7 @@ import eRSPG.Repository.FundDAO;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.Repository.SemesterDAO;
+import eRSPG.Repository.UserDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -46,9 +47,10 @@ import eRSPG.model.form.BudgetForm;
 import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
+import eRSPG.model.form.UserForm;
 
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
 public class ProposalController {
 	
 	/**
@@ -76,16 +78,11 @@ public class ProposalController {
 	
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
+
+	@Autowired
+	private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
-	@RequestMapping("/proposal/index")
-	public String startForm(Model model){
-		String contentPage = "proposalStart.jsp";
-		model.addAttribute("contentPage",contentPage);
-
-		return "projectIndex";
-	}
 	
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
@@ -104,6 +101,7 @@ public class ProposalController {
 		BodyForm bodyForm = new BodyForm();
 		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
 		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
+		UserForm userForm = new UserForm();
 
 		/*
 		 * Add all the form objects to the session
@@ -116,8 +114,30 @@ public class ProposalController {
 		model.addAttribute("bodyForm", bodyForm);
         model.addAttribute("bodyDetailsForm", bodyDetailsForm);
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
+		model.addAttribute("userForm", userForm);
 
 		return "redirect:/proposal/department";
+	}
+
+	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
+	public String UserForm(Model model){
+		String contentPage = "proposalStart.jsp";
+		model.addAttribute("contentPage",contentPage);
+
+		return "projectIndex";
+	}
+
+	@RequestMapping(value="/proposal/index", method=RequestMethod.POST)
+	public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("contentPage", "proposalBudget.jsp");
+			return "projectIndex";
+		}
+
+		//return "redirect:/proposal/body";
+		return "redirect:/" + nextPage;
 	}
 
 	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
@@ -426,11 +446,12 @@ public class ProposalController {
 						@ModelAttribute("departmentForm") DepartmentForm deptForm,
 						@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
 						@ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+						@ModelAttribute("userForm") UserForm userForm,
 						@ModelAttribute("uploadForm") UploadForm uploadForm)
 	{
 		
 		processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
-							,uploadForm);
+							, userForm, uploadForm);
 		return "Successfully Submitted";
 		
 		
@@ -442,6 +463,7 @@ public class ProposalController {
 					DepartmentForm deptForm,
 					BodyQuestionsForm bodyQuestForm,
 					BodyDetailsForm bodyDetailsForm,
+					UserForm userForm,
 					UploadForm uploadForm)
 	{
 	
