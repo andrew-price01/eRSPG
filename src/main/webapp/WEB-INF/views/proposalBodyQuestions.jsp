@@ -50,9 +50,9 @@
 		<input type="hidden" name="nextPage" id="nextPage" value="0" />
 		
 		<div class="button-row">
-			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("/proposal/bodyDetails", "<s:url value="/" />")'>Previous</button>
-			<button type="submit" class="btn my-btn" onclick='setNextPage("/proposal/bodyQuestions", "<s:url value="/" />")'>Save</button>
-           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("/proposal/upload", "<s:url value="/" />")'>Next</button>
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("proposal/bodyDetails", "<s:url value="/" />")'>Previous</button>
+			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/bodyQuestions", "<s:url value="/" />")'>Save</button>
+           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/upload", "<s:url value="/" />")'>Next</button>
         </div>
     </form:form>
 </div>
