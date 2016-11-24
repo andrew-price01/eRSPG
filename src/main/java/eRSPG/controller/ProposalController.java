@@ -425,7 +425,8 @@ public class ProposalController {
 		else {
         	model.addAttribute("failedUpload","failed to upload file!");
         	model.addAttribute("contentPage","proposalUpload.jsp");
-            return "projectIndex";
+            //return "projectIndex";
+        	return "redirect:/" + nextPage;
         }
 		//return "projectIndex";
 	}
