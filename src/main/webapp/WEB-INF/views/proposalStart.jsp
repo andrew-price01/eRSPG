@@ -42,12 +42,9 @@
 				<label for="userPassword">Password:&nbsp&nbsp</label>
 				<input id="userPassword" type="password" name="userPassword" value="" style="align-self: center;"/><br /><br />
 
-				<Button type="submit" class="btn my-btn" value="Submit" >Submit</Button>
+				<%--<Button type="submit" class="btn my-btn" value="Submit" >Submit</Button>--%>
+				<Button type="button" class="btn my-btn" value="start" onclick='window.location.href="<s:url value="start" />"' >Submit</Button>
 			</form>
-			<br />
-			<br />
-			<%= "Welcome " + firstName + " " + lastName + " " + userEmail %><br />
-			<Button type="button" class="btn my-btn" onclick='window.location.href="<s:url value="start" />"' >Start</Button>
 	</div>
 </div>
 
