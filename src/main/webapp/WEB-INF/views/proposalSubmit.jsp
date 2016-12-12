@@ -5,7 +5,7 @@
 	<div align="center">
 		<!--         <h1>Spring MVC - File Upload to Database Demo</h1> -->
 		<legend>
-			<h2 style="text-align: center;">Submit Proposal</h2>
+			<h2 style="text-align: center;">Submission Complete</h2>
 		</legend>
 		<form:form method="post" enctype="multipart/form-data"
 			modelAttribute="UploadForm">
@@ -19,13 +19,13 @@
 			</table>
 			
 			<div>
-				<p>Please review your proposal before submitting it.</p>
+				<p>Your proposal was submitted successfully and is pending review. You will be notified when the review is complete.</p>
 			</div>
 			
 			<div class="button-row">
 				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Back</button>
-				<%--<button type="button" class="btn my-btn pull-center" onclick='window.location.href="<s:url value="/proposal/review" />"'>Save</button>--%>
-				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/submit" />"'>Submit</button>
+				<button type="button" class="btn my-btn pull-center">Save</button>
+				<button type="submit" class="btn my-btn pull-right">Submit</button>
 			</div>
 
 		</form:form>

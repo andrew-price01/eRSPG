@@ -2,21 +2,15 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <div class="container">
-	<div class="breadcrumb flat">
-		<a href="<s:url value='/proposal/department' />">Details</a> <a
-			href="<s:url value='/proposal/awardType' />">Award Type</a> <a
-			href="<s:url value='/proposal/budget' />">Budget</a> <a
-			href="<s:url value='/proposal/body' />">Body</a> <a
-			href="<s:url value='/proposal/bodyDetails' />">Body Details</a> <a
-			href="<s:url value='/proposal/bodyQuestions' />">Questions</a> <a
-			href="<s:url value='/proposal/upload' />" class="active">Upload</a>
-	</div>
+	<% String pageName = "upload"; %>
+	<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
+	
 	<div align="center">
 		<!--         <h1>Spring MVC - File Upload to Database Demo</h1> -->
 		<legend>
 			<h2 style="text-align: center;">File Upload</h2>
 		</legend>
-		<form:form method="post" enctype="multipart/form-data"
+		<form:form method="post" action="upload" enctype="multipart/form-data"
 			modelAttribute="UploadForm">
 			<table border="0">
 				<tr>
@@ -26,11 +20,14 @@
 
 				
 			</table>
+		
+			<input type="hidden" name="nextPage" id="nextPage" value="0" />
+			
 			<div class="button-row">
-				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/bodyQuestions" />"'>Previous</button>
-				<button type="button" class="btn my-btn">Save</button>
-				<button type="submit" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/review" />"'>Next</button>
-			</div>
+				<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("proposal/bodyQuestions", "<s:url value="/" />")'>Previous</button>
+				<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/upload", "<s:url value="/" />")'>Save</button>
+	           	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/review", "<s:url value="/" />")'>Next</button>
+	        </div>
 
 		</form:form>
 	</div>
