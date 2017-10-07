@@ -8,11 +8,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand"><img src="http://www.weber.edu/wsuimages/brand/logos/wsu/wsu_horiz1_reverse.png" alt="wsu logo"></a>
+          <a href="http://weber.edu" class="navbar-brand"><img src="http://www.weber.edu/wsuimages/brand/logos/wsu/wsu_horiz1_reverse.png" alt="wsu logo"></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://weber.edu">WSU</a></li>
+            <li><a href="#">Faculty</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = 'committee/home'" value="Committee Home">Committee</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = 'admin/home'" value="Admin Home">Admin</a></li>
      		 <li><a href="http://weber.edu/rspg">RSPG</a></li>
           </ul>
         </div>
