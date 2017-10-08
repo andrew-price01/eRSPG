@@ -72,8 +72,7 @@
 
 		<div class="button-row">
 			<!-- Placeholder to help align buttons -->
-			<button type="button" class="btn my-btn pull-left" style="visibility: hidden;">Null</button>
-			
+			<button type="submit" class="btn my-btn pull-left" onclick='setNextPage("proposal/detail", "<s:url value="/" />")'>Previous</button>
 			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/department", "<s:url value="/" />")'>Save</button>
 			<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'>Next</button>
 		</div>

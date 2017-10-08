@@ -59,7 +59,7 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	private ProposalDAO proposalDao;
+	ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
@@ -87,7 +87,22 @@ public class ProposalController {
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
 	}
-	
+
+	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
+	public String proposalList(
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+            Model model) {
+		if (userId == null) {
+			userId = "";
+		}
+		List<Proposal> proposals = userId.isEmpty() ?
+                proposalDao.findAllProposals() :
+                proposalDao.findProposalByUserId(userId);
+
+		model.addAttribute("proposalList", proposals);
+        return "proposalList";
+	}
+
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
@@ -116,7 +131,7 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 		model.addAttribute("userForm", userForm);
 
-		return "redirect:/proposal/department";
+		return "redirect:/proposal/detail";
 	}
 
 	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
