@@ -12,10 +12,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Faculty</a></li>
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = 'committee/home'" value="Committee Home">Committee</a></li>
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = 'admin/home'" value="Admin Home">Admin</a></li>
-     		 <li><a href="http://weber.edu/rspg">RSPG</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/home'" value="Faculty">Faculty View</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/committee/home'" value="Committee">Committee View</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/admin/home'" value="Admin">Chairman View</a></li>
+     		 <li><a href="http://weber.edu/RSPG">RSPG</a></li>
           </ul>
         </div>
       </div>

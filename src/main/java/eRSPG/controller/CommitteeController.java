@@ -1,16 +1,13 @@
 package eRSPG.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @Controller
-public class HomeController {
+public class CommitteeController {
 
-	@RequestMapping("/home")
-	public String home() {
-		return "home";
-	}
-
+    @RequestMapping("committee/home")
+    public String committeeHome(){
+        return "committeeHome";
+    }
 }

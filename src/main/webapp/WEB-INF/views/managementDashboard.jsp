@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
-  Date: 10/4/2017
-  Time: 6:16 PM
+  Date: 10/7/2017
+  Time: 5:21 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -18,7 +18,6 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/sidbar.css"/>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
@@ -27,24 +26,11 @@
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
 
+<div class="container">
+    <legend><h2 style="text-align:center;">Management Dashboard</h2></legend>
 
-<div class="wrapper">
-
-    <nav id="sidebar">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header">
-            <h3>Admin Dashboard</h3>
-        </div>
-
-        <!-- Sidebar Links -->
-        <ul class="list-unstyled components">
-            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/home'" value="Committee">Home</a></li>
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/committee/home'" value="Committee">Committee</a></li>
-            <li><a href="#">Proposals</a></li>
-            <li><a href="#">Make Announcement</a></li>
-        </ul>
-    </nav>
-
+    <div style="text-align: center;">
+    </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/footer.jsp"/>
