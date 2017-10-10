@@ -18,7 +18,7 @@
 			<td>yongzhang@weber.edu</td>
 			<td>EAST</td>
 			<td>
-				<button class="btn my-btn">Remove</button>
+				<button class="btn my-btn" onclick="removeButtonPressed(this)">Remove</button>
 			</td>
 		</tr>
 		<tr>
@@ -26,7 +26,7 @@
 			<td>rienekeholman@weber.edu</td>
 			<td>HP</td>
 			<td>
-				<button class="btn my-btn">Remove</button>
+				<button class="btn my-btn" onclick="removeButtonPressed(this)">Remove</button>
 			</td>
 		</tr>
 	</table>
@@ -41,6 +41,10 @@
 <script>
 
 	var editRow = 0;
+
+	function removeButtonPressed(b) {
+	    $(b).closest('tr').remove();
+	}
 
 	function newButtonPressed() {
        $("#newButton").hide();
@@ -60,7 +64,7 @@
 	    cells[0].innerHTML = $("#nameInput").val();
 	    cells[1].innerHTML = $("#emailInput").val();
 	    cells[2].innerHTML = $("#departmentInput").val();
-	    cells[3].innerHTML = "<button class=\"btn my-btn\">Remove</button>";
+	    cells[3].innerHTML = "<button class=\"btn my-btn\" onclick=\"removeButtonPressed(this)\">Remove</button>";
 	    editRow = 0;
 	    $("#newButton").show();
     }
