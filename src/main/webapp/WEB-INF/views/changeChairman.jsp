@@ -22,7 +22,7 @@
 		</div>
 		<div class="form-group">
 			<button class="btn my-btn">Submit</button>
-			<button class="btn my-btn" onclick="window.location.href = '/erspg/chairman/userManagement'">Back</button>
+			<button class="btn my-btn" onclick="window.history.back()">Back</button>
 		</div>
 	</form>
 </div>
