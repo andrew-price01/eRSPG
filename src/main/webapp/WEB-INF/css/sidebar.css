@@ -1,3 +1,15 @@
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    background: rgb(73, 35,101);
+    color: #fff;
+    transition: all 0.3s;
+}
 
 a, a:hover, a:focus {
     color: inherit;
@@ -5,20 +17,9 @@ a, a:hover, a:focus {
     transition: all 0.3s;
 }
 
-#sidebar {
-    min-width: 250px;
-    max-width: 250px;
-    /*min-height: 100vh;*/
-    position:absolute;
-    background: rgb(73, 35,101);
-    color: #fff;
-    transition: all 0.3s;
-}
-
 #sidebar .sidebar-header {
-    padding: 20px;
+    padding: 10px;
     background: rgb(73, 35,101);
-    height:100%;
 }
 
 #sidebar ul.components {
@@ -28,7 +29,7 @@ a, a:hover, a:focus {
 
 #sidebar ul p {
     color: #fff;
-    padding: 20px;
+    padding: 10px;
 }
 
 #sidebar ul li a {
@@ -50,5 +51,6 @@ a, a:hover, a:focus {
 #wrapper {
     display: flex;
     align-items: stretch;
-    height:100%;
+    height: 100%;
+    position: relative;
 }

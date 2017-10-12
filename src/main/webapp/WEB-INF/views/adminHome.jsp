@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/sidbar.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/sidebar.css"/>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
@@ -30,18 +30,18 @@
 
 <div class="wrapper">
 
-    <nav id="sidebar">
+    <nav id="sidebar" class="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <h3>Admin Dashboard</h3>
+            <h3>Chairman Dashboard</h3>
         </div>
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled components">
-            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/home'" value="Committee">Home</a></li>
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/committee/home'" value="Committee">Committee</a></li>
-            <li><a href="#">Proposals</a></li>
-            <li><a href="#">Make Announcement</a></li>
+            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/admin/home'" value="Admin">Home</a></li>
+            <li><a class="btn my-btn" type="button"  href="#">Manage Committee</a></li>
+            <li><a class="btn my-btn" type="button" href="#">Proposals</a></li>
+            <li><a class="btn my-btn" type="button" href="#">Make Announcement</a></li>
         </ul>
     </nav>
 
