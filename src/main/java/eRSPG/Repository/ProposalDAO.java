@@ -14,4 +14,6 @@ public interface ProposalDAO {
 
 	void deleteProposal(Proposal p);
 
+	List<Proposal> findProposalByUserId(String userId);
+
 }

@@ -1,32 +1,14 @@
 package eRSPG.model.form;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
-import eRSPG.model.Proposal;
 
 public class DetailForm {
 
-	
-	//@Autowired
-	/*private Proposal proposal;
-	
-	public Proposal getProposal() {
-		return proposal;
-	}
-	public void setProposal(Proposal proposal) {
-		this.proposal = proposal;
-	}
-	*/
 	@NotEmpty(message="Please enter a proposal title")
 	private String proposalTitle;
 	
 	@NotEmpty(message="Please enter a proposal email")
 	private String proposalEmail;
-	//TODO: add to Form private int proposalYear;
-	//TODO: add to Form private int semesterID;
-	
 	private String proposalMailCode;
 	private String proposalExtension;
 	

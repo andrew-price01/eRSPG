@@ -1,5 +1,6 @@
 package eRSPG.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -36,6 +37,12 @@ public class ProposalImpl implements ProposalDAO {
 	public Proposal findProposal(int pid){
 		Proposal p = sessionFactory.getCurrentSession().get(Proposal.class, pid);
 		return p;
+	}
+
+	@Transactional
+		public List<Proposal> findProposalByUserId(String userId) {
+		//todo: add new table? are these created by user?
+		return Collections.EMPTY_LIST;
 	}
 	
 	@Transactional
