@@ -13,14 +13,14 @@ public class ChairmanController {
 
 		String contentPage = "userManagement.jsp";
 		model.addAttribute("contentPage",contentPage);
-		return "projectIndex";
+		return "userManagement";
 	}
 
 	@RequestMapping("/chairman/changeChairman")
 	public String changeChairman(Model model) {
 		String contentPage = "changeChairman.jsp";
 		model.addAttribute("contentPage",contentPage);
-		return "projectIndex";
+		return "changeChairman";
 	}
 }
 
