@@ -25,6 +25,7 @@
 	<div style="text-align: center;">
 		<input class="btn my-btn" onclick="window.location.href = 'proposal/proposals'" style= "margin-right:15px" type="button" value="View Proposals"/>
 		<input class="btn my-btn" type="button"  onclick="window.location.href = 'proposal/index'" value="Submit Proposal" />
+        <input class="btn my-btn" type="button"  onclick="window.location.href = 'security/test'" value="Test Security" />
 	</div>
 </div>
 

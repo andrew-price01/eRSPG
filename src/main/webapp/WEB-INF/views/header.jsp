@@ -1,5 +1,6 @@
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
- <nav class="navbar navbar-custom">
+<nav class="navbar navbar-custom">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,7 +14,8 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://weber.edu">WSU</a></li>
-     		 <li><a href="http://weber.edu/rspg">RSPG</a></li>
+     		<li><a href="http://weber.edu/rspg">RSPG</a></li>
+            <li><a href="<s:url value="/logout" />">Logout</a></li>
           </ul>
         </div>
       </div>
