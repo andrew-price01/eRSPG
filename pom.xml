@@ -130,15 +130,15 @@
 		</dependency>
         
         <dependency>
-    		<groupId>org.apache.commons</groupId>
-    		<artifactId>commons-dbcp2</artifactId>
-    		<version>${apache-commons.version}</version>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-dbcp2</artifactId>
+    			<version>${apache-commons.version}</version>
 		</dependency>
 		
 		<dependency>
-    		<groupId>mysql</groupId>
-    		<artifactId>mysql-connector-java</artifactId>
-    		<version>${mysql-version.connector}</version>
+    			<groupId>mysql</groupId>
+    			<artifactId>mysql-connector-java</artifactId>
+    			<version>${mysql-version.connector}</version>
 		</dependency>
 
 		<dependency>
@@ -168,6 +168,18 @@
 			<artifactId>mockito-core</artifactId>
 			<version>2.10.0</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+    			<groupId>javax.mail</groupId>
+    			<artifactId>mail</artifactId>
+    			<version>1.4</version>
+		</dependency>
+		
+		<dependency>
+    			<groupId>javax.activation</groupId>
+    			<artifactId>activation</artifactId>
+    			<version>1.1.1</version>
 		</dependency>
 
 	</dependencies>

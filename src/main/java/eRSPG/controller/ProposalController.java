@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import eRSPG.Email.EmailEvent;
 import eRSPG.Repository.DepartmentDAO;
 import eRSPG.Repository.EssayAnswerDAO;
 import eRSPG.Repository.FileUploadDAO;
@@ -91,7 +93,7 @@ public class ProposalController {
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
-		
+
 		
 		DepartmentForm deptForm = new DepartmentForm();
 		DetailForm detailForm = new DetailForm();
@@ -411,8 +413,8 @@ public class ProposalController {
                 uploadForm.setBytes(bytes);
 
                 //return "redirect:/proposal/review";
-                //return "redirect:/proposal/submit";
-        		return "redirect:/" + nextPage;
+                return "redirect:/proposal/submit";
+        		//return "redirect:/" + nextPage;
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");
@@ -450,9 +452,11 @@ public class ProposalController {
 						@ModelAttribute("userForm") UserForm userForm,
 						@ModelAttribute("uploadForm") UploadForm uploadForm)
 	{
-		
+
 		processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
 							, userForm, uploadForm);
+		
+
 		return "Successfully Submitted";
 		
 		
@@ -467,6 +471,8 @@ public class ProposalController {
 					UserForm userForm,
 					UploadForm uploadForm)
 	{
+		
+
 	
 		LocalDateTime time = LocalDateTime.now();
 		
@@ -568,7 +574,13 @@ public class ProposalController {
 			e.printStackTrace();
 		}
 		
-		
+		EmailEvent emailEvent = new EmailEvent();
+		try {
+			emailEvent.sendEmail(detailForm, bodyForm, file);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//TODO: clear session form data
 		
