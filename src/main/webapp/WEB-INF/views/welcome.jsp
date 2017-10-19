@@ -20,7 +20,7 @@
 <jsp:include page="/WEB-INF/views/header_noLogin.jsp"/>
 
 <div class="container">
-    <legend><h2 style="text-align:center;">eRSPG Wlecome</h2></legend>
+    <legend><h2 style="text-align:center;">Welcome To eRSPG</h2></legend>
 
     <div style="text-align: center;">
         <p>Please Login</p>

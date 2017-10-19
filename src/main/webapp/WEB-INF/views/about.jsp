@@ -23,7 +23,7 @@
     <legend><h2 style="text-align:center;">About eRSPG</h2></legend>
 
     <div style="text-align: center;">
-        <p>eRSPG is a web application for the submission and management of online research and grant requests.</p>
+        <p>eRSPG is a web application for the submission and management of online research, scholarship, and grant requests for Weber State faculty.</p>
     </div>
 </div>
 
