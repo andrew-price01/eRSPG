@@ -23,7 +23,7 @@
 	<legend><h2 style="text-align:center;">eRSPG Home</h2></legend>
 	
 	<div style="text-align: center;">
-		<input class="btn my-btn" onclick="window.location.href = 'proposal/'" style= "margin-right:15px" type="button" value="View Proposals"/>
+		<input class="btn my-btn" onclick="window.location.href = 'proposal/list'" style= "margin-right:15px" type="button" value="View Proposals"/>
 		<input class="btn my-btn" type="button"  onclick="window.location.href = 'proposal/index'" value="Submit Proposal" />
 	</div>
 </div>

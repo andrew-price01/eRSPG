@@ -1,53 +1,23 @@
 package eRSPG.controller;
 
-import java.io.BufferedOutputStream;
+import eRSPG.Repository.*;
+import eRSPG.model.*;
+import eRSPG.model.form.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
-
-import eRSPG.Repository.DepartmentDAO;
-import eRSPG.Repository.EssayAnswerDAO;
-import eRSPG.Repository.FileUploadDAO;
-import eRSPG.Repository.FundDAO;
-import eRSPG.Repository.ProposalDAO;
-import eRSPG.Repository.RequestAwardDAO;
-import eRSPG.Repository.SemesterDAO;
-import eRSPG.Repository.UserDAO;
-import eRSPG.model.Department;
-import eRSPG.model.EssayAnswer;
-import eRSPG.model.Fund;
-import eRSPG.model.Proposal;
-import eRSPG.model.RequestAward;
-import eRSPG.model.Semester;
-import eRSPG.model.UploadFile;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
-import eRSPG.model.form.BodyQuestionsForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DepartmentForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.UserForm;
 
 @Controller
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
@@ -59,7 +29,7 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	ProposalDAO proposalDao;
+	private ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
@@ -88,18 +58,24 @@ public class ProposalController {
 		return nextPage;
 	}
 
+
 	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
-	public String proposalList(
-	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
-            Model model) {
+	public @ResponseBody List<Proposal> proposalListByUserId(
+			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
 		if (userId == null) {
 			userId = "";
 		}
-		List<Proposal> proposals = userId.isEmpty() ?
-                proposalDao.findAllProposals() :
-                proposalDao.findProposalByUserId(userId);
+		return userId.isEmpty() ?
+				proposalDao.findAllProposals() :
+				proposalDao.findProposalByUserId(userId);
+	}
 
-		model.addAttribute("proposalList", proposals);
+	@RequestMapping(value = "/proposal/list", method = RequestMethod.GET)
+	public String proposalList(
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+            Model model) {
+
+		model.addAttribute("proposalList", proposalListByUserId(userId));
         return "proposalList";
 	}
 

@@ -1,15 +1,14 @@
 package eRSPG.Repository;
 
-import java.util.Collections;
-import java.util.List;
-
+import eRSPG.model.Proposal;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import eRSPG.model.Proposal;
+import java.util.List;
 
 @Repository
 public class ProposalImpl implements ProposalDAO {
@@ -40,9 +39,12 @@ public class ProposalImpl implements ProposalDAO {
 	}
 
 	@Transactional
-		public List<Proposal> findProposalByUserId(String userId) {
-		//todo: add new table? are these created by user?
-		return Collections.EMPTY_LIST;
+	public List<Proposal> findProposalByUserId(String userId) {
+
+	return (List<Proposal>) sessionFactory.getCurrentSession()
+			.createCriteria(Proposal.class)
+			.add(Restrictions.eq("userId",userId))
+			.list();
 	}
 	
 	@Transactional
