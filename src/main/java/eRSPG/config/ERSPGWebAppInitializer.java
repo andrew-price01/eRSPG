@@ -2,7 +2,7 @@ package eRSPG.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
+public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
 
     @Override
     protected String[] getServletMappings()
