@@ -43,6 +43,9 @@
 	var editRow = 0;
 
 	function removeButtonPressed(b) {
+	    var name = $(b).closest('tr').find('td:first').text();
+	    var c = confirm("Are you sure you want to remove " + name + " from the committee?");
+	    if (!c) return;
 	    $(b).closest('tr').remove();
 	}
 
