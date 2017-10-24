@@ -64,6 +64,9 @@ public class Proposal implements Serializable {
 	@Column(name="proposalParticipants")
 	private String proposalParticipants;
 
+	@Column(name="userID")
+	private Integer userId;
+
 	public Proposal() {
 		
 	}
@@ -203,5 +206,13 @@ public class Proposal implements Serializable {
 		this.proposalParticipants = proposalParticipants;
 	}
 
+	@JsonProperty("userId")
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }
 

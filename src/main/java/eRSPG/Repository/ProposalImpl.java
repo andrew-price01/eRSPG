@@ -38,13 +38,13 @@ public class ProposalImpl implements ProposalDAO {
 		return p;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Proposal> findProposalByUserId(String userId) {
-
-	return (List<Proposal>) sessionFactory.getCurrentSession()
-			.createCriteria(Proposal.class)
-			.add(Restrictions.eq("userId",userId))
-			.list();
+	public List<Proposal> findProposalByUserId(Integer userId) {
+		return (List<Proposal>) sessionFactory.getCurrentSession()
+				.createCriteria(Proposal.class)
+				.add(Restrictions.eq("userId",userId))
+				.list();
 	}
 	
 	@Transactional

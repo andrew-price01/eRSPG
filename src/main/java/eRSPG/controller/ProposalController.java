@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
@@ -60,14 +61,16 @@ public class ProposalController {
 
 
 	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
-	public @ResponseBody List<Proposal> proposalListByUserId(
+	public @ResponseBody List<ProposalDTO> proposalListByUserId(
 			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
-		if (userId == null) {
-			userId = "";
-		}
-		return userId.isEmpty() ?
+		Integer id = userId.equals("") ? null : Integer.parseInt(userId);
+		List<Proposal> proposals = id == null ?
 				proposalDao.findAllProposals() :
-				proposalDao.findProposalByUserId(userId);
+				proposalDao.findProposalByUserId(id);
+
+		return proposals.stream()
+				.map(p -> new ProposalDTO(p,departmentDAO.findDepartment(p.getDepartmentId())))
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(value = "/proposal/list", method = RequestMethod.GET)
