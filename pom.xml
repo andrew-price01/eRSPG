@@ -30,6 +30,9 @@
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-codec.version>1.10</commons-codec.version>
 		<javax.inject.version>1</javax.inject.version>
+        <spring-data-commons.version>1.1.0.RELEASE</spring-data-commons.version>
+        <spring-data-jpa.version>2.0.0.RELEASE</spring-data-jpa.version>
+        <joda-time.version>2.9.9</joda-time.version>
 	</properties>
 
 
@@ -103,6 +106,21 @@
             <scope>provided</scope>
             <version>${spring-boot.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons-core</artifactId>
+            <version>${spring-data-commons.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-jpa.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -189,14 +207,14 @@
 			<version>${java.cas.client.version}</version>
 		</dependency>
 
-		<!-- CAS integration for tomcat v 8.5 -->
+		 <!--CAS integration for tomcat v 8.5-->
 		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-integration-tomcat-v85</artifactId>
 			<version>${java.cas.client.version}</version>
 		</dependency>
 
-		<!-- CAS Support for SAML functionality -->
+		 <!--CAS Support for SAML functionality-->
 		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-support-saml</artifactId>
@@ -226,6 +244,13 @@
 			<artifactId>javax.inject</artifactId>
 			<version>${javax.inject.version}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
+
 
 	</dependencies>
 	<build>

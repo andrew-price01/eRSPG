@@ -14,7 +14,7 @@
                 <li><a href="/welcome">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/contact">Contact</a></li>
-                <li><a href="/home">Login</a></li>
+                <li><a href="/eRSPG/home">Login</a></li>
             </ul>
         </div>
     </div>

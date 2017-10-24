@@ -2,7 +2,13 @@ package eRSPG.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.jasig.cas.client.authentication.AuthenticationFilter;
+import org.jasig.cas.client.session.SingleSignOutFilter;
+import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
+import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
+import org.jasig.cas.client.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -30,6 +36,7 @@ import eRSPG.model.UploadFile;
 import eRSPG.model.User;
 import eRSPG.model.UserRole;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Properties;
@@ -139,5 +146,143 @@ public class DataConfig {
     @Autowired
     @Bean(name= "userDAO")
     public UserDAO getUserDao(SessionFactory sessionFactory){ return new UserImpl(sessionFactory); }
+
+
+
+    private static final String CAS_URL_LOGIN = "https://casdev.weber.edu/login";
+    private static final String CAS_URL_LOGOUT = "https://casdev.weber.edu/logout";
+    private static final String CAS_URL_PREFIX = "ttps://casdev.weber.edu";
+    private static final String CAS_SERVICE_URL = "https://cas.weber.edu/p3/serviceValidate";
+    private static final String APP_SERVER = "https://localhost:8080";
+
+
+    @Bean
+    public FilterRegistrationBean CasAuthenticationFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(delegatingFilterProxy());
+        registration.addUrlPatterns("/eRSPG/**");
+        registration.setName("CAS Authentication Filter");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean CasValidationFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(cas20ProxyReceivingTicketValidationFilter());
+        registration.addUrlPatterns("/eRSPG/**");
+        registration.setName("CAS Validation Filter");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean CasHttpServletRequestWrapperFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(httpServletRequestWrapperFilter());
+        registration.addUrlPatterns("/eRSPG/**");
+        registration.setName("CAS HttpServletRequest Wrapper Filter");
+        return registration;
+    }
+//
+//    @Bean
+//    public FilterRegistrationBean CasSingleSignOutFilterRegistration() {
+//        FilterRegistrationBean registration = new FilterRegistrationBean();
+//        registration.setFilter(singleSignOutFilter());
+//        registration.addUrlPatterns("/eRSPG/**");
+//        registration.setName("CAS SingleSignOut Filter");
+//        return registration;
+//    }
+//
+//    @Bean
+//    public SingleSignOutFilter singleSignOutFilter(){
+//        SingleSignOutFilter mSingleSignOutFilter = new SingleSignOutFilter();
+//        mSingleSignOutFilter.setCasServerUrlPrefix(CAS_URL_PREFIX);
+//        return mSingleSignOutFilter;
+//    }
+//
+//    @Bean
+//    public SingleSignOutHttpSessionListener singleSignOutHttpSessionListener(){
+//        return new SingleSignOutHttpSessionListener();
+//    }
+
+    @Bean
+    public DelegatingFilterProxy delegatingFilterProxy() {
+        DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
+        mDelegatingFilterProxy.setTargetBeanName("authenticationFilter");
+        return mDelegatingFilterProxy;
+    }
+
+
+    @Bean
+    public AuthenticationFilter authenticationFilter(){
+        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
+        mAuthenticationFilter.setCasServerLoginUrl(CAS_URL_LOGIN);
+        mAuthenticationFilter.setRenew(false);
+        mAuthenticationFilter.setGateway(false);
+        mAuthenticationFilter.setServerName(APP_SERVER);
+        mAuthenticationFilter.setService(CAS_SERVICE_URL);
+        return mAuthenticationFilter;
+    }
+
+    @Bean
+    public HttpServletRequestWrapperFilter httpServletRequestWrapperFilter(){
+        return new HttpServletRequestWrapperFilter();
+    }
+
+//    @Bean
+//    public Cas10TicketValidationFilter cas10TicketValidationFilter(){
+//        Cas10TicketValidationFilter mCas10TicketValidationFilter = new Cas10TicketValidationFilter();
+//        mCas10TicketValidationFilter.setService(CAS_SERVICE_URL);
+//        mCas10TicketValidationFilter.setTicketValidator(cas10TicketValidator());
+//        return mCas10TicketValidationFilter;
+//    }
+//
+//    @Bean
+//    public Cas10TicketValidator cas10TicketValidator(){
+//        return  new Cas10TicketValidator(CAS_URL_PREFIX);
+//    }
+
+//    @Bean
+//    public Saml11TicketValidationFilter saml11TicketValidationFilter(){
+//        Saml11TicketValidationFilter mSaml11TicketValidationFilter = new Saml11TicketValidationFilter();
+//        mSaml11TicketValidationFilter.setService(CAS_SERVICE_URL);
+//        mSaml11TicketValidationFilter.setTicketValidator(saml11TicketValidator());
+//        return mSaml11TicketValidationFilter;
+//    }
+//
+//    @Bean
+//    public Saml11TicketValidator saml11TicketValidator(){
+//        return  new Saml11TicketValidator(CAS_URL_PREFIX);
+//    }
+
+    @Bean
+    public Cas20ProxyReceivingTicketValidationFilter cas20ProxyReceivingTicketValidationFilter(){
+        Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
+        mCas20ProxyReceivingTicketValidationFilter.setServerName(APP_SERVER);
+        mCas20ProxyReceivingTicketValidationFilter.setService(CAS_SERVICE_URL);
+        mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
+        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
+        return mCas20ProxyReceivingTicketValidationFilter;
+    }
+
+    @Bean
+    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
+        return new Cas20ProxyTicketValidator(CAS_URL_PREFIX);
+    }
+
+//    @Bean
+//    public Cas30ProxyReceivingTicketValidationFilter cas30ProxyReceivingTicketValidationFilter(){
+//        Cas30ProxyReceivingTicketValidationFilter mCas30ProxyReceivingTicketValidationFilter = new Cas30ProxyReceivingTicketValidationFilter();
+//        mCas30ProxyReceivingTicketValidationFilter.setServerName(APP_SERVER);
+//        //mCas30ProxyReceivingTicketValidationFilter.setService(CAS_SERVICE_URL);
+//        mCas30ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
+//        mCas30ProxyReceivingTicketValidationFilter.setUseSession(true);
+//        mCas30ProxyReceivingTicketValidationFilter.setTicketValidator(cas30ProxyTicketValidator());
+//        return mCas30ProxyReceivingTicketValidationFilter;
+//    }
+//
+//    @Bean
+//    public Cas30ProxyTicketValidator cas30ProxyTicketValidator(){
+//        return new Cas30ProxyTicketValidator(CAS_URL_PREFIX);
+//    }
 
 }
