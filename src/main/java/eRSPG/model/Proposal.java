@@ -71,6 +71,24 @@ public class Proposal implements Serializable {
 		
 	}
 
+	public Proposal(String proposalTitle, int semesterId, int proposalYear, int projectTypeId, LocalDateTime submissionDate, String projectDirector, int departmentId, String proposalEmail, String proposalMailCode, String proposalExtension, boolean proposalReqStdAsst, boolean proposalComplete, LocalDateTime updatedDate, String proposalParticipants, Integer userId) {
+		this.proposalTitle = proposalTitle;
+		this.semesterId = semesterId;
+		this.proposalYear = proposalYear;
+		this.projectTypeId = projectTypeId;
+		this.submissionDate = submissionDate;
+		this.projectDirector = projectDirector;
+		this.departmentId = departmentId;
+		this.proposalEmail = proposalEmail;
+		this.proposalMailCode = proposalMailCode;
+		this.proposalExtension = proposalExtension;
+		this.proposalReqStdAsst = proposalReqStdAsst;
+		this.proposalComplete = proposalComplete;
+		this.updatedDate = updatedDate;
+		this.proposalParticipants = proposalParticipants;
+		this.userId = userId;
+	}
+
 	@JsonProperty("id")
 	public int getProposalId() {
 		return proposalId;

@@ -30,13 +30,13 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	private ProposalDAO proposalDao;
+	protected ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
 	
 	@Autowired
-	private DepartmentDAO departmentDAO;
+	protected DepartmentDAO departmentDAO;
 	
 	@Autowired
 	private SemesterDAO semesterDAO;
@@ -63,7 +63,7 @@ public class ProposalController {
 	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
 			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
-		Integer id = userId.equals("") ? null : Integer.parseInt(userId);
+		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
 		List<Proposal> proposals = id == null ?
 				proposalDao.findAllProposals() :
 				proposalDao.findProposalByUserId(id);
