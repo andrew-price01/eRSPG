@@ -149,84 +149,6 @@ public class DataConfig {
 
 
 
-    private static final String CAS_URL_LOGIN = "https://casdev.weber.edu/login";
-    private static final String CAS_URL_LOGOUT = "https://casdev.weber.edu/logout";
-    private static final String CAS_URL_PREFIX = "ttps://casdev.weber.edu";
-    private static final String CAS_SERVICE_URL = "https://cas.weber.edu/p3/serviceValidate";
-    private static final String APP_SERVER = "https://localhost:8080";
-
-
-    @Bean
-    public FilterRegistrationBean CasAuthenticationFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(delegatingFilterProxy());
-        registration.addUrlPatterns("/eRSPG/**");
-        registration.setName("CAS Authentication Filter");
-        return registration;
-    }
-
-    @Bean
-    public FilterRegistrationBean CasValidationFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(cas20ProxyReceivingTicketValidationFilter());
-        registration.addUrlPatterns("/eRSPG/**");
-        registration.setName("CAS Validation Filter");
-        return registration;
-    }
-
-    @Bean
-    public FilterRegistrationBean CasHttpServletRequestWrapperFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(httpServletRequestWrapperFilter());
-        registration.addUrlPatterns("/eRSPG/**");
-        registration.setName("CAS HttpServletRequest Wrapper Filter");
-        return registration;
-    }
-//
-//    @Bean
-//    public FilterRegistrationBean CasSingleSignOutFilterRegistration() {
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(singleSignOutFilter());
-//        registration.addUrlPatterns("/eRSPG/**");
-//        registration.setName("CAS SingleSignOut Filter");
-//        return registration;
-//    }
-//
-//    @Bean
-//    public SingleSignOutFilter singleSignOutFilter(){
-//        SingleSignOutFilter mSingleSignOutFilter = new SingleSignOutFilter();
-//        mSingleSignOutFilter.setCasServerUrlPrefix(CAS_URL_PREFIX);
-//        return mSingleSignOutFilter;
-//    }
-//
-//    @Bean
-//    public SingleSignOutHttpSessionListener singleSignOutHttpSessionListener(){
-//        return new SingleSignOutHttpSessionListener();
-//    }
-
-    @Bean
-    public DelegatingFilterProxy delegatingFilterProxy() {
-        DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
-        mDelegatingFilterProxy.setTargetBeanName("authenticationFilter");
-        return mDelegatingFilterProxy;
-    }
-
-
-    @Bean
-    public AuthenticationFilter authenticationFilter(){
-        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
-        mAuthenticationFilter.setCasServerLoginUrl(CAS_URL_LOGIN);
-        mAuthenticationFilter.setRenew(false);
-        mAuthenticationFilter.setGateway(false);
-        mAuthenticationFilter.setServerName(APP_SERVER);
-        mAuthenticationFilter.setService(CAS_SERVICE_URL);
-        return mAuthenticationFilter;
-    }
-
-    @Bean
-    public HttpServletRequestWrapperFilter httpServletRequestWrapperFilter(){
-        return new HttpServletRequestWrapperFilter();
-    }
 
 //    @Bean
 //    public Cas10TicketValidationFilter cas10TicketValidationFilter(){
@@ -254,11 +176,24 @@ public class DataConfig {
 //        return  new Saml11TicketValidator(CAS_URL_PREFIX);
 //    }
 
+
+    @Bean
+    public AuthenticationFilter authenticationFilter(){
+        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
+        mAuthenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
+        mAuthenticationFilter.setRenew(false);
+        mAuthenticationFilter.setGateway(false);
+        mAuthenticationFilter.setServerName(Constants.APP_SERVER);
+        mAuthenticationFilter.setService(Constants.CAS_SERVICE_URL);
+        return mAuthenticationFilter;
+    }
+
     @Bean
     public Cas20ProxyReceivingTicketValidationFilter cas20ProxyReceivingTicketValidationFilter(){
         Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        mCas20ProxyReceivingTicketValidationFilter.setServerName(APP_SERVER);
-        mCas20ProxyReceivingTicketValidationFilter.setService(CAS_SERVICE_URL);
+        mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
+        mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
+        mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
         mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
         mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
         return mCas20ProxyReceivingTicketValidationFilter;
@@ -266,7 +201,7 @@ public class DataConfig {
 
     @Bean
     public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
-        return new Cas20ProxyTicketValidator(CAS_URL_PREFIX);
+        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
     }
 
 //    @Bean
