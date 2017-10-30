@@ -25,12 +25,12 @@ public class ProposalDTO {
     private Integer proposalYear;
     @JsonProperty(value = "isComplete")
     private Boolean isComplete;
-    @JsonProperty("userId")
-    private Integer userId;
+    @JsonProperty("user")
+    private String user;
 
     public ProposalDTO() {}
 
-    public ProposalDTO(Proposal proposal, Department department) {
+    public ProposalDTO(Proposal proposal, Department department, User user) {
         this.proposalId = proposal.getProposalId();
         this.proposalName = proposal.getProposalTitle();
         this.proposalSubmissionDate = proposal.getSubmissionDate();
@@ -38,7 +38,7 @@ public class ProposalDTO {
         this.departmentName = department.getDepartmentName();
         this.proposalYear = proposal.getProposalYear();
         this.isComplete = proposal.isProposalComplete();
-        this.userId = proposal.getUserId();
+        this.user = user.getFirstName() + ' ' + user.getLastName();
     }
 
     public Integer getProposalId() {
@@ -97,11 +97,11 @@ public class ProposalDTO {
         isComplete = complete;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserId() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(String user) {
+        this.user = user;
     }
 }

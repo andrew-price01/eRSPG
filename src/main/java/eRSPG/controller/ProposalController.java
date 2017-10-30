@@ -51,7 +51,7 @@ public class ProposalController {
 	private FileUploadDAO fileUploadDAO;
 
 	@Autowired
-	private UserDAO userDAO;
+	protected UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
@@ -69,7 +69,7 @@ public class ProposalController {
 				proposalDao.findProposalByUserId(id);
 
 		return proposals.stream()
-				.map(p -> new ProposalDTO(p,departmentDAO.findDepartment(p.getDepartmentId())))
+				.map(p -> new ProposalDTO(p,departmentDAO.findDepartment(p.getDepartmentId()), userDAO.findUserById(p.getUserId())))
 				.collect(Collectors.toList());
 	}
 
