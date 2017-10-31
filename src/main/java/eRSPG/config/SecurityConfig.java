@@ -38,12 +38,6 @@ import javax.inject.Inject;
 //@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    private static final String CAS_URL_LOGIN = "https://localhost:8443/cas/login";
-    private static final String CAS_URL_LOGOUT = "https://localhost:8443/cas/logout";
-    private static final String CAS_URL_PREFIX = "https://localhost:8443/cas";
-    private static final String CAS_SERVICE_URL = "https://localhost:8443/cas/p3/serviceValidate";
-    private static final String APP_SERVER = "https://localhost:8080";
-
 
 //
 //    @Inject

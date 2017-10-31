@@ -5,6 +5,8 @@ import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.jasig.cas.client.util.AssertionThreadLocalFilter;
 import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -37,16 +39,18 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
         return new Filter[] {};
     }
 
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
 
+        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
+        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+
         FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
         authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
 
-        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
-        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
     }
 
 
@@ -64,7 +68,7 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
 
     public DelegatingFilterProxy delegatingFilterProxyValidation() {
         DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
-        mDelegatingFilterProxy.setTargetBeanName("cas20ProxyReceivingTicketValidationFilter");
+        mDelegatingFilterProxy.setTargetBeanName("cas10TicketValidationFilter");
         return mDelegatingFilterProxy;
     }
 
