@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import eRSPG.util.LocalDateTimeDeserializer;
 import eRSPG.util.LocalDateTimeSerializer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ProposalDTO {
+public class ProposalDTO implements Serializable {
     @JsonProperty(value = "id")
     private Integer proposalId;
     @JsonProperty(value = "name")
@@ -23,8 +24,8 @@ public class ProposalDTO {
     private String departmentName;
     @JsonProperty(value = "year")
     private Integer proposalYear;
-    @JsonProperty(value = "isComplete")
-    private Boolean isComplete;
+    @JsonProperty(value = "status")
+    private Integer proposalStatus;
     @JsonProperty("user")
     private String user;
 
@@ -37,7 +38,7 @@ public class ProposalDTO {
         this.projectDirector = proposal.getProjectDirector();
         this.departmentName = department.getDepartmentName();
         this.proposalYear = proposal.getProposalYear();
-        this.isComplete = proposal.isProposalComplete();
+        this.proposalStatus = proposal.getProposalStatus();
         this.user = user.getFirstName() + ' ' + user.getLastName();
     }
 
@@ -89,12 +90,12 @@ public class ProposalDTO {
         this.proposalYear = proposalYear;
     }
 
-    public Boolean getComplete() {
-        return isComplete;
+    public Integer getProposalStatus() {
+        return proposalStatus;
     }
 
-    public void setComplete(Boolean complete) {
-        isComplete = complete;
+    public void setProposalStatus(Integer proposalStatus) {
+        this.proposalStatus = proposalStatus;
     }
 
     public String getUserId() {

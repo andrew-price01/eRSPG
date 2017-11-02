@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +53,16 @@ public class ProposalController {
 
 	@Autowired
 	protected UserDAO userDAO;
+
+	@Autowired
+	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
+	private static final String SUBMITTED_STATUS= "SUBMITTED";
+
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
 	}
-
 
 	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
@@ -80,6 +84,46 @@ public class ProposalController {
 
 		model.addAttribute("proposalList", proposalListByUserId(userId));
         return "proposalList";
+	}
+
+	@RequestMapping(value = "/proposalStatus", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalStatus> proposalStatusList(
+			@RequestParam(value = "name", defaultValue = "", required = false) String name) {
+
+		name = name == null ? "" : name.toUpperCase();
+
+		if (name.isEmpty()) {
+			List<ProposalStatus> statuses = proposalStatusDAO.findAllProposalStatuses();
+			return statuses;
+		} else {
+			ProposalStatus status = proposalStatusDAO.findProposalStatusByName(name);
+			return status == null ? Collections.EMPTY_LIST : Collections.singletonList(status);
+        }
+	}
+
+	@RequestMapping(value = "/proposal/{id}/status", method = RequestMethod.PUT)
+	public @ResponseBody Proposal updateProposalStatus(
+			@PathVariable String id,
+			@RequestBody String statusName) {
+
+		Integer proposalId = id == null ? null : Integer.parseInt(id);
+        statusName = statusName == null ? "" : statusName.toUpperCase();
+        ProposalStatus status = proposalStatusDAO.findProposalStatusByName(statusName);
+
+        Proposal proposal;
+        if (proposalId != null) {
+             proposal = proposalDao.findProposal(proposalId);
+        } else {
+            return null;
+        }
+
+		if (status != null && proposal != null) {
+			proposal.setProposalStatus(status.getProposalStatusId());
+			proposalDao.addNewOrUpdateProposal(proposal);
+			return proposal;
+		} else {
+			return null;
+		}
 	}
 
 	@RequestMapping("/proposal/start")
@@ -468,7 +512,7 @@ public class ProposalController {
 	    
 		Proposal proposal = new Proposal();
 		proposal.setProjectDirector(detailForm.getProjectDirector());
-		proposal.setProposalComplete(true);
+		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
 		proposal.setProposalMailCode(detailForm.getProposalMailCode());
 		proposal.setProposalExtension(detailForm.getProposalExtension());
 		proposal.setProposalEmail(detailForm.getProposalEmail());

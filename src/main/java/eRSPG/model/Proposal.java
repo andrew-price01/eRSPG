@@ -53,8 +53,8 @@ public class Proposal implements Serializable {
 	@Column(name="proposalReqStudentAssistance")
 	private boolean proposalReqStdAsst;
 	
-	@Column(name="proposalComplete")
-	private boolean proposalComplete;
+	@Column(name="proposalStatusID")
+	private Integer proposalStatus;
 	
 	@Column(name="updatedDate")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -71,7 +71,7 @@ public class Proposal implements Serializable {
 		
 	}
 
-	public Proposal(String proposalTitle, int semesterId, int proposalYear, int projectTypeId, LocalDateTime submissionDate, String projectDirector, int departmentId, String proposalEmail, String proposalMailCode, String proposalExtension, boolean proposalReqStdAsst, boolean proposalComplete, LocalDateTime updatedDate, String proposalParticipants, Integer userId) {
+	public Proposal(String proposalTitle, int semesterId, int proposalYear, int projectTypeId, LocalDateTime submissionDate, String projectDirector, int departmentId, String proposalEmail, String proposalMailCode, String proposalExtension, boolean proposalReqStdAsst, Integer proposalStatus, LocalDateTime updatedDate, String proposalParticipants, Integer userId) {
 		this.proposalTitle = proposalTitle;
 		this.semesterId = semesterId;
 		this.proposalYear = proposalYear;
@@ -83,7 +83,7 @@ public class Proposal implements Serializable {
 		this.proposalMailCode = proposalMailCode;
 		this.proposalExtension = proposalExtension;
 		this.proposalReqStdAsst = proposalReqStdAsst;
-		this.proposalComplete = proposalComplete;
+		this.proposalStatus = proposalStatus;
 		this.updatedDate = updatedDate;
 		this.proposalParticipants = proposalParticipants;
 		this.userId = userId;
@@ -197,13 +197,13 @@ public class Proposal implements Serializable {
 		this.proposalReqStdAsst = proposalReqStdAsst;
 	}
 
-	@JsonProperty("isComplete")
-	public boolean isProposalComplete() {
-		return proposalComplete;
+	@JsonProperty("status")
+	public Integer getProposalStatus() {
+		return proposalStatus;
 	}
 
-	public void setProposalComplete(boolean proposalComplete) {
-		this.proposalComplete = proposalComplete;
+	public void setProposalStatus(Integer proposalStatus) {
+		this.proposalStatus = proposalStatus;
 	}
 
 	@JsonProperty("updateDate")

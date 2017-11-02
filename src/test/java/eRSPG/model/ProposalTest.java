@@ -1,6 +1,5 @@
 package eRSPG.model;
 
-import org.junit.Ignore;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -127,11 +126,11 @@ public class ProposalTest {
     }
 
     @Test
-    public void testProposalComplete() throws Exception {
-        fixture.setProposalComplete(false);
+    public void testProposalStatus() throws Exception {
+        fixture.setProposalStatus(1);
 
         assertNotNull(fixture);
-        assertFalse(fixture.isProposalComplete());
+        assertNotNull(fixture.getProposalStatus());
     }
 
     @Test
