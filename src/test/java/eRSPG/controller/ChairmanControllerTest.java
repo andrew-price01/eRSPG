@@ -28,4 +28,13 @@ public class ChairmanControllerTest {
 		mockMvc.perform(get("/chairman/changeChairman")).andExpect(view().name("projectIndex"));
 	}
 
+	@Test
+	public void showCreateAnnouncement() throws Exception {
+		ChairmanController controller = new ChairmanController();
+		MockMvc mockMvc = standaloneSetup(controller)
+				.setSingleView(new InternalResourceView("/WEB-INF/views/createAnnouncement.jsp"))
+				.build();
+		mockMvc.perform(get("/chairman/createAnnouncement")).andExpect(view().name("projectIndex"));
+	}
+
 }
