@@ -73,7 +73,12 @@ public class ProposalController {
 				proposalDao.findProposalByUserId(id);
 
 		return proposals.stream()
-				.map(p -> new ProposalDTO(p,departmentDAO.findDepartment(p.getDepartmentId()), userDAO.findUserById(p.getUserId())))
+				.map(p -> new
+                    ProposalDTO(
+                        p,
+                        departmentDAO.findDepartment(p.getDepartmentId()),
+                        userDAO.findUserById(p.getUserId()),
+                        proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
 				.collect(Collectors.toList());
 	}
 

@@ -11,8 +11,7 @@ import org.testng.annotations.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,10 +39,13 @@ public class ProposalControllerTest {
         proposalDAOMock = mock(ProposalDAO.class);
         departmentDAOMock = mock(DepartmentDAO.class);
         userDAOMock = mock(UserDAO.class);
+        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
+        proposalController.proposalStatusDAO = proposalStatusDAOMock;
         proposalController.departmentDAO = departmentDAOMock;
         proposalController.proposalDao = proposalDAOMock;
         proposalController.userDAO = userDAOMock;
 
+        when(proposalStatusDAOMock.findProposalStatus(anyInt())).thenReturn(TEST_PROPOSAL_STATUS);
         when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
         when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
         when(proposalDAOMock.findAllProposals()).thenReturn(ImmutableList.of(TEST_PROPOSAL, TEST_PROPOSAL));
@@ -56,10 +58,13 @@ public class ProposalControllerTest {
         proposalDAOMock = mock(ProposalDAO.class);
         departmentDAOMock = mock(DepartmentDAO.class);
         userDAOMock = mock(UserDAO.class);
+        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
         proposalController.userDAO = userDAOMock;
         proposalController.departmentDAO = departmentDAOMock;
         proposalController.proposalDao = proposalDAOMock;
+        proposalController.proposalStatusDAO = proposalStatusDAOMock;
         when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
+        when(proposalStatusDAOMock.findProposalStatus(any())).thenReturn(TEST_PROPOSAL_STATUS);
         when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
         when(proposalDAOMock.findAllProposals()).thenReturn(ImmutableList.of(TEST_PROPOSAL, TEST_PROPOSAL));
         List<ProposalDTO> proposals = proposalController.proposalListByUserId(null);
@@ -70,10 +75,13 @@ public class ProposalControllerTest {
     public void list_proposal_user() {
         proposalDAOMock = mock(ProposalDAO.class);
         departmentDAOMock = mock(DepartmentDAO.class);
+        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
         proposalController.departmentDAO = departmentDAOMock;
         proposalController.proposalDao = proposalDAOMock;
+        proposalController.proposalStatusDAO = proposalStatusDAOMock;
         userDAOMock = mock(UserDAO.class);
         proposalController.userDAO = userDAOMock;
+        when(proposalStatusDAOMock.findProposalStatus(anyInt())).thenReturn(TEST_PROPOSAL_STATUS);
         when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
         when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
         when(proposalDAOMock.findProposalByUserId(TEST_USER_ID))

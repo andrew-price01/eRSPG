@@ -25,20 +25,20 @@ public class ProposalDTO implements Serializable {
     @JsonProperty(value = "year")
     private Integer proposalYear;
     @JsonProperty(value = "status")
-    private Integer proposalStatus;
+    private String proposalStatus;
     @JsonProperty("user")
     private String user;
 
     public ProposalDTO() {}
 
-    public ProposalDTO(Proposal proposal, Department department, User user) {
+    public ProposalDTO(Proposal proposal, Department department, User user, ProposalStatus status) {
         this.proposalId = proposal.getProposalId();
         this.proposalName = proposal.getProposalTitle();
         this.proposalSubmissionDate = proposal.getSubmissionDate();
         this.projectDirector = proposal.getProjectDirector();
         this.departmentName = department.getDepartmentName();
         this.proposalYear = proposal.getProposalYear();
-        this.proposalStatus = proposal.getProposalStatus();
+        this.proposalStatus = status.getProposalStatusDescription();
         this.user = user.getFirstName() + ' ' + user.getLastName();
     }
 
@@ -90,11 +90,11 @@ public class ProposalDTO implements Serializable {
         this.proposalYear = proposalYear;
     }
 
-    public Integer getProposalStatus() {
+    public String getProposalStatus() {
         return proposalStatus;
     }
 
-    public void setProposalStatus(Integer proposalStatus) {
+    public void setProposalStatus(String proposalStatus) {
         this.proposalStatus = proposalStatus;
     }
 
