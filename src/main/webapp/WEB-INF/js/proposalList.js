@@ -14,7 +14,7 @@ const tableBuilder = (proposalList) => {
                 <td data-label="Department">${p.department}</td>
                 <td data-label="Proposal Year">${p.year}</td>
                 <td data-label="Submission Date">${moment().format("MM/DD/YYY hh:mm A",p.submitDate)}</td>
-                <td data-label="Status">${p.isComplete}</td>
+                <td data-label="Status">${p.status}</td>
             </tr>
            `);
        });
