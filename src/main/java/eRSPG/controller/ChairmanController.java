@@ -10,7 +10,6 @@ public class ChairmanController {
 
 	@RequestMapping("/chairman/userManagement")
 	public String userManagement(Model model) {
-
 		String contentPage = "userManagement.jsp";
 		model.addAttribute("contentPage",contentPage);
 		return "projectIndex";
@@ -20,6 +19,13 @@ public class ChairmanController {
 	public String changeChairman(Model model) {
 		String contentPage = "changeChairman.jsp";
 		model.addAttribute("contentPage",contentPage);
+		return "projectIndex";
+	}
+
+	@RequestMapping("/chairman/createAnnouncement")
+	public String createAnnouncement(Model model) {
+		String contentPage = "createAnnouncement.jsp";
+		model.addAttribute("contentPage", contentPage);
 		return "projectIndex";
 	}
 }
