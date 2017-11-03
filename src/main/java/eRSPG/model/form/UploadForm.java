@@ -44,7 +44,8 @@ public class UploadForm {
 		return file;
 		
 	}
-	
+
+	// Not sure why this is using a list for a single file....
 	public List<UploadFile> generateUploadFiles()
 	{
 		List<UploadFile> uploadList = new ArrayList<>();

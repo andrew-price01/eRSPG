@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.validation.Valid;
 
@@ -116,7 +119,7 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 		model.addAttribute("userForm", userForm);
 
-		return "redirect:/proposal/department";
+		return "redirect:/eRSPG/proposal/department";
 	}
 
 	@RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.GET)
@@ -127,7 +130,7 @@ public class ProposalController {
 		return "projectIndex";
 	}
 
-	@RequestMapping(value="/proposal/index", method=RequestMethod.POST)
+	@RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.POST)
 	public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
@@ -137,7 +140,7 @@ public class ProposalController {
 		}
 
 		//return "redirect:/proposal/body";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 
 	@RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.GET)
@@ -157,7 +160,7 @@ public class ProposalController {
 		}
 
 		//return "redirect:/proposal/body";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 	
 	@RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
@@ -212,7 +215,7 @@ public class ProposalController {
 
 		//return "redirect:/proposal/detail";
 		//return "redirect:/proposal/awardType";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 	
 	
@@ -237,7 +240,7 @@ public class ProposalController {
 		}
 
 		//return "redirect:/proposal/awardType";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 	
 	@RequestMapping(value="/eRSPG/proposal/awardType", method=RequestMethod.GET)
@@ -293,10 +296,10 @@ public class ProposalController {
 			return "projectIndex";
 		}
 		//return "redirect:/proposal/budget";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 
-	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
+	@RequestMapping(value="/eRSPG/proposal/body", method=RequestMethod.GET)
 	public String bodyForm(@ModelAttribute AwardTypeForm awardForm,Model model){
 		
 		boolean collaborative = false;
@@ -347,7 +350,7 @@ public class ProposalController {
 		}
 
 		//return "redirect:/proposal/bodyDetails";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 
     @RequestMapping(value="/eRSPG/proposal/bodyDetails", method=RequestMethod.GET)
@@ -357,7 +360,7 @@ public class ProposalController {
         return "projectIndex";
     }
 
-    @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
+    @RequestMapping(value="/eRSPG/proposal/bodyDetails", method=RequestMethod.POST)
     public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
@@ -367,7 +370,7 @@ public class ProposalController {
         }
 
         //return "redirect:/proposal/bodyQuestions";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
     }
 
     @RequestMapping(value="/eRSPG/proposal/bodyQuestions", method=RequestMethod.GET)
@@ -387,7 +390,7 @@ public class ProposalController {
         }
 
         //return "redirect:/proposal/upload";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
     }
 	
 	@RequestMapping(value="/eRSPG/proposal/upload", method=RequestMethod.GET)
@@ -412,12 +415,12 @@ public class ProposalController {
 
                 //return "redirect:/proposal/review";
                 //return "redirect:/proposal/submit";
-        		return "redirect:/" + nextPage;
+        		return "redirect:/eRSPG/" + nextPage;
             } catch (Exception e) {
             	
             	model.addAttribute("failedUpload","failed to upload file!");
             	model.addAttribute("contentPage","proposalUpload.jsp");
-        		return "redirect:/" + nextPage;
+        		return "redirect:/eRSPG/" + nextPage;
                 //return "projectIndex";
                 
             }
@@ -426,7 +429,7 @@ public class ProposalController {
         	model.addAttribute("failedUpload","failed to upload file!");
         	model.addAttribute("contentPage","proposalUpload.jsp");
             //return "projectIndex";
-        	return "redirect:/" + nextPage;
+        	return "redirect:/eRSPG/" + nextPage;
         }
 		//return "projectIndex";
 	}
@@ -471,15 +474,22 @@ public class ProposalController {
 		LocalDateTime time = LocalDateTime.now();
 		
 	    
-	    
+	    // Some of this information must be hard coded until we retrieve it with the web crawler
+		// the commented out code is the code for production
+		String test = "TEST";   //string for testing
 		Proposal proposal = new Proposal();
-		proposal.setProjectDirector(detailForm.getProjectDirector());
+		//proposal.setProjectDirector(detailForm.getProjectDirector());
+		proposal.setProjectDirector(test);
 		proposal.setProposalComplete(true);
-		proposal.setProposalMailCode(detailForm.getProposalMailCode());
-		proposal.setProposalExtension(detailForm.getProposalExtension());
-		proposal.setProposalEmail(detailForm.getProposalEmail());
+		//proposal.setProposalMailCode(detailForm.getProposalMailCode());
+		proposal.setProposalMailCode(test);
+		//proposal.setProposalExtension(detailForm.getProposalExtension());
+		proposal.setProposalExtension(test);
+		//proposal.setProposalEmail(detailForm.getProposalEmail());
+		proposal.setProposalEmail(test);
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-		proposal.setProposalTitle(detailForm.getProposalTitle());
+		//proposal.setProposalTitle(detailForm.getProposalTitle());
+        proposal.setProposalTitle(test);
 		proposal.setSemesterId(deptForm.getSemesterID());
 		proposal.setProjectTypeId(awardForm.getProjectTypeID());
 		proposal.setDepartmentId(deptForm.getDepartmentID());
@@ -547,21 +557,42 @@ public class ProposalController {
 		}
 		try
 		{
-			file.createNewFile();
-			OutputStream output = new FileOutputStream(file);
-			output.write(uploadForm.getBytes());
-			output.close();
-			
-			List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
-			
-			for (UploadFile uploadFile : uploadFiles) {
-				uploadFile.setProposalId(proposalID);
-				uploadFile.setPath(this.uploadDirectory + fileName);
-				uploadFile.setFileName(uploadForm.getName());
-				
-				// store saved file locations to  database
-				fileUploadDAO.save(uploadFile);
+			// add code to check if directory exists and if not make it with write permissions
+            File directory = new File(this.uploadDirectory);
+			if (! directory.exists()){
+                // Throws exception on failure
+                directory.mkdirs();
+                directory.setReadable(true);
+                directory.setWritable(true);
+                directory.setExecutable(true);
 			}
+
+			file.createNewFile();
+            file.setReadable(true);
+            file.setWritable(true);
+            file.setExecutable(true);
+			OutputStream output = new FileOutputStream(file);
+
+            // Added this code to stop null exceptions because duh not everyone uploads a file with submission
+			if(uploadForm.getBytes() != null){
+                output.write(uploadForm.getBytes());
+            }
+
+			output.close();
+
+            List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
+            // Added this code to stop null exceptions because duh not everyone uploads a file with submission
+            if(uploadFiles != null && uploadFiles.size() > 0){
+                for (UploadFile uploadFile : uploadFiles) {
+                    uploadFile.setProposalId(proposalID);
+                    uploadFile.setPath(this.uploadDirectory + fileName);
+                    uploadFile.setFileName(uploadForm.getName());
+
+                    // store saved file locations to  database
+                    fileUploadDAO.save(uploadFile);
+                }
+            }
+
 		}
 		catch(Exception e)
 		{

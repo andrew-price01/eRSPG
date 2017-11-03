@@ -38,6 +38,7 @@ import eRSPG.model.UserRole;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.util.Properties;
 import eRSPG.Repository.*;
@@ -218,6 +219,13 @@ public class DataConfig {
     @Bean
     public Cas30ProxyTicketValidator cas30ProxyTicketValidator(){
         return new Cas30ProxyTicketValidator(Constants.CAS_URL_PREFIX);
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver mCommonsMultipartResolver = new CommonsMultipartResolver();
+        mCommonsMultipartResolver.setMaxUploadSize(268435456);
+        return mCommonsMultipartResolver;
     }
 
 }

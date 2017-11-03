@@ -23,9 +23,9 @@
 			</div>
 			
 			<div class="button-row">
-				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Back</button>
+				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/eRSPG/proposal/upload" />"'>Back</button>
 				<%--<button type="button" class="btn my-btn pull-center" onclick='window.location.href="<s:url value="/proposal/review" />"'>Save</button>--%>
-				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/proposal/submit" />"'>Submit</button>
+				<button type="button" class="btn my-btn pull-right" onclick='window.location.href="<s:url value="/eRSPG/proposal/submit" />"'>Submit</button>
 			</div>
 
 		</form:form>

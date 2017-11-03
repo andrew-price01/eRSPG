@@ -3,13 +3,13 @@
 <div class="container">
   
     	<div class="breadcrumb flat">
-			<a href="<s:url value='/proposal/department' />" class="active">Details </a>
-			<a href="<s:url value='/proposal/awardType' />" >Award Type</a>
-			<a href="<s:url value='/proposal/budget' />" >Budget</a>
-			<a href="<s:url value='/proposal/body' />">Body</a>
-			<a href="<s:url value='/proposal/bodyDetails' />">Body Details</a>
-			<a href="<s:url value='/proposal/bodyQuestions' />">Questions</a>
-			<a href="<s:url value='/proposal/upload' />">Upload</a>
+			<a href="<s:url value='/eRSPG/proposal/department' />" class="active">Details </a>
+			<a href="<s:url value='/eRSPG/proposal/awardType' />" >Award Type</a>
+			<a href="<s:url value='/eRSPG/proposal/budget' />" >Budget</a>
+			<a href="<s:url value='/eRSPG/proposal/body' />">Body</a>
+			<a href="<s:url value='/eRSPG/proposal/bodyDetails' />">Body Details</a>
+			<a href="<s:url value='/eRSPG/proposal/bodyQuestions' />">Questions</a>
+			<a href="<s:url value='/eRSPG/proposal/upload' />">Upload</a>
 		</div>
     
         <legend><h2 style="text-align:center;">Project Details</h2></legend>
