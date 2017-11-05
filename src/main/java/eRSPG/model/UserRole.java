@@ -20,7 +20,7 @@ public class UserRole {
 	@Column(name="roleTypeID")
 	private int roleTypeId;
 	
-	@Column(name="rovoked")
+	@Column(name="revoked")
 	private LocalDateTime revoked;
 	
 	@Column(name="updateAt")

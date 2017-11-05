@@ -19,7 +19,7 @@ public class EmailEvent {
 	static MimeMessage generateMailMessage;
 	
 	
-	public void sendEmail(DetailForm detailForm, BodyForm bodyForm, File file) throws MessagingException {
+	public void sendEmail(DetailForm detailForm, BodyForm bodyForm, File file, String toUser) throws MessagingException {
 		final String username = "erspgdonotreply@gmail.com";
 		final String password = "msumlslqfyqdoekt";
 
@@ -31,7 +31,7 @@ public class EmailEvent {
 		 
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
 		generateMailMessage = new MimeMessage(getMailSession);
-		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("nicholaslindquist@mail.weber.edu"));
+		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toUser));
 		generateMailMessage.setSubject("A proposal has been submitted through eRSPG");
 		
 		String emailBody = "<b>Proposal Details</b>:\n"

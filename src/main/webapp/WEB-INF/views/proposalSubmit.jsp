@@ -8,12 +8,12 @@
 			<h2 style="text-align: center;">Submission Complete</h2>
 		</legend>
 		<form:form method="post" enctype="multipart/form-data"
-			modelAttribute="UploadForm">
+			modelAttribute="uploadForm">
 			<table border="0">
-<!-- 				<tr> -->
-<!-- 					<td>Pick file #1:</td> -->
-<!-- 					<td><input type="file" name="fileUpload" size="50" /> -->
-<!-- 				</tr> -->
+ 				<tr> 
+ 					<td>Pick file #1:</td> 
+ 					<td><input type="file" name="fileUpload" size="50" /> 
+ 				</tr> 
 
 				
 			</table>

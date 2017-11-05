@@ -1,9 +1,7 @@
 package eRSPG.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -33,7 +31,6 @@ import eRSPG.Repository.FundDAO;
 import eRSPG.Repository.ProposalDAO;
 import eRSPG.Repository.RequestAwardDAO;
 import eRSPG.Repository.SemesterDAO;
-import eRSPG.Repository.UserDAO;
 import eRSPG.model.Department;
 import eRSPG.model.EssayAnswer;
 import eRSPG.model.Fund;
@@ -81,8 +78,6 @@ public class ProposalController {
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
 
-	@Autowired
-	private UserDAO userDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
 	
@@ -400,11 +395,12 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
-	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
+	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("UploadForm") UploadForm uploadForm
 		, Model model, @RequestParam("nextPage") String nextPage){
 		
+		try {
 		if (!file.isEmpty()) {
-        	try {
+        		try {
                 byte[] bytes = file.getBytes();
                
                
@@ -413,23 +409,28 @@ public class ProposalController {
                 uploadForm.setBytes(bytes);
 
                 //return "redirect:/proposal/review";
-                return "redirect:/proposal/submit";
-        		//return "redirect:/" + nextPage;
-            } catch (Exception e) {
+                //return "redirect:/proposal/submit";
+        			return "redirect:/" + nextPage;
+        		} catch (Exception e) {
             	
-            	model.addAttribute("failedUpload","failed to upload file!");
-            	model.addAttribute("contentPage","proposalUpload.jsp");
-        		return "redirect:/" + nextPage;
+        			e.printStackTrace();
+        			model.addAttribute("failedUpload","failed to upload file!");
+        			model.addAttribute("contentPage","proposalUpload.jsp");
+        			return "redirect:/" + nextPage;
                 //return "projectIndex";
                 
             }
-        } 
-		else {
-        	model.addAttribute("failedUpload","failed to upload file!");
-        	model.addAttribute("contentPage","proposalUpload.jsp");
+        } else {
+        		model.addAttribute("failedUpload","failed to upload file!");
+        		model.addAttribute("contentPage","proposalUpload.jsp");
             //return "projectIndex";
-        	return "redirect:/" + nextPage;
+        		return "redirect:/" + nextPage;
         }
+		
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return "redirect:/" + nextPage;
 		//return "projectIndex";
 	}
 	
@@ -461,6 +462,8 @@ public class ProposalController {
 		
 		
 	}
+	
+	
 	private void processSubmission( DetailForm detailForm,
 					AwardTypeForm awardForm,
 					BodyForm bodyForm,
@@ -502,14 +505,13 @@ public class ProposalController {
 		
 		
 		
-		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
-		{
+		for(int i = 0; i < awardForm.getAwardTypes().size(); i++) {
 			RequestAward requestAward = new RequestAward();
+			
 			requestAward.setProposalId(proposalID);
 			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
 			
 			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
-			
 		}
 		
 
@@ -546,13 +548,11 @@ public class ProposalController {
 		
 		File file = new File(this.uploadDirectory + fileName);
 		
-		if(file.exists())
-		{
+		if (file.exists()) {
 			file.delete();
-			
 		}
-		try
-		{
+		
+		try {
 			file.createNewFile();
 			OutputStream output = new FileOutputStream(file);
 			output.write(uploadForm.getBytes());
@@ -568,15 +568,13 @@ public class ProposalController {
 				// store saved file locations to  database
 				fileUploadDAO.save(uploadFile);
 			}
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		EmailEvent emailEvent = new EmailEvent();
 		try {
-			emailEvent.sendEmail(detailForm, bodyForm, file);
+			emailEvent.sendEmail(detailForm, bodyForm, file, detailForm.getProposalEmail());
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

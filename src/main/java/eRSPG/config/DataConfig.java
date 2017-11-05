@@ -30,6 +30,7 @@ import eRSPG.model.UploadFile;
 import eRSPG.model.User;
 import eRSPG.model.UserRole;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Properties;
@@ -139,5 +140,12 @@ public class DataConfig {
     @Autowired
     @Bean(name= "userDAO")
     public UserDAO getUserDao(SessionFactory sessionFactory){ return new UserImpl(sessionFactory); }
-
+    
+    @Autowired
+    @Bean(name="multipartResolver")
+    public CommonsMultipartResolver getMultipartResolver() {
+    		CommonsMultipartResolver mCommonsMultipartResolver = new CommonsMultipartResolver();
+    		mCommonsMultipartResolver.setMaxUploadSize(1000000);
+    		return mCommonsMultipartResolver;
+    }
 }
