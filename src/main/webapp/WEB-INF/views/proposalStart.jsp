@@ -2,52 +2,52 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="eRSPG.model.User" %>
-<%@ page import="eRSPG.Repository.UserImpl" %>
-<jsp:useBean id="user" class="eRSPG.model.User"/>
 
 <div class="container">
-	<legend><h2 style="text-align:center;">RSPG Proposal Submission</h2></legend>
 
-	<div class="text-center">
-			<form action="<%
-							String firstName = request.getParameter("firstName");
-							String lastName = request.getParameter("lastName");
-							String userEmail = request.getParameter("userEmail");
+    <%--<% String pageName = "index"; %>--%>
+    <%--<%@include file="/WEB-INF/views/breadcrumbs.jsp" %>--%>
 
-							user.setFirstName(firstName);
-							user.setLastName(lastName);
-							user.setEmail(userEmail);
-							System.out.println("First: " +" "+ user.getFirstName() + " " + "Last: " +" "+
-								user.getLastName() + " " + "Email: " +" "+ user.getEmail() + " " + "Id: " + user.getUserId());
+    <legend><h2 style="text-align:center;">RSPG Proposal Submission</h2></legend>
+    <form:form class="form-horizontal" method="post" action="index" modelAttribute="userForm">
 
-							User aUser = new User();
-							aUser.setFirstName(firstName);
-							aUser.setLastName(lastName);
-							aUser.setEmail(userEmail);
-							System.out.println("First: " +" "+ aUser.getFirstName() + " " + "Last: " +" "+
-								aUser.getLastName() + " " + "Email: " +" "+ aUser.getEmail() + " " + "Id: " + aUser.getUserId());
-						%>"
-				  method="post" encrypt="text/plain">
+        <div class="form-group">
+            <label class="col-sm-3 control-label required-field" for="userFirstName"> First Name:&nbsp </label>
+            <div class="col-sm-9">
+                <form:input class="form-control" type="text" path="firstName" required="true"/>
+            </div>
+            <%--<form:errors cssClass="form-error" path="firstName"/>--%>
+        </div>
 
-				<label for="firstName" style="align-content: center"> First Name:&nbsp </label>
-				<input id="firstName" type="text" name="firstName" value="" style="align-self: center;" /><br /><br />
+        <div class="form-group">
+            <label class="col-sm-3 control-label required-field" for="userLastName"> Last Name:&nbsp </label>
+            <div class="col-sm-9">
+                <form:input class="form-control" type="text" path="lastName" required="true"/>
+            </div>
+            <%--<form:errors cssClass="form-error" path="lastName"/>--%>
+        </div>
 
-				<label for="lastName" style="alignment: center"> Last Name:&nbsp </label>
-				<input id="lastName" type="text" name="lastName" value="" style="align-self: center;" /><br /><br />
+        <div class="form-group">
+            <label class="col-sm-3 control-label required-field" for="email">Email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+            <div class="col-sm-9">
+                <form:input class="form-control" type="email" path="userEmail" required="true"/>
+            </div>
+            <%--<form:errors cssClass="form-error" path="userEmail"/>--%>
+        </div>
 
-				<label for="userEmail">Email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-				<input id="userEmail" type="text" name="userEmail" value="" style="align-self: center;" /><br /><br />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" >Password:&nbsp&nbsp</label>
 
-				<label for="userPassword">Password:&nbsp&nbsp</label>
-				<input id="userPassword" type="password" name="userPassword" value="" style="align-self: center;"/><br /><br />
+            <div class="col-sm-9">
+                <input class="form-control" type="password" required="true"/>
+            </div>
+        </div>
 
-				<%--<Button type="submit" class="btn my-btn" value="Submit" >Submit</Button>--%>
-				<Button type="button" class="btn my-btn" value="start" onclick='window.location.href="<s:url value="start" />"' >Submit</Button>
-			</form>
-	</div>
+        <input type="hidden" name="nextPage" id="nextPage" value="0"/>
+
+        <div class="button-row">
+            <button type="button" class="btn my-btn" onclick='setNextPage("proposal/start", "/")'>Submit</button>
+        </div>
+    </form:form>
+
 </div>
-
-
-
-

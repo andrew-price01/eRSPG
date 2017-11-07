@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label required-field">Project Director:</label>
+            <label class="col-sm-3 control-label required-field" for="projectDirector">Project Director:</label>
             <div class="col-sm-9">
                 <form:input class="form-control" type="text" path="projectDirector" required="true"/>
             </div>

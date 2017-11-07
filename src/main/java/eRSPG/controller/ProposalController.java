@@ -94,10 +94,6 @@ public class ProposalController {
 		return nextPage;
 	}
 
-//<<<<<<< HEAD
-//
-//	@RequestMapping("/eRSPG/proposal/start")
-//=======
 
 	@RequestMapping(value = "/eRSPG/proposal", method = RequestMethod.GET)
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
@@ -120,7 +116,10 @@ public class ProposalController {
     @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.GET)
     public String UserForm(Model model){
         String contentPage = "proposalStart.jsp";
+        UserForm userForm = new UserForm();
+
         model.addAttribute("contentPage",contentPage);
+        model.addAttribute("userForm", userForm);
 
         return "projectIndex";
     }
@@ -129,10 +128,20 @@ public class ProposalController {
     @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.POST)
     public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
+        //for debugging
+        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
+
         if(result.hasErrors())
         {
-            model.addAttribute("contentPage", "proposalBudget.jsp");
+            model.addAttribute("contentPage", "proposalStart.jsp");
             return "projectIndex";
+        }
+
+        User user = checkIfUserAlreadyExists(userForm);
+        if(user == null){
+            addNewUserToDatabase(userForm);
+
+            // add user to the session here ( We wont need this soon as index will be removed )
         }
 
         //return "redirect:/proposal/body";
@@ -151,6 +160,12 @@ public class ProposalController {
         BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
         BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
         UserForm userForm = new UserForm();
+
+        // for debugging
+        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
+
+        // We need to add the user info to the user form here from the user stored in a session
+        User user = new User();
 
 		/*
 		 * Add all the form objects to the session
@@ -546,6 +561,16 @@ public class ProposalController {
 		LocalDateTime time = LocalDateTime.now();
 
 		Proposal proposal = new Proposal();
+
+		// weird work around for user data
+        userForm.setUserEmail(detailForm.getProposalEmail());
+        User user = checkIfUserAlreadyExists(userForm);
+        if(user != null){
+            int userID = user.getUserId();
+            // added code to get user id
+            proposal.setUserId(userID);
+        }
+
 		proposal.setProjectDirector(detailForm.getProjectDirector());
 		//proposal.setProposalComplete(true);
 		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
@@ -654,5 +679,24 @@ public class ProposalController {
 		//TODO: clear session form data
 		
 	}
+
+	private User checkIfUserAlreadyExists(UserForm userForm){
+        // user added if doesn't exist
+        User user = null;
+        try{
+            user = userDAO.findUserByEmail(userForm.getUserEmail());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private void addNewUserToDatabase(UserForm userForm) {
+        User newUser = new User();
+        newUser.setEmail(userForm.getUserEmail());
+        newUser.setFirstName(userForm.getFirstName());
+        newUser.setLastName(userForm.getLastName());
+        userDAO.addNewOrUpdateUser(newUser);
+    }
 	
 }
