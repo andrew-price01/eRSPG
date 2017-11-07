@@ -10,7 +10,7 @@
 			<input id="titleInput" class="form-control input-xs-5 input-lg" type="text" placeholder="Title" required/>
 		</div>
 		<div class="form-group col-xs-10">
-			<textarea id="bodyInput" class="form-control input-xs-8" rows="10" required></textarea>
+			<textarea id="bodyInput" class="form-control input-xs-8" rows="10" placeholder="Enter announcement text here..." required></textarea>
 		</div>
 		<div class="form-group col-xs-10 clearfix">
 			<button id="cancelButton" onclick="window.history.back()" class="btn my-btn">Cancel</button>
