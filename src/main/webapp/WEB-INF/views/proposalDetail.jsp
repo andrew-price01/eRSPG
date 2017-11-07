@@ -2,21 +2,6 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
 
-    	<div class="breadcrumb flat">
-			<a href="<s:url value='/eRSPG/proposal/department' />" class="active">Details </a>
-			<a href="<s:url value='/eRSPG/proposal/awardType' />" >Award Type</a>
-			<a href="<s:url value='/eRSPG/proposal/budget' />" >Budget</a>
-			<a href="<s:url value='/eRSPG/proposal/body' />">Body</a>
-			<a href="<s:url value='/eRSPG/proposal/bodyDetails' />">Body Details</a>
-			<a href="<s:url value='/eRSPG/proposal/bodyQuestions' />">Questions</a>
-			<a href="<s:url value='/eRSPG/proposal/upload' />">Upload</a>
-		</div>
-    
-        <legend><h2 style="text-align:center;">Project Details</h2></legend>
-        <form:form class="form-horizontal"  method="post" action="bodyDetails"   modelAttribute="detailForm">
-            <div class="form-group">
-                <label class="col-sm-3 control-label required-field" for="proposalTitle">Project Title:</label>
-
     <% String pageName = "detail"; %>
     <%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
 
@@ -70,4 +55,5 @@
             </button>
         </div>
     </form:form>
+
 </div>

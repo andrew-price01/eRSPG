@@ -1,7 +1,6 @@
 package eRSPG.config;
 
 import eRSPG.security.*;
-import eRSPG.webfilters.CsrfCookieGeneratorFilter;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
