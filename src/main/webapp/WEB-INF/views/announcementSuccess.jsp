@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
-  Date: 10/23/2017
-  Time: 6:06 PM
+  Date: 11/1/2017
+  Time: 8:16 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,27 +51,25 @@
 
     <!-- Page Content -->
     <div id="content" class="main">
+            <div>
 
-        <div class="col-md-6 col-md-offset-3 text-center">
-
-            <form:form method="post" action="/eRSPG/admin/makeAnnouncement" modelAttribute="announcement">
-                <div class="input-group-lg">
-                    <form:input path="title" class="form-control" id="title" placeholder="Title" />
-                </div>
-
-                <div class="input-group-lg">
-                    ​<form:textarea path="message" style="resize: none" id="message" rows="5" cols="80" />
-                </div>
+                <img src="https://i.imgur.com/OdMd1HL.jpg" alt="checkmark" >
+                <%--<img src="${pageContext.request.contextPath}/WEB-INF/images/checkmark.png" />--%>
 
                 <br>
 
-                <div class="form-actions">
-                    <input type="submit"
-                           class="btn btn-success" value="Save">
-                </div>
+                <label class="text-center">Success!</label>
 
-            </form:form>
+                <h4>Title: </h4>
+                <h5>${title}</h5>
 
+                <h4>Message: </h4>
+                <h5>${message}</h5>
+
+                <h4>Date: </h4>
+                <h5>${date}</h5>
+
+            </div>
         </div>
 
 

@@ -20,11 +20,12 @@ a, a:hover, a:focus {
 #sidebar .sidebar-header {
     padding: 10px;
     background: rgb(73, 35,101);
+    border-bottom: 1px solid #ffffff;
 }
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid rgb(73, 35,101);
+    border-bottom: 1px solid #ffffff;
 }
 
 #sidebar ul p {
@@ -57,5 +58,6 @@ a, a:hover, a:focus {
 
 #content {
     text-align: center;
-    padding-left: 150px;
+    padding-left: 250px;
 }
+

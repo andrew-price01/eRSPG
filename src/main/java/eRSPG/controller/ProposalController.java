@@ -191,8 +191,6 @@ public class ProposalController {
 			semesterList.put(semester.getSemesterId(), semester.getSemesterName());
 		}
 		
-		
-		
 		return "projectIndex";
 	}
 	
@@ -219,11 +217,11 @@ public class ProposalController {
 	
 	@RequestMapping(value="/proposal/detail", method=RequestMethod.GET)
 	public String proposalForm(Model model){
-		
+
 		String contentPage = "proposalDetail.jsp";
 		model.addAttribute("contentPage",contentPage);
-		
-		
+
+
 		return "projectIndex";
 	}
 	
@@ -320,7 +318,8 @@ public class ProposalController {
 	}
 
 	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
-	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm,
+							   BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		//System.out.println(result.hasErrors());
        // System.out.println(result);

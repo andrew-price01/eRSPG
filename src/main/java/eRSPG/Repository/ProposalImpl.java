@@ -15,9 +15,7 @@ public class ProposalImpl implements ProposalDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public ProposalImpl(){
-		
-	}
+	public ProposalImpl(){ }
 	
 	public ProposalImpl(SessionFactory sf){
 		this.sessionFactory = sf;

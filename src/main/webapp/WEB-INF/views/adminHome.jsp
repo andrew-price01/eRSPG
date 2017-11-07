@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/sidebar.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/admin.css"/>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
@@ -44,6 +44,11 @@
             <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/admin/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
         </ul>
     </nav>
+
+    <!-- Page Content -->
+    <div id="content" class="main">
+        <h1>Home</h1>
+    </div>
 
 </div>
 
