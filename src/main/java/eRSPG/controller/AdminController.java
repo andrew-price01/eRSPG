@@ -6,6 +6,7 @@ import eRSPG.model.form.AwardTypeForm;
 import eRSPG.model.form.BodyDetailsForm;
 import eRSPG.model.form.BodyForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +24,7 @@ import java.util.Date;
     public class AdminController {
 
         @Autowired
-        private AnnouncementDAO announcementDAO;
+        private AnnouncementDAO announcementDao;
 
         @RequestMapping("/eRSPG/admin/home")
         public String adminHome(){
@@ -56,7 +57,7 @@ import java.util.Date;
         model.addAttribute("title", announcement.getTitle());
         model.addAttribute("message", announcement.getMessage());
         model.addAttribute("date", announcement.getDate());
-        announcementDAO.addNewOrUpdateAnnouncement(announcement);
+        announcementDao.addNewOrUpdateAnnouncement(announcement);
         return "announcementSuccess";
     }
 }

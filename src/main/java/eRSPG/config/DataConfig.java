@@ -1,5 +1,6 @@
 package eRSPG.config;
 
+import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +11,6 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 
 import javax.sql.DataSource;
 
-import eRSPG.model.AwardType;
-import eRSPG.model.Awarded;
-import eRSPG.model.Department;
-import eRSPG.model.EssayAnswer;
-import eRSPG.model.EssayQuestion;
-import eRSPG.model.Fund;
-import eRSPG.model.FundCategory;
-import eRSPG.model.FundType;
-import eRSPG.model.Participant;
-import eRSPG.model.ProjectType;
-import eRSPG.model.Proposal;
-import eRSPG.model.RequestAward;
-import eRSPG.model.Reviewer;
-import eRSPG.model.RoleType;
-import eRSPG.model.Semester;
-import eRSPG.model.SourceType;
-import eRSPG.model.UploadFile;
-import eRSPG.model.User;
-import eRSPG.model.UserRole;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -57,7 +39,7 @@ public class DataConfig {
 
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 
-        sessionBuilder.addAnnotatedClasses(Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
+        sessionBuilder.addAnnotatedClasses(Announcement.class, Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
                 FundType.class, Participant.class, ProjectType.class, Proposal.class, RequestAward.class, RoleType.class,
                 Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
         //sessionBuilder.scanPackages("eRPSG.model");
@@ -80,6 +62,12 @@ public class DataConfig {
                 sessionFactory);
 
         return transactionManager;
+    }
+
+    @Autowired
+    @Bean(name = "announcementDao")
+    public AnnouncementDAO getAnnouncementDao(SessionFactory sessionFactory) {
+        return new AnnouncementImpl(sessionFactory);
     }
 
     @Autowired
