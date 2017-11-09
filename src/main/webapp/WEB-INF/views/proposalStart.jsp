@@ -47,6 +47,8 @@
 
         <div class="button-row">
             <button type="button" class="btn my-btn" onclick='setNextPage("proposal/start", "/")'>Submit</button>
+                <%--<Button type="submit" class="btn my-btn" value="Submit" >Submit</Button>--%>
+            <%--<Button type="button" class="btn my-btn" value="start" onclick='window.location.href="<s:url value="start" />"' >Submit</Button>--%>
         </div>
     </form:form>
 
