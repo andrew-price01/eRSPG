@@ -53,21 +53,21 @@
     <div id="content" class="main">
             <div>
 
-                <img src="https://i.imgur.com/OdMd1HL.jpg" alt="checkmark" >
+                <img src="https://i.imgur.com/N145PyA.jpg" alt="success img" >
                 <%--<img src="${pageContext.request.contextPath}/WEB-INF/images/checkmark.png" />--%>
 
                 <br>
 
-                <label class="text-center">Success!</label>
+                <h2><label class="text-center">Announcements Sent!</label></h2>
 
-                <h4>Title: </h4>
-                <h5>${title}</h5>
+                <h3>Title: </h3>
+                <h4>${title}</h4>
 
-                <h4>Message: </h4>
-                <h5>${message}</h5>
+                <h3>Message: </h3>
+                <h4>${message}</h4>
 
-                <h4>Date: </h4>
-                <h5>${date}</h5>
+                <h3>Date: </h3>
+                <h4>${date}</h4>
 
             </div>
         </div>
