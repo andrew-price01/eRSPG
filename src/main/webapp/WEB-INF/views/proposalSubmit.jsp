@@ -23,7 +23,7 @@
 			</div>
 			
 			<div class="button-row">
-				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="/proposal/upload" />"'>Back</button>
+				<button type="button" class="btn my-btn pull-left" onclick='window.location.href="<s:url value="proposal/upload" />"'>Back</button>
 				<button type="button" class="btn my-btn pull-center">Save</button>
 				<button type="submit" class="btn my-btn pull-right">Submit</button>
 			</div>

@@ -10,6 +10,8 @@ public interface UserDAO {
 
 	User findUserById(int raid);
 
+	User findUserByUsername(String username);
+
 	User findUserByEmail(String email);
 
 	List<User> findAllUserByFirstName(String fn);

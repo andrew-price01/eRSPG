@@ -1,28 +1,25 @@
 package eRSPG.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import eRSPG.Repository.*;
+import eRSPG.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import eRSPG.Repository.DepartmentDAO;
 import eRSPG.Repository.EssayAnswerDAO;
@@ -48,6 +45,11 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
@@ -59,13 +61,13 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	private ProposalDAO proposalDao;
+	protected ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
 	
 	@Autowired
-	private DepartmentDAO departmentDAO;
+	protected DepartmentDAO departmentDAO;
 	
 	@Autowired
 	private SemesterDAO semesterDAO;
@@ -80,167 +82,187 @@ public class ProposalController {
 	private FileUploadDAO fileUploadDAO;
 
 	@Autowired
-	private UserDAO userDAO;
+	protected UserDAO userDAO;
+
+	@Autowired
+	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
+	private static final String SUBMITTED_STATUS= "SUBMITTED";
+
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
 	}
-	
-	@RequestMapping("/proposal/start")
-	public String startSubmission(Model model)
-	{
-		
-		
-		DepartmentForm deptForm = new DepartmentForm();
-		DetailForm detailForm = new DetailForm();
-		AwardTypeForm awardForm = new AwardTypeForm();
-		UploadForm uploadForm = new UploadForm();
-		BudgetForm budgetForm = new BudgetForm();
-		BodyForm bodyForm = new BodyForm();
-		BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
-		BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
-		UserForm userForm = new UserForm();
+
+
+	@RequestMapping(value = "/eRSPG/proposal", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalDTO> proposalListByUserId(
+			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
+		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
+		List<Proposal> proposals = id == null ?
+				proposalDao.findAllProposals() :
+				proposalDao.findProposalByUserId(id);
+
+		return proposals.stream()
+				.map(p -> new
+                    ProposalDTO(
+                        p,
+                        departmentDAO.findDepartment(p.getDepartmentId()),
+                        userDAO.findUserById(p.getUserId()),
+                        proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
+				.collect(Collectors.toList());
+	}
+
+    @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.GET)
+    public String UserForm(Model model){
+        String contentPage = "proposalStart.jsp";
+        UserForm userForm = new UserForm();
+
+        model.addAttribute("contentPage",contentPage);
+        model.addAttribute("userForm", userForm);
+
+        return "projectIndex";
+    }
+
+
+    @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.POST)
+    public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+    {
+        //for debugging
+        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
+
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalStart.jsp");
+            return "projectIndex";
+        }
+
+        User user = checkIfUserAlreadyExists(userForm);
+        if(user == null){
+            addNewUserToDatabase(userForm);
+
+            // add user to the session here ( We wont need this soon as index will be removed )
+        }
+
+        //return "redirect:/proposal/body";
+        return "redirect:/eRSPG/" + nextPage;
+    }
+
+    @RequestMapping("/eRSPG/proposal/start")
+    public String startSubmission(Model model)
+    {
+        DepartmentForm deptForm = new DepartmentForm();
+        DetailForm detailForm = new DetailForm();
+        AwardTypeForm awardForm = new AwardTypeForm();
+        UploadForm uploadForm = new UploadForm();
+        BudgetForm budgetForm = new BudgetForm();
+        BodyForm bodyForm = new BodyForm();
+        BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
+        BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
+        UserForm userForm = new UserForm();
+
+        // for debugging
+        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
+
+        // We need to add the user info to the user form here from the user stored in a session
+        User user = new User();
 
 		/*
 		 * Add all the form objects to the session
 		 */
-		model.addAttribute("departmentForm", deptForm);
-		model.addAttribute("detailForm", detailForm);
-		model.addAttribute("awardTypeForm",awardForm);
-		model.addAttribute("uploadForm", uploadForm);
-		model.addAttribute("budgetForm", budgetForm);
-		model.addAttribute("bodyForm", bodyForm);
+        model.addAttribute("departmentForm", deptForm);
+        model.addAttribute("detailForm", detailForm);
+        model.addAttribute("awardTypeForm",awardForm);
+        model.addAttribute("uploadForm", uploadForm);
+        model.addAttribute("budgetForm", budgetForm);
+        model.addAttribute("bodyForm", bodyForm);
         model.addAttribute("bodyDetailsForm", bodyDetailsForm);
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
-		model.addAttribute("userForm", userForm);
+        model.addAttribute("userForm", userForm);
 
-		return "redirect:/proposal/department";
-	}
+        //return "redirect:/eRSPG/proposal/department";		// why is department turned to detail?
+        return "redirect:/eRSPG/proposal/detail";
+    }
 
-	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
-	public String UserForm(Model model){
-		String contentPage = "proposalStart.jsp";
-		model.addAttribute("contentPage",contentPage);
+    @RequestMapping(value="/eRSPG/proposal/detail", method=RequestMethod.GET)
+    public String proposalForm(Model model){
 
-		return "projectIndex";
-	}
-
-	@RequestMapping(value="/proposal/index", method=RequestMethod.POST)
-	public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
-	{
-		if(result.hasErrors())
-		{
-			model.addAttribute("contentPage", "proposalBudget.jsp");
-			return "projectIndex";
-		}
-
-		//return "redirect:/proposal/body";
-		return "redirect:/" + nextPage;
-	}
-
-	@RequestMapping(value="/proposal/budget", method=RequestMethod.GET)
-	public String budgetForm(Model model){
-		String contentPage = "proposalBudget.jsp";
-		model.addAttribute("contentPage",contentPage);
-		return "projectIndex";
-	}
-	
-	@RequestMapping(value="/proposal/budget", method=RequestMethod.POST)
-	public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
-	{
-		if(result.hasErrors())
-		{
-			model.addAttribute("contentPage", "proposalBudget.jsp");
-			return "projectIndex";
-		}
-
-		//return "redirect:/proposal/body";
-		return "redirect:/" + nextPage;
-	}
-	
-	@RequestMapping(value="/proposal/department", method=RequestMethod.GET)
-	public String departmentForm(Model model)
-	{
-		String contentPage = "proposalDepartment.jsp";
-		model.addAttribute("contentPage",contentPage );
-		
-		Map<Integer, String> departmentList = new HashMap<>();
-		Map<Integer, String> semesterList = new HashMap<>();
-		
-		//retrieve list of departments from database and store in model for access
-		// in view.
-		
-		model.addAttribute("deptList",departmentList);
-		model.addAttribute("semesterList",semesterList);
-		
-		List<Department> deptDBList = departmentDAO.findAllDepartment();
-		
-		for (Department department : deptDBList) {
-			
-			departmentList.put(department.getDepartmentId(), department.getDepartmentName());
-		}
-		
-		// retrieve list of semester from database and store in model for access
-		// in view.
-		
-		List<Semester> semesterDBList = semesterDAO.findAllSemester();
-		
-		for (Semester semester : semesterDBList) {
-			semesterList.put(semester.getSemesterId(), semester.getSemesterName());
-		}
-		
-		return "projectIndex";
-	}
-	
-	@RequestMapping(value="/proposal/department", method=RequestMethod.POST)
-	public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
-	{
-		//String contentPage = "proposalDepartment.jsp";
-		//model.addAttribute("contentPage",contentPage );
-		
-		if(result.hasErrors())
-		{
-			model.addAttribute("contentPage", "proposalDepartment.jsp");
-			return "projectIndex";
-		}
-		
-		System.out.println(nextPage);
-
-		//return "redirect:/proposal/detail";
-		//return "redirect:/proposal/awardType";
-		return "redirect:/" + nextPage;
-	}
-	
-	
-	
-	@RequestMapping(value="/proposal/detail", method=RequestMethod.GET)
-	public String proposalForm(Model model){
-
-		String contentPage = "proposalDetail.jsp";
-		model.addAttribute("contentPage",contentPage);
+        String contentPage = "proposalDetail.jsp";
+        model.addAttribute("contentPage",contentPage);
 
 
-		return "projectIndex";
-	}
-	
-	@RequestMapping(value="/proposal/detail", method=RequestMethod.POST)
-	public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
-	{
-		if(result.hasErrors())
-		{
-			model.addAttribute("contentPage", "proposalDetail.jsp");
-			return "projectIndex";
-		}
+        return "projectIndex";
+    }
 
-		//return "redirect:/proposal/awardType";
-		return "redirect:/" + nextPage;
-	}
-	
-	@RequestMapping(value="/proposal/awardType", method=RequestMethod.GET)
+    @RequestMapping(value="/eRSPG/proposal/detail", method=RequestMethod.POST)
+    public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    {
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalDetail.jsp");
+            return "projectIndex";
+        }
+
+        //return "redirect:/proposal/awardType";
+        return "redirect:/eRSPG/" + nextPage;
+    }
+
+    @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
+    public String departmentForm(Model model)
+    {
+        String contentPage = "proposalDepartment.jsp";
+        model.addAttribute("contentPage",contentPage );
+
+        Map<Integer, String> departmentList = new HashMap<>();
+        Map<Integer, String> semesterList = new HashMap<>();
+
+        //retrieve list of departments from database and store in model for access
+        // in view.
+
+        model.addAttribute("deptList",departmentList);
+        model.addAttribute("semesterList",semesterList);
+
+        List<Department> deptDBList = departmentDAO.findAllDepartment();
+
+        for (Department department : deptDBList) {
+
+            departmentList.put(department.getDepartmentId(), department.getDepartmentName());
+        }
+
+        // retrieve list of semester from database and store in model for access
+        // in view.
+
+        List<Semester> semesterDBList = semesterDAO.findAllSemester();
+
+        for (Semester semester : semesterDBList) {
+            semesterList.put(semester.getSemesterId(), semester.getSemesterName());
+        }
+
+        return "projectIndex";
+    }
+
+    @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.POST)
+    public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    {
+        //String contentPage = "proposalDepartment.jsp";
+        //model.addAttribute("contentPage",contentPage );
+
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalDepartment.jsp");
+            return "projectIndex";
+        }
+
+        System.out.println(nextPage);
+
+        //return "redirect:/proposal/detail";
+        //return "redirect:/proposal/awardType";
+        return "redirect:/eRSPG/" + nextPage;
+    }
+
+	@RequestMapping(value="/eRSPG/proposal/awardType", method=RequestMethod.GET)
 	public String awardTypeForm(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute("awardTypeForm") AwardTypeForm awardForm, Model model){
-		
+
 		String semester = "Spring";
 		if(deptForm.getSemesterID() == 1)
 		{
@@ -249,23 +271,23 @@ public class ProposalController {
 		else if(deptForm.getSemesterID() == 2)
 		{
 			semester = "Fall";
-			
+
 		}
 		else if(deptForm.getSemesterID() == 3)
 		{
 			semester = "Summer";
 		}
-		
+
 		model.addAttribute("semester",semester);
-		
+
 		String contentPage = "proposalAwardType.jsp";
 		model.addAttribute("contentPage",contentPage);
 
-		
+
 		return "projectIndex";
 	}
-	
-	@RequestMapping(value="/proposal/awardType", method=RequestMethod.POST)
+
+	@RequestMapping(value="/eRSPG/proposal/awardType", method=RequestMethod.POST)
 	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
 	{
 		if(result.hasErrors())
@@ -278,85 +300,105 @@ public class ProposalController {
 			else if(deptForm.getSemesterID() == 2)
 			{
 				semester = "Fall";
-				
+
 			}
 			else if(deptForm.getSemesterID() == 3)
 			{
 				semester = "Summer";
 			}
-			
+
 			model.addAttribute("semester",semester);
-			
+
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
 			return "projectIndex";
 		}
 		//return "redirect:/proposal/budget";
-		return "redirect:/" + nextPage;
+		return "redirect:/eRSPG/" + nextPage;
 	}
 
-	@RequestMapping(value="/proposal/body", method=RequestMethod.GET)
-	public String bodyForm(@ModelAttribute AwardTypeForm awardForm,Model model){
-		
-		boolean collaborative = false;
-		boolean excellence = false;
+    @RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.GET)
+    public String budgetForm(Model model){
+        String contentPage = "proposalBudget.jsp";
+        model.addAttribute("contentPage",contentPage);
+        return "projectIndex";
+    }
 
-		// TODO: Null pointer
-		if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(6)){
-			collaborative = true;
-		}
-		if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(5))
-		{
-			excellence = true;
-		}
+    @RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.POST)
+    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    {
+        if(result.hasErrors())
+        {
+            model.addAttribute("contentPage", "proposalBudget.jsp");
+            return "projectIndex";
+        }
 
-		model.addAttribute("excellence", excellence);
-		model.addAttribute("collaborative",collaborative);
-		
-		String contentPage = "proposalBody.jsp";
-		model.addAttribute("contentPage", contentPage);
-		return "projectIndex";
-	}
+        //return "redirect:/proposal/body";
+        return "redirect:/eRSPG/" + nextPage;
+    }
 
-	@RequestMapping(value="/proposal/body", method=RequestMethod.POST)
-	public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm,
-							   BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
-	{
-		//System.out.println(result.hasErrors());
-       // System.out.println(result);
-		
-		
-		
-		if(result.hasErrors())
-		{
-			boolean collaborative = false;
-			boolean excellence = false;
-			
-			if(awardForm.getAwardTypes().contains(6)){
-				collaborative = true;
-			}
-			if(awardForm.getAwardTypes().contains(5))
-			{
-				excellence = true;
-			}
-			model.addAttribute("excellence", excellence);
-			model.addAttribute("collaborative",collaborative);
-			
-			model.addAttribute("contentPage", "proposalBody.jsp");
-			return "projectIndex";
-		}
 
-		//return "redirect:/proposal/bodyDetails";
-		return "redirect:/" + nextPage;
-	}
 
-    @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.GET)
+
+
+    @RequestMapping(value="/eRSPG/proposal/body", method=RequestMethod.GET)
+    public String bodyForm(@ModelAttribute AwardTypeForm awardForm,Model model){
+
+        boolean collaborative = false;
+        boolean excellence = false;
+
+        // TODO: Null pointer
+        if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(6)){
+            collaborative = true;
+        }
+        if(awardForm.getAwardTypes() != null && awardForm.getAwardTypes().contains(5))
+        {
+            excellence = true;
+        }
+
+        model.addAttribute("excellence", excellence);
+        model.addAttribute("collaborative",collaborative);
+
+        String contentPage = "proposalBody.jsp";
+        model.addAttribute("contentPage", contentPage);
+        return "projectIndex";
+    }
+
+    @RequestMapping(value="/eRSPG/proposal/body", method=RequestMethod.POST)
+    public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+    {
+        //System.out.println(result.hasErrors());
+        // System.out.println(result);
+        if(result.hasErrors())
+        {
+            boolean collaborative = false;
+            boolean excellence = false;
+
+            if(awardForm.getAwardTypes().contains(6)){
+                collaborative = true;
+            }
+            if(awardForm.getAwardTypes().contains(5))
+            {
+                excellence = true;
+            }
+            model.addAttribute("excellence", excellence);
+            model.addAttribute("collaborative",collaborative);
+
+            model.addAttribute("contentPage", "proposalBody.jsp");
+            return "projectIndex";
+        }
+
+        //return "redirect:/proposal/bodyDetails";
+        return "redirect:/eRSPG/" + nextPage;
+    }
+
+    @RequestMapping(value="/eRSPG/proposal/bodyDetails", method=RequestMethod.GET)
     public String bodyDetailsForm(Model model){
         String contentPage = "proposalBodyDetails.jsp";
         model.addAttribute("contentPage", contentPage);
         return "projectIndex";
     }
 
-    @RequestMapping(value="/proposal/bodyDetails", method=RequestMethod.POST)
+    @RequestMapping(value="/eRSPG/proposal/bodyDetails", method=RequestMethod.POST)
     public String saveBodyDetailsForm(@ModelAttribute @Valid BodyDetailsForm bodyDetailsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
@@ -366,17 +408,17 @@ public class ProposalController {
         }
 
         //return "redirect:/proposal/bodyQuestions";
-		return "redirect:/" + nextPage;
+        return "redirect:/eRSPG/" + nextPage;
     }
 
-    @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.GET)
+    @RequestMapping(value="/eRSPG/proposal/bodyQuestions", method=RequestMethod.GET)
     public String bodyQuestionsForm(Model model){
         String contentPage = "proposalBodyQuestions.jsp";
         model.addAttribute("contentPage", contentPage);
         return "projectIndex";
     }
 
-    @RequestMapping(value="/proposal/bodyQuestions", method=RequestMethod.POST)
+    @RequestMapping(value="/eRSPG/proposal/bodyQuestions", method=RequestMethod.POST)
     public String saveBodyQuestionsForm(@ModelAttribute @Valid BodyQuestionsForm bodyQuestionsForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
@@ -386,76 +428,125 @@ public class ProposalController {
         }
 
         //return "redirect:/proposal/upload";
-		return "redirect:/" + nextPage;
+        return "redirect:/eRSPG/" + nextPage;
     }
-	
-	@RequestMapping(value="/proposal/upload", method=RequestMethod.GET)
-	public String uploadForm(Model model){
-		String contentPage = "proposalUpload.jsp";
-		model.addAttribute("contentPage",contentPage);
-		return "projectIndex";
-	}
-	
-	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
-	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
-		, Model model, @RequestParam("nextPage") String nextPage){
-		
-		if (!file.isEmpty()) {
-        	try {
+
+    @RequestMapping(value="/eRSPG/proposal/upload", method=RequestMethod.GET)
+    public String uploadForm(Model model){
+        String contentPage = "proposalUpload.jsp";
+        model.addAttribute("contentPage",contentPage);
+        return "projectIndex";
+    }
+
+    @RequestMapping(value="/eRSPG/proposal/upload", method=RequestMethod.POST)
+    public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
+            , Model model, @RequestParam("nextPage") String nextPage){
+
+        if (!file.isEmpty()) {
+            try {
                 byte[] bytes = file.getBytes();
-               
-               
+
+
                 uploadForm.setName(file.getOriginalFilename());
-                
+
                 uploadForm.setBytes(bytes);
 
                 //return "redirect:/proposal/review";
                 //return "redirect:/proposal/submit";
-        		return "redirect:/" + nextPage;
+                return "redirect:/eRSPG/" + nextPage;
             } catch (Exception e) {
-            	
-            	model.addAttribute("failedUpload","failed to upload file!");
-            	model.addAttribute("contentPage","proposalUpload.jsp");
-        		return "redirect:/" + nextPage;
+
+                model.addAttribute("failedUpload","failed to upload file!");
+                model.addAttribute("contentPage","proposalUpload.jsp");
+                return "redirect:/eRSPG/" + nextPage;
                 //return "projectIndex";
-                
+
             }
-        } 
-		else {
-        	model.addAttribute("failedUpload","failed to upload file!");
-        	model.addAttribute("contentPage","proposalUpload.jsp");
-            //return "projectIndex";
-        	return "redirect:/" + nextPage;
         }
-		//return "projectIndex";
+        else {
+            model.addAttribute("failedUpload","failed to upload file!");
+            model.addAttribute("contentPage","proposalUpload.jsp");
+            //return "projectIndex";
+            return "redirect:/eRSPG/" + nextPage;
+        }
+        //return "projectIndex";
+    }
+
+    @RequestMapping("/eRSPG/proposal/review")
+    public String reviewForm(Model model){
+        String contentPage = "proposalReview.jsp";
+        model.addAttribute("contentPage",contentPage);
+        return "projectIndex";
+    }
+
+
+    @RequestMapping("/eRSPG/proposal/submit")
+    public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
+                                       @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
+                                       @ModelAttribute("bodyForm") BodyForm bodyForm,
+                                       @ModelAttribute("budgetForm") BudgetForm budgetForm,
+                                       @ModelAttribute("departmentForm") DepartmentForm deptForm,
+                                       @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
+                                       @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+                                       @ModelAttribute("userForm") UserForm userForm,
+                                       @ModelAttribute("uploadForm") UploadForm uploadForm)
+    {
+
+        processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
+                , userForm, uploadForm);
+        return "Successfully Submitted";
+
+    }
+
+	@RequestMapping(value = "/eRSPG/proposal/list", method = RequestMethod.GET)
+	public String proposalList(
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+            Model model) {
+
+		model.addAttribute("proposalList", proposalListByUserId(userId));
+        return "proposalList";
 	}
-	
-	@RequestMapping("/proposal/review")
-	public String reviewForm(Model model){
-		String contentPage = "proposalReview.jsp";
-		model.addAttribute("contentPage",contentPage);
-		return "projectIndex";
+
+	@RequestMapping(value = "/eRSPG/proposalStatus", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalStatus> proposalStatusList(
+			@RequestParam(value = "name", defaultValue = "", required = false) String name) {
+
+		name = name == null ? "" : name.toUpperCase();
+
+		if (name.isEmpty()) {
+			List<ProposalStatus> statuses = proposalStatusDAO.findAllProposalStatuses();
+			return statuses;
+		} else {
+			ProposalStatus status = proposalStatusDAO.findProposalStatusByName(name);
+			return status == null ? Collections.EMPTY_LIST : Collections.singletonList(status);
+        }
 	}
-	
-	
-	@RequestMapping("/proposal/submit")
-	public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
-						@ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
-						@ModelAttribute("bodyForm") BodyForm bodyForm,
-						@ModelAttribute("budgetForm") BudgetForm budgetForm,
-						@ModelAttribute("departmentForm") DepartmentForm deptForm,
-						@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
-						@ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
-						@ModelAttribute("userForm") UserForm userForm,
-						@ModelAttribute("uploadForm") UploadForm uploadForm)
-	{
-		
-		processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
-							, userForm, uploadForm);
-		return "Successfully Submitted";
-		
-		
+
+	@RequestMapping(value = "/eRSPG/proposal/{id}/status", method = RequestMethod.PUT)
+	public @ResponseBody Proposal updateProposalStatus(
+			@PathVariable String id,
+			@RequestBody String statusName) {
+
+		Integer proposalId = id == null ? null : Integer.parseInt(id);
+        statusName = statusName == null ? "" : statusName.toUpperCase();
+        ProposalStatus status = proposalStatusDAO.findProposalStatusByName(statusName);
+
+        Proposal proposal;
+        if (proposalId != null) {
+             proposal = proposalDao.findProposal(proposalId);
+        } else {
+            return null;
+        }
+
+		if (status != null && proposal != null) {
+			proposal.setProposalStatus(status.getProposalStatusId());
+			proposalDao.addNewOrUpdateProposal(proposal);
+			return proposal;
+		} else {
+			return null;
+		}
 	}
+
 	private void processSubmission( DetailForm detailForm,
 					AwardTypeForm awardForm,
 					BodyForm bodyForm,
@@ -468,12 +559,21 @@ public class ProposalController {
 	{
 	
 		LocalDateTime time = LocalDateTime.now();
-		
-	    
-	    
+
 		Proposal proposal = new Proposal();
+
+		// weird work around for user data
+        userForm.setUserEmail(detailForm.getProposalEmail());
+        User user = checkIfUserAlreadyExists(userForm);
+        if(user != null){
+            int userID = user.getUserId();
+            // added code to get user id
+            proposal.setUserId(userID);
+        }
+
 		proposal.setProjectDirector(detailForm.getProjectDirector());
-		proposal.setProposalComplete(true);
+		//proposal.setProposalComplete(true);
+		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
 		proposal.setProposalMailCode(detailForm.getProposalMailCode());
 		proposal.setProposalExtension(detailForm.getProposalExtension());
 		proposal.setProposalEmail(detailForm.getProposalEmail());
@@ -486,27 +586,18 @@ public class ProposalController {
 		proposal.setSubmissionDate(time);
 		proposal.setUpdatedDate(time);
 		
-		
-		
 		//save proposal to database
 		proposalDao.addNewOrUpdateProposal(proposal);
-		
 		int proposalID = proposal.getProposalId();
-		
-		
 		
 		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
 		{
 			RequestAward requestAward = new RequestAward();
 			requestAward.setProposalId(proposalID);
 			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
-			
 			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
-			
 		}
-		
 
-		
 		List<Fund> fundList = budgetForm.generateFundObjects();
 		
 		// iterate through the all fund objects and set the proposal id
@@ -514,7 +605,7 @@ public class ProposalController {
 			fund.setProposalId(proposalID);
 			fundDAO.addNewOrUpdateFund(fund);
 		}
-		
+
 		// save essay question answers
 		List<EssayAnswer> answerList = bodyForm.generateEssayAnswers();
 		
@@ -532,9 +623,7 @@ public class ProposalController {
 			essayAnswerDAO.addNewOrUpdateEssayAnswer(essayAnswer);
 		}
 		
-		//create the file on the server 
-		
-		
+		//create the file on the server
 		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
 		
 		File file = new File(this.uploadDirectory + fileName);
@@ -546,32 +635,68 @@ public class ProposalController {
 		}
 		try
 		{
-			file.createNewFile();
-			OutputStream output = new FileOutputStream(file);
-			output.write(uploadForm.getBytes());
-			output.close();
-			
-			List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
-			
-			for (UploadFile uploadFile : uploadFiles) {
-				uploadFile.setProposalId(proposalID);
-				uploadFile.setPath(this.uploadDirectory + fileName);
-				uploadFile.setFileName(uploadForm.getName());
-				
-				// store saved file locations to  database
-				fileUploadDAO.save(uploadFile);
+			// add code to check if directory exists and if not make it with write permissions
+            File directory = new File(this.uploadDirectory);
+			if (! directory.exists()){
+                // Throws exception on failure
+                directory.mkdirs();
+                directory.setReadable(true);
+                directory.setWritable(true);
+                directory.setExecutable(true);
 			}
+
+			file.createNewFile();
+            file.setReadable(true);
+            file.setWritable(true);
+            file.setExecutable(true);
+			OutputStream output = new FileOutputStream(file);
+
+            // Added this code to stop null exceptions because duh not everyone uploads a file with submission
+			if(uploadForm.getBytes() != null){
+                output.write(uploadForm.getBytes());
+            }
+
+			output.close();
+
+            List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
+            // Added this code to stop null exceptions because duh not everyone uploads a file with submission
+            if(uploadFiles != null && uploadFiles.size() > 0){
+                for (UploadFile uploadFile : uploadFiles) {
+                    uploadFile.setProposalId(proposalID);
+                    uploadFile.setPath(this.uploadDirectory + fileName);
+                    uploadFile.setFileName(uploadForm.getName());
+
+                    // store saved file locations to  database
+                    fileUploadDAO.save(uploadFile);
+                }
+            }
+
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		
-		
 		//TODO: clear session form data
 		
 	}
-	
+
+	private User checkIfUserAlreadyExists(UserForm userForm){
+        // user added if doesn't exist
+        User user = null;
+        try{
+            user = userDAO.findUserByEmail(userForm.getUserEmail());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private void addNewUserToDatabase(UserForm userForm) {
+        User newUser = new User();
+        newUser.setEmail(userForm.getUserEmail());
+        newUser.setFirstName(userForm.getFirstName());
+        newUser.setLastName(userForm.getLastName());
+        userDAO.addNewOrUpdateUser(newUser);
+    }
 	
 }

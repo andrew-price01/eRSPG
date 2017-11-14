@@ -20,9 +20,19 @@ public class User {
 	
 	@Column(name="userLastName")
 	private String lastName;
+
+//	@Column(name="userLoginName")
+//	private String loginName;
 	
 	public User(){
 		
+	}
+
+	public User(int userId, String email, String firstName, String lastName) {
+		this.userId = userId;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public int getUserId() {
@@ -56,5 +66,12 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
+//	public String getLoginName() {
+//		return loginName;
+//	}
+//
+//	public void setLoginName(String loginName) {
+//		this.loginName = loginName;
+//	}
 }

@@ -21,11 +21,17 @@ public class UserForm {
         this.firstName = firstName;
     }
 
+    public void setFirstName(String fName) {
+        this.firstName = fName;
+    }
+
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName() { this.lastName = lastName; }
+
+    public void setLastName(String lName) { this.lastName = lName; }
 
     public String getUserEmail() {
         return userEmail;
@@ -33,5 +39,9 @@ public class UserForm {
 
     public void setUserEmail() {
         this.userEmail = userEmail;
+    }
+
+    public void setUserEmail(String email) {
+        this.userEmail = email;
     }
 }
