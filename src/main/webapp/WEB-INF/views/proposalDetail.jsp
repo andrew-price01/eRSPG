@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <div class="container">
+
     <% String pageName = "detail"; %>
     <%@include file="/WEB-INF/views/breadcrumbs.jsp" %>
 
@@ -15,7 +16,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label required-field">Project Director:</label>
+            <label class="col-sm-3 control-label required-field" for="projectDirector">Project Director:</label>
             <div class="col-sm-9">
                 <form:input class="form-control" type="text" path="projectDirector" required="true"/>
             </div>
@@ -54,4 +55,5 @@
             </button>
         </div>
     </form:form>
+
 </div>

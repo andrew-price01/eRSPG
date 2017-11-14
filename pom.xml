@@ -25,12 +25,30 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<validation-api.version>1.1.0.Final</validation-api.version>
+		<java.cas.client.version>3.4.1</java.cas.client.version>
+		<commons-io.version>2.4</commons-io.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-codec.version>1.10</commons-codec.version>
+		<javax.inject.version>1</javax.inject.version>
+        <spring-data-commons.version>1.1.0.RELEASE</spring-data-commons.version>
+        <spring-data-jpa.version>2.0.0.RELEASE</spring-data-jpa.version>
+        <joda-time.version>2.9.9</joda-time.version>
 		<guava.version>23.0</guava.version>
 		<jackson.version>2.9.1</jackson.version>
+		<google.collections.version>1.0</google.collections.version>
 	</properties>
 
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/com.google.collections/google-collections -->
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>${google.collections.version}</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -226,11 +244,11 @@
 		</dependency>
 
 		 <!--CAS integration for tomcat v 8.5-->
-		<!--<dependency>-->
-			<!--<groupId>org.jasig.cas.client</groupId>-->
-			<!--<artifactId>cas-client-integration-tomcat-v85</artifactId>-->
-			<!--<version>${java.cas.client.version}</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-integration-tomcat-v85</artifactId>
+			<version>${java.cas.client.version}</version>
+		</dependency>
 
 		 <!--CAS Support for SAML functionality-->
 		<dependency>

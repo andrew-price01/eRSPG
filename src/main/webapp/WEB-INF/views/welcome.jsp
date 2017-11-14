@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>" />
-    <%-- <link rel="stylesheet" type="text/css" href="<s:url value="/css/home.css"/>" /> --%>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
@@ -17,17 +17,14 @@
     <title>eRSPG</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp"/>
+<jsp:include page="/WEB-INF/views/header_noLogin.jsp"/>
 
 <div class="container">
-	<legend><h2 style="text-align:center;">eRSPG Home</h2></legend>
-	
-	<div style="text-align: center;">
+    <legend><h2 style="text-align:center;">Welcome To eRSPG</h2></legend>
 
-		<input class="btn my-btn" onclick="window.location.href = '/eRSPG/proposal/list'" style= "margin-right:15px" type="button" value="View Proposals"/>
-		<input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/index'" value="Submit Proposal" />
-
-	</div>
+    <div style="text-align: center;">
+        <p>Please Login</p>
+    </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/footer.jsp"/>
