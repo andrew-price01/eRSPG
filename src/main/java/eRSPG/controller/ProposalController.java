@@ -395,7 +395,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value="/proposal/upload", method=RequestMethod.POST)
-	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("UploadForm") UploadForm uploadForm
+	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
 		, Model model, @RequestParam("nextPage") String nextPage){
 		
 		try {
@@ -480,15 +480,16 @@ public class ProposalController {
 		LocalDateTime time = LocalDateTime.now();
 		
 	    
-	    
+	    String test = "TEST";
 		Proposal proposal = new Proposal();
-		proposal.setProjectDirector(detailForm.getProjectDirector());
+		//proposal.setProjectDirector(detailForm.getProjectDirector());
+		proposal.setProjectDirector(test);
 		proposal.setProposalComplete(true);
-		proposal.setProposalMailCode(detailForm.getProposalMailCode());
-		proposal.setProposalExtension(detailForm.getProposalExtension());
-		proposal.setProposalEmail(detailForm.getProposalEmail());
+		proposal.setProposalMailCode(test);
+		proposal.setProposalExtension(test);
+		proposal.setProposalEmail(test);
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-		proposal.setProposalTitle(detailForm.getProposalTitle());
+		proposal.setProposalTitle(test);
 		proposal.setSemesterId(deptForm.getSemesterID());
 		proposal.setProjectTypeId(awardForm.getProjectTypeID());
 		proposal.setDepartmentId(deptForm.getDepartmentID());
@@ -543,7 +544,6 @@ public class ProposalController {
 		
 		//create the file on the server 
 		
-		
 		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
 		
 		File file = new File(this.uploadDirectory + fileName);
@@ -553,9 +553,22 @@ public class ProposalController {
 		}
 		
 		try {
+			
+			File directory = new File(this.uploadDirectory);
+			
+			if(!directory.exists()) {
+				directory.mkdirs();
+				directory.setReadable(true);
+				directory.setWritable(true);
+				directory.setExecutable(true);
+			}
+			
 			file.createNewFile();
 			OutputStream output = new FileOutputStream(file);
-			output.write(uploadForm.getBytes());
+			
+			if(uploadForm != null) {
+				output.write(uploadForm.getBytes());
+			}
 			output.close();
 			
 			List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
@@ -574,6 +587,7 @@ public class ProposalController {
 		
 		EmailEvent emailEvent = new EmailEvent();
 		try {
+			detailForm.setProposalEmail("nicholaslindquist@mail.weber.edu");
 			emailEvent.sendEmail(detailForm, bodyForm, file, detailForm.getProposalEmail());
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block

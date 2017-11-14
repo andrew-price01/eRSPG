@@ -3,54 +3,84 @@ package eRSPG.Email;
 import java.io.File;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import eRSPG.model.form.BodyForm;
 import eRSPG.model.form.DetailForm;
 
 public class EmailEvent {
-	static Properties mailServerProperties;
-	static Session getMailSession;
-	static MimeMessage generateMailMessage;
+
 	
 	
 	public void sendEmail(DetailForm detailForm, BodyForm bodyForm, File file, String toUser) throws MessagingException {
 		final String username = "erspgdonotreply@gmail.com";
 		final String password = "msumlslqfyqdoekt";
-
 		
-		mailServerProperties = System.getProperties();
-		mailServerProperties.put("mail.smtp.port", "587");
-		mailServerProperties.put("mail.smtp.auth", "true");
-		mailServerProperties.put("mail.smtp.starttls.enable", "true");
+		
+	    Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+	  
 		 
-		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
-		generateMailMessage = new MimeMessage(getMailSession);
-		generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toUser));
-		generateMailMessage.setSubject("A proposal has been submitted through eRSPG");
 		
-		String emailBody = "<b>Proposal Details</b>:\n"
-				+ "<li>\n"
-				+ "<ul>Project Director: " + detailForm.getProjectDirector() + "</ul>\n"
-				+ "<ul>Email: " + detailForm.getProposalEmail() + "</ul>\n"
-				+ "<ul>Proposal Title: " + detailForm.getProposalTitle() + "</ul>\n"
-				+ "<ul>Summary: " + bodyForm.getSummary() + "</ul>\n"
-				+ "</li>";
-		
-		generateMailMessage.setContent(emailBody, "text/html");
+		 Session session = Session.getInstance(props,
+		            new javax.mail.Authenticator() {
+		                protected PasswordAuthentication getPasswordAuthentication() {
+		                    return new PasswordAuthentication(username, password);
+		                }
+		            });
 
-		Transport transport = getMailSession.getTransport("smtp");
-		 
-		// Enter your correct gmail UserID and Password
-		// if you have 2FA enabled then provide App Specific Password
-		transport.connect("smtp.gmail.com", username, password);
-		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
-		transport.close();
+		    try {
+
+		        Message message = new MimeMessage(session);
+		        message.setFrom(new InternetAddress(username));
+		        message.setRecipients(Message.RecipientType.TO,
+		                InternetAddress.parse("nicholaslindquist@mail.weber.edu"));
+		        message.setSubject("Message from eRSPG");
+		        //message.setText("<li><ul>Test</ul></li>","utf-8", "html");
+		        
+
+		        MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+		        Multipart multipart = new MimeMultipart();
+
+		        messageBodyPart = new MimeBodyPart();
+		        String fileSource = file.getAbsolutePath();
+		        String fileName = file.getName();
+		        DataSource source = new FileDataSource(fileSource);
+		        messageBodyPart.setDataHandler(new DataHandler(source));
+		        messageBodyPart.setFileName(fileName);
+		        //messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
+		        message.setText("<html><ul><li>Test</li></ul></html>");
+		        multipart.addBodyPart(messageBodyPart);    
+		        message.setContent(multipart);
+
+		        System.out.println("Sending");
+
+		        Transport.send(message);
+
+		        System.out.println("Done");
+
+		    } catch (MessagingException e) {
+		        e.printStackTrace();
+		    }
 	}
+	
+
 
 }
