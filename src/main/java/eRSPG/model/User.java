@@ -28,6 +28,11 @@ public class User {
 		
 	}
 
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	public User(int userId, String email, String firstName, String lastName) {
 		this.userId = userId;
 		this.email = email;

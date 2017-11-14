@@ -108,7 +108,7 @@ public class ProposalController {
                     ProposalDTO(
                         p,
                         departmentDAO.findDepartment(p.getDepartmentId()),
-                        userDAO.findUserById(p.getUserId()),
+                        p.getUserId() == null ? new User("","") : userDAO.findUserById(p.getUserId()),
                         proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
 				.collect(Collectors.toList());
 	}
