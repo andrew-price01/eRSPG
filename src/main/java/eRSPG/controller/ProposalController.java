@@ -1,52 +1,25 @@
 package eRSPG.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.validation.Valid;
-
+import eRSPG.Repository.*;
+import eRSPG.model.*;
+import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import eRSPG.Email.EmailEvent;
-import eRSPG.Repository.DepartmentDAO;
-import eRSPG.Repository.EssayAnswerDAO;
-import eRSPG.Repository.FileUploadDAO;
-import eRSPG.Repository.FundDAO;
-import eRSPG.Repository.ProposalDAO;
-import eRSPG.Repository.RequestAwardDAO;
-import eRSPG.Repository.SemesterDAO;
-import eRSPG.model.Department;
-import eRSPG.model.EssayAnswer;
-import eRSPG.model.Fund;
-import eRSPG.model.Proposal;
-import eRSPG.model.RequestAward;
-import eRSPG.model.Semester;
-import eRSPG.model.UploadFile;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
-import eRSPG.model.form.BodyQuestionsForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DepartmentForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.UserForm;
+import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
@@ -58,13 +31,13 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	private ProposalDAO proposalDao;
+	protected ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
 	
 	@Autowired
-	private DepartmentDAO departmentDAO;
+	protected DepartmentDAO departmentDAO;
 	
 	@Autowired
 	private SemesterDAO semesterDAO;
@@ -78,17 +51,90 @@ public class ProposalController {
 	@Autowired
 	private FileUploadDAO fileUploadDAO;
 
+	@Autowired
+	protected UserDAO userDAO;
+
+	@Autowired
+	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
+	private static final String SUBMITTED_STATUS= "SUBMITTED";
+
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
 	}
-	
+
+	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalDTO> proposalListByUserId(
+			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
+		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
+		List<Proposal> proposals = id == null ?
+				proposalDao.findAllProposals() :
+				proposalDao.findProposalByUserId(id);
+
+		return proposals.stream()
+				.map(p -> new
+                    ProposalDTO(
+                        p,
+                        departmentDAO.findDepartment(p.getDepartmentId()),
+                        userDAO.findUserById(p.getUserId()),
+                        proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
+				.collect(Collectors.toList());
+	}
+
+	@RequestMapping(value = "/proposal/list", method = RequestMethod.GET)
+	public String proposalList(
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+            Model model) {
+
+		model.addAttribute("proposalList", proposalListByUserId(userId));
+        return "proposalList";
+	}
+
+	@RequestMapping(value = "/proposalStatus", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalStatus> proposalStatusList(
+			@RequestParam(value = "name", defaultValue = "", required = false) String name) {
+
+		name = name == null ? "" : name.toUpperCase();
+
+		if (name.isEmpty()) {
+			List<ProposalStatus> statuses = proposalStatusDAO.findAllProposalStatuses();
+			return statuses;
+		} else {
+			ProposalStatus status = proposalStatusDAO.findProposalStatusByName(name);
+			return status == null ? Collections.EMPTY_LIST : Collections.singletonList(status);
+        }
+	}
+
+	@RequestMapping(value = "/proposal/{id}/status", method = RequestMethod.PUT)
+	public @ResponseBody Proposal updateProposalStatus(
+			@PathVariable String id,
+			@RequestBody String statusName) {
+
+		Integer proposalId = id == null ? null : Integer.parseInt(id);
+        statusName = statusName == null ? "" : statusName.toUpperCase();
+        ProposalStatus status = proposalStatusDAO.findProposalStatusByName(statusName);
+
+        Proposal proposal;
+        if (proposalId != null) {
+             proposal = proposalDao.findProposal(proposalId);
+        } else {
+            return null;
+        }
+
+		if (status != null && proposal != null) {
+			proposal.setProposalStatus(status.getProposalStatusId());
+			proposalDao.addNewOrUpdateProposal(proposal);
+			return proposal;
+		} else {
+			return null;
+		}
+	}
+
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
-
+		
 		
 		DepartmentForm deptForm = new DepartmentForm();
 		DetailForm detailForm = new DetailForm();
@@ -113,7 +159,7 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 		model.addAttribute("userForm", userForm);
 
-		return "redirect:/proposal/department";
+		return "redirect:/proposal/detail";
 	}
 
 	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
@@ -398,9 +444,8 @@ public class ProposalController {
 	public String upload(@RequestParam("fileUpload") MultipartFile file, @ModelAttribute("uploadForm") UploadForm uploadForm
 		, Model model, @RequestParam("nextPage") String nextPage){
 		
-		try {
 		if (!file.isEmpty()) {
-        		try {
+        	try {
                 byte[] bytes = file.getBytes();
                
                
@@ -410,27 +455,22 @@ public class ProposalController {
 
                 //return "redirect:/proposal/review";
                 //return "redirect:/proposal/submit";
-        			return "redirect:/" + nextPage;
-        		} catch (Exception e) {
+        		return "redirect:/" + nextPage;
+            } catch (Exception e) {
             	
-        			e.printStackTrace();
-        			model.addAttribute("failedUpload","failed to upload file!");
-        			model.addAttribute("contentPage","proposalUpload.jsp");
-        			return "redirect:/" + nextPage;
+            	model.addAttribute("failedUpload","failed to upload file!");
+            	model.addAttribute("contentPage","proposalUpload.jsp");
+        		return "redirect:/" + nextPage;
                 //return "projectIndex";
                 
             }
-        } else {
-        		model.addAttribute("failedUpload","failed to upload file!");
-        		model.addAttribute("contentPage","proposalUpload.jsp");
+        } 
+		else {
+        	model.addAttribute("failedUpload","failed to upload file!");
+        	model.addAttribute("contentPage","proposalUpload.jsp");
             //return "projectIndex";
-        		return "redirect:/" + nextPage;
+        	return "redirect:/" + nextPage;
         }
-		
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		return "redirect:/" + nextPage;
 		//return "projectIndex";
 	}
 	
@@ -453,17 +493,13 @@ public class ProposalController {
 						@ModelAttribute("userForm") UserForm userForm,
 						@ModelAttribute("uploadForm") UploadForm uploadForm)
 	{
-
+		
 		processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
 							, userForm, uploadForm);
-		
-
 		return "Successfully Submitted";
 		
 		
 	}
-	
-	
 	private void processSubmission( DetailForm detailForm,
 					AwardTypeForm awardForm,
 					BodyForm bodyForm,
@@ -474,22 +510,19 @@ public class ProposalController {
 					UserForm userForm,
 					UploadForm uploadForm)
 	{
-		
-
 	
 		LocalDateTime time = LocalDateTime.now();
 		
 	    
-	    String test = "TEST";
+	    
 		Proposal proposal = new Proposal();
-		//proposal.setProjectDirector(detailForm.getProjectDirector());
-		proposal.setProjectDirector(test);
-		proposal.setProposalComplete(true);
-		proposal.setProposalMailCode(test);
-		proposal.setProposalExtension(test);
-		proposal.setProposalEmail(test);
+		proposal.setProjectDirector(detailForm.getProjectDirector());
+		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
+		proposal.setProposalMailCode(detailForm.getProposalMailCode());
+		proposal.setProposalExtension(detailForm.getProposalExtension());
+		proposal.setProposalEmail(detailForm.getProposalEmail());
 		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-		proposal.setProposalTitle(test);
+		proposal.setProposalTitle(detailForm.getProposalTitle());
 		proposal.setSemesterId(deptForm.getSemesterID());
 		proposal.setProjectTypeId(awardForm.getProjectTypeID());
 		proposal.setDepartmentId(deptForm.getDepartmentID());
@@ -506,13 +539,14 @@ public class ProposalController {
 		
 		
 		
-		for(int i = 0; i < awardForm.getAwardTypes().size(); i++) {
+		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
+		{
 			RequestAward requestAward = new RequestAward();
-			
 			requestAward.setProposalId(proposalID);
 			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
 			
 			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+			
 		}
 		
 
@@ -544,31 +578,21 @@ public class ProposalController {
 		
 		//create the file on the server 
 		
+		
 		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
 		
 		File file = new File(this.uploadDirectory + fileName);
 		
-		if (file.exists()) {
+		if(file.exists())
+		{
 			file.delete();
+			
 		}
-		
-		try {
-			
-			File directory = new File(this.uploadDirectory);
-			
-			if(!directory.exists()) {
-				directory.mkdirs();
-				directory.setReadable(true);
-				directory.setWritable(true);
-				directory.setExecutable(true);
-			}
-			
+		try
+		{
 			file.createNewFile();
 			OutputStream output = new FileOutputStream(file);
-			
-			if(uploadForm != null) {
-				output.write(uploadForm.getBytes());
-			}
+			output.write(uploadForm.getBytes());
 			output.close();
 			
 			List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
@@ -581,18 +605,13 @@ public class ProposalController {
 				// store saved file locations to  database
 				fileUploadDAO.save(uploadFile);
 			}
-		} catch(Exception e) {
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 		
-		EmailEvent emailEvent = new EmailEvent();
-		try {
-			detailForm.setProposalEmail("nicholaslindquist@mail.weber.edu");
-			emailEvent.sendEmail(detailForm, bodyForm, file, detailForm.getProposalEmail());
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		//TODO: clear session form data
 		
