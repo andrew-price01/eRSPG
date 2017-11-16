@@ -36,6 +36,9 @@ import java.util.Date;
         @RequestMapping("/eRSPG/chairman/proposal")
         public String chairmanProposal() { return "chairmanProposalHome"; }
 
+        @RequestMapping("/eRSPG/chairman/committee")
+        public String chairmanCommittee() { return "manageCommittee"; }
+
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
         return new ModelAndView("makeAnnouncement", "announcement", new AnnouncementForm());

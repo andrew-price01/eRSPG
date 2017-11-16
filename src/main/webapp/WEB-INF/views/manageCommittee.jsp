@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Andrew
-  Date: 10/23/2017
-  Time: 5:58 PM
+  Date: 11/15/2017
+  Time: 8:11 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -38,8 +38,8 @@
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled components">
-            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/home'" value="Chairman Home">Home</a></li>
-            <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/committee'" value="Manage Committee">Manage Committee</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/home'" value="Chairman Home">Home</a></li>
+            <li class="active"><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/committee'" value="Manage Committee">Manage Committee</a></li>
             <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/proposal'" value="Chairman Proposals">Proposals</a></li>
             <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chairman/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
         </ul>
@@ -47,7 +47,8 @@
 
     <!-- Page Content -->
     <div id="content" class="main">
-        <h1>Home</h1>
+        <h1>Manage Committee</h1>
+
     </div>
 
 </div>
