@@ -92,10 +92,6 @@
 			</div>
 			<form:errors path="projectTypeID" />
 		</div>
-		<%-- <div>
-			<a class="pull-left" href="<s:url value='/proposal/detail' />">Previous</a>
-			<button type="submit" class="btn my-btn pull-right">Next</button>
-		</div> --%>
 		
 		<input type="hidden" name="nextPage" id="nextPage" value="0" />
 		
@@ -104,10 +100,6 @@
 			<button type="submit" class="btn my-btn" onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'>Save</button>
            	<button type="submit" class="btn my-btn pull-right" onclick='setNextPage("proposal/budget", "<s:url value="/" />")'>Next</button>
         </div>
-        
-		<%-- <div>
-            <a class="btn my-btn pull-left" href='<s:url value="/proposal/budget" />'>Previous</a>
-            <a class="btn my-btn pull-right" href='<s:url value="/proposal/department" />'>Next</a>
-        </div> --%>
+
 	</form:form>
 </div>

@@ -1,53 +1,25 @@
 package eRSPG.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import eRSPG.Repository.*;
+import eRSPG.model.*;
+import eRSPG.model.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import eRSPG.Repository.DepartmentDAO;
-import eRSPG.Repository.EssayAnswerDAO;
-import eRSPG.Repository.FileUploadDAO;
-import eRSPG.Repository.FundDAO;
-import eRSPG.Repository.ProposalDAO;
-import eRSPG.Repository.RequestAwardDAO;
-import eRSPG.Repository.SemesterDAO;
-import eRSPG.Repository.UserDAO;
-import eRSPG.model.Department;
-import eRSPG.model.EssayAnswer;
-import eRSPG.model.Fund;
-import eRSPG.model.Proposal;
-import eRSPG.model.RequestAward;
-import eRSPG.model.Semester;
-import eRSPG.model.UploadFile;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
-import eRSPG.model.form.BodyQuestionsForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DepartmentForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.UserForm;
+import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
@@ -59,13 +31,13 @@ public class ProposalController {
 	 */
 	
 	@Autowired
-	private ProposalDAO proposalDao;
+	protected ProposalDAO proposalDao;
 	
 	@Autowired
 	private RequestAwardDAO requestAwardDao;
 	
 	@Autowired
-	private DepartmentDAO departmentDAO;
+	protected DepartmentDAO departmentDAO;
 	
 	@Autowired
 	private SemesterDAO semesterDAO;
@@ -80,14 +52,85 @@ public class ProposalController {
 	private FileUploadDAO fileUploadDAO;
 
 	@Autowired
-	private UserDAO userDAO;
+	protected UserDAO userDAO;
+
+	@Autowired
+	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
-	
+	private static final String SUBMITTED_STATUS= "SUBMITTED";
+
 	public String getNextPage(@RequestParam("nextPage") String nextPage) {
 		return nextPage;
 	}
-	
+
+	@RequestMapping(value = "/proposal", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalDTO> proposalListByUserId(
+			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
+		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
+		List<Proposal> proposals = id == null ?
+				proposalDao.findAllProposals() :
+				proposalDao.findProposalByUserId(id);
+
+		return proposals.stream()
+				.map(p -> new
+                    ProposalDTO(
+                        p,
+                        departmentDAO.findDepartment(p.getDepartmentId()),
+                        userDAO.findUserById(p.getUserId()),
+                        proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
+				.collect(Collectors.toList());
+	}
+
+	@RequestMapping(value = "/proposal/list", method = RequestMethod.GET)
+	public String proposalList(
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+            Model model) {
+
+		model.addAttribute("proposalList", proposalListByUserId(userId));
+        return "proposalList";
+	}
+
+	@RequestMapping(value = "/proposalStatus", method = RequestMethod.GET)
+	public @ResponseBody List<ProposalStatus> proposalStatusList(
+			@RequestParam(value = "name", defaultValue = "", required = false) String name) {
+
+		name = name == null ? "" : name.toUpperCase();
+
+		if (name.isEmpty()) {
+			List<ProposalStatus> statuses = proposalStatusDAO.findAllProposalStatuses();
+			return statuses;
+		} else {
+			ProposalStatus status = proposalStatusDAO.findProposalStatusByName(name);
+			return status == null ? Collections.EMPTY_LIST : Collections.singletonList(status);
+        }
+	}
+
+	@RequestMapping(value = "/proposal/{id}/status", method = RequestMethod.PUT)
+	public @ResponseBody Proposal updateProposalStatus(
+			@PathVariable String id,
+			@RequestBody String statusName) {
+
+		Integer proposalId = id == null ? null : Integer.parseInt(id);
+        statusName = statusName == null ? "" : statusName.toUpperCase();
+        ProposalStatus status = proposalStatusDAO.findProposalStatusByName(statusName);
+
+        Proposal proposal;
+        if (proposalId != null) {
+             proposal = proposalDao.findProposal(proposalId);
+        } else {
+            return null;
+        }
+
+		if (status != null && proposal != null) {
+			proposal.setProposalStatus(status.getProposalStatusId());
+			proposalDao.addNewOrUpdateProposal(proposal);
+			return proposal;
+		} else {
+			return null;
+		}
+	}
+
 	@RequestMapping("/proposal/start")
 	public String startSubmission(Model model)
 	{
@@ -116,7 +159,7 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
 		model.addAttribute("userForm", userForm);
 
-		return "redirect:/proposal/department";
+		return "redirect:/proposal/detail";
 	}
 
 	@RequestMapping(value="/proposal/index", method=RequestMethod.GET)
@@ -473,7 +516,7 @@ public class ProposalController {
 	    
 		Proposal proposal = new Proposal();
 		proposal.setProjectDirector(detailForm.getProjectDirector());
-		proposal.setProposalComplete(true);
+		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
 		proposal.setProposalMailCode(detailForm.getProposalMailCode());
 		proposal.setProposalExtension(detailForm.getProposalExtension());
 		proposal.setProposalEmail(detailForm.getProposalEmail());

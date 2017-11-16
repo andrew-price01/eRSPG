@@ -1,6 +1,8 @@
 package eRSPG.config;
 
 import eRSPG.model.*;
+import eRSPG.Repository.*;
+import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,8 @@ import javax.sql.DataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.sql.DataSource;
 import java.util.Properties;
-import eRSPG.Repository.*;
 
 @Configuration
 @EnableTransactionManagement
@@ -41,6 +43,8 @@ public class DataConfig {
 
         sessionBuilder.addAnnotatedClasses(Announcement.class, Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
                 FundType.class, Participant.class, ProjectType.class, Proposal.class, RequestAward.class, RoleType.class,
+        sessionBuilder.addAnnotatedClasses(Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
+                FundType.class, Participant.class, ProjectType.class, Proposal.class, ProposalStatus.class, RequestAward.class, RoleType.class,
                 Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
         //sessionBuilder.scanPackages("eRPSG.model");
         sessionBuilder.addProperties(getHibernateProperties());
@@ -128,4 +132,9 @@ public class DataConfig {
     @Bean(name= "userDAO")
     public UserDAO getUserDao(SessionFactory sessionFactory){ return new UserImpl(sessionFactory); }
 
+    @Autowired
+    @Bean(name="proposalStatusDAO")
+    public ProposalStatusDAO getProposalStatus(SessionFactory sessionFactory) {
+        return new ProposalStatusImpl(sessionFactory);
+    }
 }
