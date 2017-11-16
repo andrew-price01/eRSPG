@@ -696,6 +696,9 @@ public class ProposalController {
         newUser.setEmail(userForm.getUserEmail());
         newUser.setFirstName(userForm.getFirstName());
         newUser.setLastName(userForm.getLastName());
+        String username = newUser.getFirstName() + newUser.getLastName();
+        username = username.toLowerCase();
+        newUser.setUsername(username);
         userDAO.addNewOrUpdateUser(newUser);
     }
 	

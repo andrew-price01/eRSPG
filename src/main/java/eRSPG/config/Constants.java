@@ -19,6 +19,7 @@ public final class Constants {
 //    public static final String CAS_URL_PREFIX = "https://casdev.weber.edu";
 //    public static final String CAS_SERVICE_URL = "https://cas.weber.edu/p3/serviceValidate";
     public static final String APP_SERVER = "http://localhost:8080";
+    public static final String CAS_SERVER = "http://localhost:8443";
     public static final String CAS_SERVICE_URL = "http://localhost:8080/eRSPG/home";
     public static final String CAS_URL_LOGIN = "https://localhost:8443/cas/login";
     public static final String CAS_URL_LOGOUT = "https://localhost:8443/cas/logout";

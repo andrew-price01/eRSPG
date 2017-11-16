@@ -45,11 +45,17 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
         super.onStartup(servletContext);
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
 
-        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
-        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+//        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
+//        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+//
+//        FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
+//        authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
 
-        FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
-        authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+        FilterRegistration.Dynamic ssoFilter = servletContext.addFilter("CAS Single Sign Out Filter", singleSignOutFilter());
+        ssoFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+
+        FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxySpringSecurity());
+        springSecurityFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
 
     }
 
@@ -72,12 +78,9 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
         return mDelegatingFilterProxy;
     }
 
-    public HttpServletRequestWrapperFilter httpServletRequestWrapperFilter(){
-        return new HttpServletRequestWrapperFilter();
+    public DelegatingFilterProxy delegatingFilterProxySpringSecurity() {
+        DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
+        return mDelegatingFilterProxy;
     }
 
-    public AssertionThreadLocalFilter assertionThreadLocalFilter(){
-        AssertionThreadLocalFilter mAssertionThreadLocalFilter = new AssertionThreadLocalFilter();
-        return new AssertionThreadLocalFilter();
-    }
 }

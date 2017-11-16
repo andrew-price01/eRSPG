@@ -55,10 +55,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/font/**").addResourceLocations("/WEB-INF/font/");
 	}
 
-	public SingleSignOutHttpSessionListener singleSignOutHttpSessionListener(){
-		return new SingleSignOutHttpSessionListener();
-	}
-
 }
 
 
