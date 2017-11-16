@@ -2,11 +2,7 @@ package eRSPG.controller;
 
 import eRSPG.model.Announcement;
 import eRSPG.model.form.AnnouncementForm;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,28 +17,31 @@ import java.util.Date;
 
 @Controller
     @SessionAttributes("AnnouncementForm")
-    public class AdminController {
+    public class ChairmanController {
 
         @Autowired
         private AnnouncementDAO announcementDao;
 
-        @RequestMapping("/eRSPG/admin/home")
-        public String adminHome(){
-        return "adminHome";
+        @RequestMapping("/eRSPG/chairman/home")
+        public String chairmanHome(){
+        return "chairmanHome";
     }
 
-        @RequestMapping("/eRSPG/admin/makeAnnouncement")
+        @RequestMapping("/eRSPG/chairman/makeAnnouncement")
         public String makeAnnouncement()
         {
             return "makeAnnouncement";
         }
 
-    @RequestMapping(value = "/eRSPG/admin/makeAnnouncement", method = RequestMethod.GET)
+        @RequestMapping("/eRSPG/chairman/proposal")
+        public String chairmanProposal() { return "chairmanProposalHome"; }
+
+    @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
         return new ModelAndView("makeAnnouncement", "announcement", new AnnouncementForm());
     }
 
-    @RequestMapping(value = "/eRSPG/admin/makeAnnouncement", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.POST)
     public String saveAnnouncement(@Valid @ModelAttribute Announcement announcement,
                          BindingResult result, Model model) {
 

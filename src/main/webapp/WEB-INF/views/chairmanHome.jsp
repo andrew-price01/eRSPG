@@ -38,10 +38,10 @@
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled components">
-            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/admin/home'" value="Admin">Home</a></li>
+            <li class="active"><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/home'" value="Chairman Home">Home</a></li>
             <li><a class="btn my-btn" type="button">Manage Committee</a></li>
-            <li><a class="btn my-btn" type="button" href="#">Proposals</a></li>
-            <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/admin/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
+            <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/proposal'" value="Chairman Proposals">Proposals</a></li>
+            <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chairman/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
         </ul>
     </nav>
 
