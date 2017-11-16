@@ -1,5 +1,6 @@
 package eRSPG.config;
 
+import eRSPG.security.CustomUserAuthenticationProvider;
 import eRSPG.security.CustomUserDetailsService;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl;
@@ -12,9 +13,9 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.access.intercept.RunAsManagerImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +27,7 @@ import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
@@ -38,7 +40,6 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.context.support.ServletContextAttributeFactoryBean;
 
 import java.util.*;
 
@@ -48,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
+                //.addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
                 //.formLogin().loginPage("/login")
                 //.and()
                 .httpBasic().realmName("eRSPG")
@@ -57,8 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/welcome","/about", "/contact").permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/eRSPG/**").authenticated()
-                .anyRequest().permitAll()
+                .authorizeRequests().antMatchers("/eRSPG/**").authenticated().anyRequest().permitAll()
                 .and()
                 .csrf().disable();
     }
@@ -68,9 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("user").password("password").authorities("ROLE_USER")
                 .and()
-                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN");
-//                .and()
-//                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN");
+                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN")
+                .and()
+                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN", "ROLE_CHAIRMAN");
     }
 
     @Bean
@@ -84,9 +84,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         </sec:filter-chain-map>
         */
         List listOfFilterChains = new ArrayList();
-        listOfFilterChains.add(new DefaultSecurityFilterChain(
-                new AntPathRequestMatcher("/eRSPG/**"),
-                casValidationFilter(), wrappingFilter()));
+//        listOfFilterChains.add(new DefaultSecurityFilterChain(
+//                new AntPathRequestMatcher("/eRSPG"),
+//                casValidationFilter(), wrappingFilter()));
         listOfFilterChains.add(new DefaultSecurityFilterChain(
                 new AntPathRequestMatcher("/eRSPG/secure/receptor"),
                 casValidationFilter()));
@@ -115,7 +115,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsByNameServiceWrapper userDetailsServiceWrapper(){
         UserDetailsByNameServiceWrapper mUserDetailsByNameServiceWrapper = new UserDetailsByNameServiceWrapper();
-        mUserDetailsByNameServiceWrapper.setUserDetailsService((UserDetailsService) userService());
+        mUserDetailsByNameServiceWrapper.setUserDetailsService(userService());
         return mUserDetailsByNameServiceWrapper;
     }
 
@@ -142,8 +142,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManager(){
         //figure out how to set this up
-        AuthenticationManager authenticationManager = new ProviderManager(Arrays.asList((AuthenticationProvider) userService()));
+        AuthenticationManager authenticationManager = new ProviderManager(Arrays.asList(authenticationProvider()));
         return authenticationManager;
+    }
+
+    @Bean
+    public CustomUserAuthenticationProvider authenticationProvider(){
+        return new CustomUserAuthenticationProvider();
     }
 
     @Bean
@@ -162,10 +167,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SecurityContextLogoutHandler();
     }
 
-    @Bean
-    public ServletContextAttributeFactoryBean servletContext(){
-        return new ServletContextAttributeFactoryBean();
-    }
+//    @Bean
+//    public ServletContextAttributeFactoryBean servletContext(){
+//        ServletContextAttributeFactoryBean servletContextAttributeFactoryBean = new ServletContextAttributeFactoryBean();
+//        //List<String> attributes = (List<String>) getServletContext.getAttributeNames();
+//        servletContextAttributeFactoryBean.setAttributeName("cas.root");
+//        return servletContextAttributeFactoryBean;
+//    }
 
     @Bean
     public ExceptionTranslationFilter etf(){
@@ -177,14 +185,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AffirmativeBased httpRequestAccessDecisionManager(){
         List<AccessDecisionVoter<?>> roleVoters = new ArrayList<>();
         roleVoters.add(roleVoter());
+        roleVoters.add(new AuthenticatedVoter());
+        roleVoters.add(new WebExpressionVoter());
         AffirmativeBased mAffirmativeBased = new AffirmativeBased(roleVoters);
         mAffirmativeBased.setAllowIfAllAbstainDecisions(false);
         return mAffirmativeBased;
-    }
-
-    @Bean
-    public RoleVoter roleVoter(){
-        return new RoleVoter();
     }
 
     @Bean
@@ -196,7 +201,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return mFilterSecurityInterceptor;
     }
 
+    @Bean
+    public RoleVoter roleVoter(){
+        return new RoleVoter();
+    }
 
+    @Bean
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
         //cofigure this stuff in here
             /*
@@ -216,14 +226,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         requestMap.put(new AntPathRequestMatcher("/eRSPG/chair/**"),SecurityConfig.createList("hasRole('ROLE_CHAIRMAN')"));
         FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource = new ExpressionBasedFilterInvocationSecurityMetadataSource(requestMap, new DefaultWebSecurityExpressionHandler());
         return filterInvocationSecurityMetadataSource;
-
-//        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
-//        requestMap.put(new AntPathRequestMatcher("/**"),SecurityConfig.createList("hasRole('"+UserAuth.ROLE_USER.name()+"')"));
-//        requestMap.put(new AntPathRequestMatcher("/eRSPG/user/**"), SecurityConfig.createList("hasRole('"+UserAuth.ROLE_USER.name()+"')"));
-//        requestMap.put(new AntPathRequestMatcher("/eRSPG/admin/**"),SecurityConfig.createList("hasRole('"+UserAuth.ROLE_ADMIN.name()+"')"));
-//        requestMap.put(new AntPathRequestMatcher("/eRSPG/chair/**"),SecurityConfig.createList("hasRole('"+UserAuth.ROLE_CHAIRMAN.name()+"')"));
-//        FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource = new ExpressionBasedFilterInvocationSecurityMetadataSource(requestMap, new DefaultWebSecurityExpressionHandler());
-//        return filterInvocationSecurityMetadataSource;
     }
 
     @Bean
@@ -257,7 +259,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
         mAuthenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
         mAuthenticationFilter.setService(Constants.CAS_SERVICE_URL);
-        mAuthenticationFilter.setServerName(Constants.APP_SERVER);
+        mAuthenticationFilter.setServerName(Constants.CAS_SERVER);
         mAuthenticationFilter.setRenew(false);
         mAuthenticationFilter.setGateway(false);
         return mAuthenticationFilter;
@@ -266,9 +268,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public Cas20ProxyReceivingTicketValidationFilter casValidationFilter(){
         Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
+        //mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.CAS_SERVER);
         mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas20ProxyReceivingTicketValidationFilter.setProxyReceptorUrl("/eRSPG/home");
+        //mCas20ProxyReceivingTicketValidationFilter.setProxyReceptorUrl("/proxy/receptor");
         mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
         mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
         mCas20ProxyReceivingTicketValidationFilter.setExceptionOnValidationFailure(true);
@@ -286,5 +288,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public HttpServletRequestWrapperFilter wrappingFilter(){
         return  new HttpServletRequestWrapperFilter();
     }
+
 
 }

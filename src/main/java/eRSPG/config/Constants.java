@@ -34,5 +34,5 @@ public final class Constants {
     public static final String CAS_URL_LOGIN = "https://localhost:8443/cas-server-webapp-3.5.1/login";
     public static final String CAS_URL_LOGOUT = "https://localhost:8443/cas-server-webapp-3.5.1/logout";
     public static final String CAS_URL_PREFIX = "https://localhost:8443/cas-server-webapp-3.5.1";
-
+    public static final String CAS_SERVER = "http://localhost:8443";
 }
