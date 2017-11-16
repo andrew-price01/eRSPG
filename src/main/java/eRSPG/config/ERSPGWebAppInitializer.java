@@ -7,6 +7,7 @@ import org.jasig.cas.client.util.AssertionThreadLocalFilter;
 import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -39,17 +40,21 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
         return new Filter[] {};
     }
 
+    @Override
+    protected void registerDispatcherServlet(ServletContext servletContext) {
+        super.registerDispatcherServlet(servletContext);
+        servletContext.addListener(new SingleSignOutHttpSessionListener());
+        servletContext.addListener(new ContextLoaderListener());
+    }
+
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
 
-//        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
-//        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
-//
-//        FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
-//        authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+        servletContext.setInitParameter("webAppRootKey", "cas.root");
+
+        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
 
         FilterRegistration.Dynamic ssoFilter = servletContext.addFilter("CAS Single Sign Out Filter", singleSignOutFilter());
         ssoFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
@@ -57,6 +62,11 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
         FilterRegistration.Dynamic springSecurityFilter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxySpringSecurity());
         springSecurityFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
 
+//        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
+//        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
+//
+//        FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
+//        authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
     }
 
 

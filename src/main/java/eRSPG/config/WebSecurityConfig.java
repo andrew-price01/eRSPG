@@ -48,11 +48,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .formLogin().loginPage("/login")
-                .and()
+                .addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
+                //.formLogin().loginPage("/login")
+                //.and()
                 .httpBasic().realmName("eRSPG")
                 .and()
-                .logout().logoutSuccessUrl("/")
+                .logout().logoutUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/welcome","/about", "/contact").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/eRSPG/**").authenticated()
                 .anyRequest().permitAll()
@@ -67,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN");
 //                .and()
-//                .withUser("casuser").password("Mellon").authorities("ROLE_USER", "ROLE_ADMIN");
+//                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN");
     }
 
     @Bean
