@@ -40,7 +40,7 @@ public class DataConfig {
     public SessionFactory getSessionFactory(DataSource dataSource) {
 
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-        
+
         sessionBuilder.addAnnotatedClasses(Announcement.class, Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
                 FundType.class, Participant.class, ProjectType.class, Proposal.class, ProposalStatus.class, RequestAward.class, RoleType.class,
                 Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
