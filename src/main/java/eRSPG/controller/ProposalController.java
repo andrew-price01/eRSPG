@@ -395,6 +395,7 @@ public class ProposalController {
     public String bodyDetailsForm(Model model){
         String contentPage = "proposalBodyDetails.jsp";
         model.addAttribute("contentPage", contentPage);
+
         return "projectIndex";
     }
 
@@ -560,7 +561,7 @@ public class ProposalController {
 	
 		LocalDateTime time = LocalDateTime.now();
 
-		Proposal proposal = new Proposal();
+		Proposal proposal = new Proposal();// find incomplete proposal by user id
 
 		// weird work around for user data
         userForm.setUserEmail(detailForm.getProposalEmail());

@@ -1,8 +1,10 @@
 package eRSPG.model.form;
 
+import eRSPG.model.Proposal;
+
 import javax.validation.constraints.NotNull;
 
-public class DepartmentForm {
+public class DepartmentForm extends BaseForm{
 
 	@NotNull
 	private int departmentID;
@@ -40,6 +42,11 @@ public class DepartmentForm {
 		this.semesterID = semesterID;
 	}
 	
-	
+	@Override
+	public void LoadFormIntoProposal(Proposal proposal){
+		proposal.setDepartmentId(departmentID);
+		proposal.setSemesterId(semesterID);
+		proposal.setProposalYear(year);
+	}
 	
 }
