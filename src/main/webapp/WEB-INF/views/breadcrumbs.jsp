@@ -1,4 +1,5 @@
 <div class="breadcrumb flat">
+	<%--<a onclick='setNextPage("proposal/index", "<s:url value="/" />")'<%= pageName.equals("index") ? " class='active'" : "" %>>Index</a>--%>
 	<a onclick='setNextPage("proposal/detail", "<s:url value="/" />")'<%= pageName.equals("detail") ? " class='active'" : "" %>>Details</a>
 	<a onclick='setNextPage("proposal/department", "<s:url value="/" />")'<%= pageName.equals("department") ? " class='active'" : "" %>>Department</a>
 	<a onclick='setNextPage("proposal/awardType", "<s:url value="/" />")'<%= pageName.equals("awardType") ? " class='active'" : "" %>>Award Type</a>

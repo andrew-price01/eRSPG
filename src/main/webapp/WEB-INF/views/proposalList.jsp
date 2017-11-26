@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="../css/table.css" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/table.css" />" />
     <%--<link rel="stylesheet" type="text/css" href="<s:url value="/css/table.css"/>" />--%>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
