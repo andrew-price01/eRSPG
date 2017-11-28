@@ -60,7 +60,7 @@
 
         <div>
             <input class="btn my-btn" type="button" value="Review Proposal" />
-            <input class="btn my-btn" type="button" value="Assign Proposal" />
+            <input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign Proposal" />
         </div>
     </div>
 

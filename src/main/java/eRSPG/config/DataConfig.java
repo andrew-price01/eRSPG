@@ -75,6 +75,10 @@ public class DataConfig {
     }
 
     @Autowired
+    @Bean(name = "announcementDao")
+    public AnnouncementDAO getAnnouncementDao(SessionFactory sessionFactory) { return new AnnouncementImpl(sessionFactory); }
+
+    @Autowired
     @Bean(name = "proposalDao")
     public ProposalDAO getProposalDao(SessionFactory sessionFactory) {
         return new ProposalImpl(sessionFactory);
@@ -136,6 +140,12 @@ public class DataConfig {
     @Bean(name="proposalStatusDAO")
     public ProposalStatusDAO getProposalStatus(SessionFactory sessionFactory) {
         return new ProposalStatusImpl(sessionFactory);
+    }
+
+    @Autowired
+    @Bean(name="reviewerDAO")
+    public ReviewerDAO getReviewerDAO(SessionFactory sessionFactory) {
+        return new ReviewerImpl(sessionFactory);
     }
 
     @Bean
