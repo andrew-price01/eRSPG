@@ -8,23 +8,24 @@ import eRSPG.Repository.UserDAO;
 import eRSPG.Repository.UserRoleDAO;
 import eRSPG.model.RoleType;
 import eRSPG.model.UserRole;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.cas.authentication.CasAssertionAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletContext;
 
 
-public class CustomUserAuthenticationProvider  extends AbstractUserDetailsAuthenticationProvider {
+public class CustomUserAuthenticationProvider  extends AuthenticationFilter {
 
     @Autowired
     private UserDAO userDAO;
@@ -33,21 +34,19 @@ public class CustomUserAuthenticationProvider  extends AbstractUserDetailsAuthen
     @Autowired
     private RoleTypeDAO roleTypeDAO;
 
-    @Override
+    //@Override
     protected void additionalAuthenticationChecks(UserDetails userDetails,
                                                   UsernamePasswordAuthenticationToken token)
             throws AuthenticationException {
     }
 
-    @Override
-    protected UserDetails retrieveUser(String str,
-                                       UsernamePasswordAuthenticationToken token)
-            throws AuthenticationException {
+    @Transactional
+    public UserDetails loadUserDetails(CasAssertionAuthenticationToken token) throws UsernameNotFoundException {
         String login = token.getPrincipal().toString();
         String lowercaseUsername = login.toLowerCase();
+        //log.debug("Authenticating {}", login);
 
         eRSPG.model.User userFromDatabase = userDAO.findUserByUsername(lowercaseUsername);
-        UserRole userRoleFromDatabase = userRoleDAO.findUserRoleById(userFromDatabase.getUserId());
         if (userFromDatabase == null) {
             throw new UsernameNotFoundException("User " + lowercaseUsername + " was not found in the database");
         }
@@ -55,8 +54,9 @@ public class CustomUserAuthenticationProvider  extends AbstractUserDetailsAuthen
 //            throw new UserNotActivatedException("User " + lowercaseUsername + " role was revoked");
 //        }
 
+        UserRole userRoleFromDatabase = userRoleDAO.findUserRoleByUserId(userFromDatabase.getUserId());
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        RoleType roleTypeFromDatabase = roleTypeDAO.findRoleTypeByUserId(userFromDatabase.getUserId());
+        RoleType roleTypeFromDatabase = roleTypeDAO.findRoleTypeByRoleTypeId(userRoleFromDatabase.getRoleTypeId());
         String roleFromDB = roleTypeFromDatabase.getRoleDesc();
         String roleUser = "ROLE_USER";
         String roleAdmin = "ROLE_ADMIN";

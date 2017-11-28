@@ -3,6 +3,7 @@ package eRSPG.config;
 import eRSPG.security.CustomUserAuthenticationProvider;
 import eRSPG.security.CustomUserDetailsService;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
+import org.jasig.cas.client.authentication.Saml11AuthenticationFilter;
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl;
 import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.jasig.cas.client.validation.*;
@@ -16,7 +17,9 @@ import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+//import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.cas.ServiceProperties;
+import org.springframework.security.cas.authentication.CasAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,6 +36,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter;
@@ -49,53 +53,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
-                //.formLogin().loginPage("/login")
-                //.and()
+                .addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
                 .httpBasic().realmName("eRSPG")
                 .and()
-                .logout().logoutUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()
+                .logout()
+                    .logoutUrl("/eRSPG/logout")
+                    .logoutSuccessUrl("/welcome")
+                    .logoutSuccessHandler((LogoutSuccessHandler) securityContextLogoutHandler())
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/welcome","/about", "/contact").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/eRSPG/**").authenticated().anyRequest().permitAll()
+                .authorizeRequests()
+                    .antMatchers("/welcome", "/about", "/contact").permitAll()
+                    .antMatchers("/eRSPG/**").hasAuthority("ROLE_USER")
+                    .antMatchers("/eRSPG/admin/**").hasAuthority("ROLE_ADMIN")
+                    .antMatchers("/eRSPG/chairman/**").hasAuthority("ROLE_CHAIRMAN")
+                    .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
+
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(preAuthAuthProvider());
         auth.inMemoryAuthentication()
                 .withUser("user").password("password").authorities("ROLE_USER")
                 .and()
-                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN")
-                .and()
-                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN", "ROLE_CHAIRMAN");
+                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN");
+//                .and()
+//                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN", "ROLE_CHAIRMAN");
     }
 
     @Bean
     public FilterChainProxy springSecurityFilterChain(){
-        /*
-        <sec:filter-chain-map path-type="ant">
-        <sec:filter-chain pattern="/" filters="casValidationFilter, wrappingFilter" />
-        <sec:filter-chain pattern="/secure/receptor" filters="casValidationFilter" />
-        <sec:filter-chain pattern="/j_spring_security_logout" filters="logoutFilter,etf,fsi" />
-        <sec:filter-chain pattern="/**" filters="casAuthenticationFilter, casValidationFilter, wrappingFilter, sif,j2eePreAuthFilter,logoutFilter,etf,fsi"/>
-        </sec:filter-chain-map>
-        */
+        // To change to Cas20 protocol change the authicationFilter and ticketValidationFilter below
         List listOfFilterChains = new ArrayList();
-//        listOfFilterChains.add(new DefaultSecurityFilterChain(
-//                new AntPathRequestMatcher("/eRSPG"),
-//                casValidationFilter(), wrappingFilter()));
-        listOfFilterChains.add(new DefaultSecurityFilterChain(
-                new AntPathRequestMatcher("/eRSPG/secure/receptor"),
-                casValidationFilter()));
-        listOfFilterChains.add(new DefaultSecurityFilterChain(
-                new AntPathRequestMatcher("/eRSPG/j_spring_security_logout"),
-                logoutFilter(), etf(), fsi()));
         listOfFilterChains.add(new DefaultSecurityFilterChain(
                 new AntPathRequestMatcher("/eRSPG/**"),
-                authenticationFilter(), casValidationFilter(), wrappingFilter(), sif(),
+                authenticationFilterSaml(), ticketValidationFilterSaml(), wrappingFilter(), sif(),
                 j2eePreAuthFilter(), logoutFilter(), etf(), fsi()));
         return new FilterChainProxy(listOfFilterChains);
     }
@@ -115,16 +112,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsByNameServiceWrapper userDetailsServiceWrapper(){
         UserDetailsByNameServiceWrapper mUserDetailsByNameServiceWrapper = new UserDetailsByNameServiceWrapper();
-        mUserDetailsByNameServiceWrapper.setUserDetailsService(userService());
+        //mUserDetailsByNameServiceWrapper.setUserDetailsService(userDetailsService());
+        mUserDetailsByNameServiceWrapper.setUserDetailsService(getUserService());
         return mUserDetailsByNameServiceWrapper;
     }
 
     @Bean
-    public CustomUserDetailsService userService(){
-        // figure out how to set this up
+    public CustomUserDetailsService getUserService(){
         CustomUserDetailsService mCustomUserDetailsService = new CustomUserDetailsService();
         return mCustomUserDetailsService;
     }
+
+//    @Bean
+//    public CustomUserAuthenticationProvider getUserAuthProvider(){
+//        CustomUserAuthenticationProvider authenticationProvider = new CustomUserAuthenticationProvider();
+//        return authenticationProvider;
+//    }
 
     @Bean
     public Http403ForbiddenEntryPoint preAuthEntryPoint(){
@@ -134,16 +137,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public J2eePreAuthenticatedProcessingFilter j2eePreAuthFilter(){
         J2eePreAuthenticatedProcessingFilter j2eePreAuthFilter = new J2eePreAuthenticatedProcessingFilter();
-        j2eePreAuthFilter.setAuthenticationManager(authenticationManager());
+        j2eePreAuthFilter.setAuthenticationManager(getAuthenticationManager());
         j2eePreAuthFilter.setAuthenticationDetailsSource(authenticationDetailsSource());
+        j2eePreAuthFilter.setContinueFilterChainOnUnsuccessfulAuthentication(false);
         return j2eePreAuthFilter;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(){
-        //figure out how to set this up
-        AuthenticationManager authenticationManager = new ProviderManager(Arrays.asList(authenticationProvider()));
-        return authenticationManager;
+    public AuthenticationManager getAuthenticationManager(){
+        try{
+            return authenticationManager();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
@@ -158,7 +165,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LogoutFilter logoutFilter(){
-        LogoutFilter logoutFilter = new LogoutFilter("/", securityContextLogoutHandler());
+        LogoutFilter logoutFilter = new LogoutFilter("/welcome", securityContextLogoutHandler());
         return logoutFilter;
     }
 
@@ -166,14 +173,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityContextLogoutHandler securityContextLogoutHandler(){
         return new SecurityContextLogoutHandler();
     }
-
-//    @Bean
-//    public ServletContextAttributeFactoryBean servletContext(){
-//        ServletContextAttributeFactoryBean servletContextAttributeFactoryBean = new ServletContextAttributeFactoryBean();
-//        //List<String> attributes = (List<String>) getServletContext.getAttributeNames();
-//        servletContextAttributeFactoryBean.setAttributeName("cas.root");
-//        return servletContextAttributeFactoryBean;
-//    }
 
     @Bean
     public ExceptionTranslationFilter etf(){
@@ -195,7 +194,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public FilterSecurityInterceptor fsi(){
         FilterSecurityInterceptor mFilterSecurityInterceptor = new FilterSecurityInterceptor();
-        mFilterSecurityInterceptor.setAuthenticationManager(authenticationManager());
+        mFilterSecurityInterceptor.setAuthenticationManager(getAuthenticationManager());
         mFilterSecurityInterceptor.setAccessDecisionManager(httpRequestAccessDecisionManager());
         mFilterSecurityInterceptor.setSecurityMetadataSource(filterInvocationSecurityMetadataSource());
         return mFilterSecurityInterceptor;
@@ -208,18 +207,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
-        //cofigure this stuff in here
-            /*
-            <property name="securityMetadataSource">
-              <sec:filter-invocation-definition-source>
-                <sec:intercept-url pattern="/secure/extreme/**" access="ROLE_SUPERVISOR"/>
-                <sec:intercept-url pattern="/secure/**" access="ROLE_USER"/>
-                <sec:intercept-url pattern="/**" access="ROLE_USER"/>
-              </sec:filter-invocation-definition-source>
-            </property>
-            */
-        //          This is how i will do it
-
         LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<>();
         requestMap.put(new AntPathRequestMatcher("/eRSPG/**"), SecurityConfig.createList("hasRole('ROLE_USER')"));
         requestMap.put(new AntPathRequestMatcher("/eRSPG/admin/**"),SecurityConfig.createList("hasRole('ROLE_ADMIN')"));
@@ -228,30 +215,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filterInvocationSecurityMetadataSource;
     }
 
-    @Bean
-    public RunAsManager runAsManager() throws Exception {
-        RunAsManagerImpl runAsManager = new RunAsManagerImpl();
-        runAsManager.setKey("ROLE_ADMIN");
-        runAsManager.afterPropertiesSet();
-        return runAsManager;
-    }
+//    @Bean
+//    public RunAsManager runAsManager() throws Exception {
+//        RunAsManagerImpl runAsManager = new RunAsManagerImpl();
+//        runAsManager.setKey("ROLE_ADMIN");
+//        runAsManager.afterPropertiesSet();
+//        return runAsManager;
+//    }
 
     @Bean
     public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter(){
         return new SecurityContextHolderAwareRequestFilter();
     }
 
-    @Bean
-    public Cas20ServiceTicketValidator ticketValidator(){
-        Cas20ServiceTicketValidator mCas20ServiceTicketValidator = new Cas20ServiceTicketValidator(Constants.CAS_URL_PREFIX);
-        mCas20ServiceTicketValidator.setProxyGrantingTicketStorage(proxyGrantingTicketStorage());
-        mCas20ServiceTicketValidator.setProxyCallbackUrl(Constants.CAS_SERVICE_URL);
-        return mCas20ServiceTicketValidator;
-    }
 
     @Bean
-    public ProxyGrantingTicketStorageImpl proxyGrantingTicketStorage(){
-        return new ProxyGrantingTicketStorageImpl();
+    public Saml11AuthenticationFilter authenticationFilterSaml(){
+        Saml11AuthenticationFilter authenticationFilter = new Saml11AuthenticationFilter();
+        authenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
+        authenticationFilter.setService(Constants.CAS_SERVICE_URL);
+        authenticationFilter.setServerName(Constants.CAS_SERVER);
+        authenticationFilter.setRenew(false);
+        authenticationFilter.setGateway(false);
+        return authenticationFilter;
     }
 
     @Bean
@@ -266,9 +252,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public Cas20ProxyReceivingTicketValidationFilter casValidationFilter(){
+    public Saml11TicketValidationFilter ticketValidationFilterSaml(){
+        Saml11TicketValidationFilter ticketValidationFilter = new Saml11TicketValidationFilter();
+        ticketValidationFilter.setServerName(Constants.CAS_SERVER);
+        ticketValidationFilter.setService(Constants.CAS_SERVICE_URL);
+        ticketValidationFilter.setUseSession(true);
+        ticketValidationFilter.setRedirectAfterValidation(true);
+        ticketValidationFilter.setExceptionOnValidationFailure(true);
+        ticketValidationFilter.setTicketValidator(ticketValidatorSaml());
+        return ticketValidationFilter;
+    }
+
+    @Bean
+    public Saml11TicketValidator ticketValidatorSaml(){
+        Saml11TicketValidator ticketValidator = new Saml11TicketValidator(Constants.CAS_URL_PREFIX);
+        return ticketValidator;
+    }
+
+    @Bean
+    public Cas20ProxyReceivingTicketValidationFilter ticketValidationFilterCas20(){
         Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        //mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.CAS_SERVER);
+        mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.CAS_SERVER);
         mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
         //mCas20ProxyReceivingTicketValidationFilter.setProxyReceptorUrl("/proxy/receptor");
         mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
@@ -284,10 +288,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
     }
 
+//    @Bean
+//    public Cas20ServiceTicketValidator ticketValidator(){
+//        Cas20ServiceTicketValidator mCas20ServiceTicketValidator = new Cas20ServiceTicketValidator(Constants.CAS_URL_PREFIX);
+//        mCas20ServiceTicketValidator.setProxyGrantingTicketStorage(proxyGrantingTicketStorage());
+//        mCas20ServiceTicketValidator.setProxyCallbackUrl(Constants.CAS_SERVICE_URL);
+//        return mCas20ServiceTicketValidator;
+//    }
+
+    @Bean
+    public ProxyGrantingTicketStorageImpl proxyGrantingTicketStorage(){
+        return new ProxyGrantingTicketStorageImpl();
+    }
+
+
     @Bean
     public HttpServletRequestWrapperFilter wrappingFilter(){
         return  new HttpServletRequestWrapperFilter();
     }
-
 
 }

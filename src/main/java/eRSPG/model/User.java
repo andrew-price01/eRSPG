@@ -21,8 +21,8 @@ public class User {
 	@Column(name="userLastName")
 	private String lastName;
 
-	@Column(name="userName")
-	private String userName;
+	@Column(name="username")
+	private String username;
 	
 	public User(){
 		
@@ -68,10 +68,10 @@ public class User {
 	}
 
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 
 	public void setUsername(String loginName) {
-		this.userName = loginName;
+		this.username = loginName;
 	}
 }

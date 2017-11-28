@@ -51,6 +51,7 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+
         servletContext.setInitParameter("webAppRootKey", "cas.root");
 
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);

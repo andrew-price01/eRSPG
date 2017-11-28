@@ -46,6 +46,12 @@ public class RoleTypeImpl implements RoleTypeDAO {
 		
 		return ra;
 	}
+
+	@Transactional
+	public RoleType findRoleTypeByRoleTypeId(int roleTypeId){
+        RoleType rt = (RoleType)sessionFactory.getCurrentSession().createQuery("from RoleType rt where rt.roleTypeId = :roleTypeId").setParameter("roleTypeId", roleTypeId).uniqueResult();
+        return rt;
+	}
 	
 	@Transactional
 	public void addNewOrUpdateRoleType(RoleType ra){

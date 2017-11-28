@@ -38,6 +38,12 @@ public class UserRoleImpl implements UserRoleDAO {
 		UserRole ra = sessionFactory.getCurrentSession().get(UserRole.class, raid);
 		return ra;
 	}
+
+	@Transactional
+	public UserRole findUserRoleByUserId(int userId){
+		UserRole ur = (UserRole)sessionFactory.getCurrentSession().createQuery("from UserRole ur where ur.userId = :userId").setParameter("userId", userId).uniqueResult();
+		return ur;
+	}
 	
 	@Transactional
 	public void addNewOrUpdateUserRole(UserRole ra){
