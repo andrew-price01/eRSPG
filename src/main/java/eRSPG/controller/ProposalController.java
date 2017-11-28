@@ -2,6 +2,7 @@ package eRSPG.controller;
 
 import eRSPG.Repository.*;
 import eRSPG.model.*;
+import eRSPG.util.PresistProposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -166,6 +167,8 @@ public class ProposalController {
 
         // We need to add the user info to the user form here from the user stored in a session
         User user = new User();
+        user = PresistProposal.getDummyUser();
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
 		/*
 		 * Add all the form objects to the session

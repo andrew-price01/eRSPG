@@ -65,5 +65,6 @@ public class DetailForm extends BaseForm {
 		proposal.setProposalExtension(proposalExtension);
 		proposal.setProposalTitle(proposalTitle);
 	}
+
 	
 }

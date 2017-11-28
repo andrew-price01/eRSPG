@@ -7,5 +7,5 @@ import eRSPG.model.Proposal;
  */
 public abstract class BaseForm {
     public void LoadFormIntoProposal(Proposal proposal){}
-    //TODO: COMPLETED AwardType, Department, Detail
+    public void LoadProposalIntoForm(Proposal proposal){}
 }

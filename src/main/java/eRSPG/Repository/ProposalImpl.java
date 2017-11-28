@@ -56,5 +56,10 @@ public class ProposalImpl implements ProposalDAO {
 	public void deleteProposal(Proposal p){
 		sessionFactory.getCurrentSession().delete(p);
 	}
-	
+
+	@Transactional
+	public Proposal findIncompleteProposalByUserId(int id){
+		sessionFactory.getCurrentSession();
+		return new Proposal();
+	}
 }
