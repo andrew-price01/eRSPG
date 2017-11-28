@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,10 +46,8 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -137,12 +136,12 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        User user = checkIfUserAlreadyExists(userForm);
-        if(user == null){
-            addNewUserToDatabase(userForm);
-
-            // add user to the session here ( We wont need this soon as index will be removed )
-        }
+//        User user = checkIfUserAlreadyExists(userForm);
+//        if(user == null){
+//            addNewUserToDatabase(userForm);
+//
+//            // add user to the session here ( We wont need this soon as index will be removed )
+//        }
 
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
@@ -482,18 +481,19 @@ public class ProposalController {
 
     @RequestMapping("/eRSPG/proposal/submit")
     public String submit(@ModelAttribute("detailForm") DetailForm detailForm,
-                                       @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
-                                       @ModelAttribute("bodyForm") BodyForm bodyForm,
-                                       @ModelAttribute("budgetForm") BudgetForm budgetForm,
-                                       @ModelAttribute("departmentForm") DepartmentForm deptForm,
-                                       @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
-                                       @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
-                                       @ModelAttribute("userForm") UserForm userForm,
-                                       @ModelAttribute("uploadForm") UploadForm uploadForm)
+                         @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
+                         @ModelAttribute("bodyForm") BodyForm bodyForm,
+                         @ModelAttribute("budgetForm") BudgetForm budgetForm,
+                         @ModelAttribute("departmentForm") DepartmentForm deptForm,
+                         @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
+                         @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+                         @ModelAttribute("userForm") UserForm userForm,
+                         @ModelAttribute("uploadForm") UploadForm uploadForm,
+                         HttpServletRequest request)
     {
 
         processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
-                , userForm, uploadForm);
+                , userForm, uploadForm, request);
         return "proposalSubmit";
 
     }
@@ -555,7 +555,8 @@ public class ProposalController {
 					BodyQuestionsForm bodyQuestForm,
 					BodyDetailsForm bodyDetailsForm,
 					UserForm userForm,
-					UploadForm uploadForm)
+					UploadForm uploadForm,
+                    HttpServletRequest request)
 	{
 	
 		LocalDateTime time = LocalDateTime.now();
@@ -563,14 +564,17 @@ public class ProposalController {
 		Proposal proposal = new Proposal();
 
 		// weird work around for user data
-        userForm.setUserEmail(detailForm.getProposalEmail());
-        User user = checkIfUserAlreadyExists(userForm);
-        if(user != null){
-            int userID = user.getUserId();
-            // added code to get user id
-            proposal.setUserId(userID);
-        }
+//        userForm.setUserEmail(detailForm.getProposalEmail());
+//        User user = checkIfUserAlreadyExists(userForm);
+//        if(user != null){
+//            int userID = user.getUserId();
+//            // added code to get user id
+//            proposal.setUserId(userID);
+//        }
 
+        // user is now in the session at login
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        proposal.setUserId(user.getUserId());
 		proposal.setProjectDirector(detailForm.getProjectDirector());
 		//proposal.setProposalComplete(true);
 		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());

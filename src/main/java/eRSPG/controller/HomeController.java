@@ -1,7 +1,9 @@
 package eRSPG.controller;
 
 import eRSPG.Repository.UserDAO;
+import eRSPG.Repository.UserRoleDAO;
 import eRSPG.model.User;
+import eRSPG.model.UserRole;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,10 @@ public class HomeController {
 
     @Autowired
     protected UserDAO userDAO;
+    // this will be removed and is temporary to create default users from logins
+    @Autowired
+    protected UserRoleDAO userRoleDAO;
+    // what I think the staff affiliation might look like / may be removed later
 	private static String STAFF_AFFILIATION = "staff:weber.edu";
 
 	@RequestMapping("/eRSPG/home")
@@ -41,7 +47,7 @@ public class HomeController {
                 username = principal.getName();
             }
 
-            // Check if the user has a staff affil:
+            // Check if the user has a staff affiliation
             Map attributes = (principal==null)
                     ? new HashMap()
                     : principal.getAttributes();
@@ -60,12 +66,31 @@ public class HomeController {
                         addNewUserToDatabase(email, firstName, lastName, username);
                         // query db again because we want the userID in the User object
                         user = getNewUserFromDatabase(username);
+                        int userID = user.getUserId();
+                        // add the user role to the DB for new user   NOTE: MAKE SURE TO CHANGE ROLETYPE TO 1 AFTER TESTING IS DONE
+                        addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman , the default will actually be 1 for lowest authorities
+
                     }
                     addUserInformationToSession(request, response, user);
                     return "home";
                 }
-            }else{
+            }else if(username != null){
                 // this will be removed but is here while we can't get attributes
+                // REMOVE THE WHOLE ELSE IF WHEN TESTING IS DONE
+                User user = getNewUserFromDatabase(username);
+                if(user == null){
+                    // create a user
+                    String firstName = username;
+                    String lastName =  username;
+                    String email =  username+"@fake.email";
+                    addNewUserToDatabase(email, firstName, lastName, username);
+                    // query db again because we want the userID in the User object
+                    user = getNewUserFromDatabase(username);
+                    int userID = user.getUserId();
+                    // add the user role to the DB for new user
+                    addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman
+                }
+                addUserInformationToSession(request, response, user);
                 return "home";
             }
         }else{
@@ -87,6 +112,13 @@ public class HomeController {
         userDAO.addNewOrUpdateUser(newUser);
     }
 
+    private void addNewUserRoleToDatabase(int userID, int roleType) {
+        UserRole ur = new UserRole();
+        ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chairman
+        ur.setUserId(userID);
+        userRoleDAO.addNewOrUpdateUserRole(ur);
+    }
+
     private User getNewUserFromDatabase(String username){
         User user = null;
         try{
@@ -101,5 +133,6 @@ public class HomeController {
                                              HttpServletResponse response, User user){
 
         request.getSession().setAttribute("User", user);
+        int i = 0;
     }
 }
