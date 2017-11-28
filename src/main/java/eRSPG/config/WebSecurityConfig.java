@@ -1,6 +1,5 @@
 package eRSPG.config;
 
-import eRSPG.security.CustomUserAuthenticationProvider;
 import eRSPG.security.CustomUserDetailsService;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.authentication.Saml11AuthenticationFilter;
@@ -17,9 +16,6 @@ import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.cas.ServiceProperties;
-import org.springframework.security.cas.authentication.CasAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -123,12 +119,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return mCustomUserDetailsService;
     }
 
-//    @Bean
-//    public CustomUserAuthenticationProvider getUserAuthProvider(){
-//        CustomUserAuthenticationProvider authenticationProvider = new CustomUserAuthenticationProvider();
-//        return authenticationProvider;
-//    }
-
     @Bean
     public Http403ForbiddenEntryPoint preAuthEntryPoint(){
         return new Http403ForbiddenEntryPoint();
@@ -151,11 +141,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Bean
-    public CustomUserAuthenticationProvider authenticationProvider(){
-        return new CustomUserAuthenticationProvider();
     }
 
     @Bean
