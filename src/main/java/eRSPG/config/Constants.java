@@ -20,7 +20,7 @@ public final class Constants {
 //    public static final String CAS_URL_LOGIN = "https://casdev.weber.edu/login";
 //    public static final String CAS_URL_LOGOUT = "https://casdev.weber.edu/logout";
 //    public static final String CAS_URL_PREFIX = "https://casdev.weber.edu";
-//    public static final String CAS_SERVER = "http://localhost:8443";
+//    public static final String CAS_SERVER = "https://casdev.weber.edu";
 //    public static final String CAS_SERVICE_URL = "http://localhost:8081/eRSPG/home";
 //    public static final String CAS_SECURITY_SERVICE = "https://localhost:8443/cas-server-webapp-3.5.1/j_spring_cas_security_check";
 
