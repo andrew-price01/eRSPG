@@ -66,5 +66,12 @@ public class DetailForm extends BaseForm {
 		proposal.setProposalTitle(proposalTitle);
 	}
 
+	@Override
+	public void LoadProposalIntoForm(Proposal proposal){
+		this.proposalTitle = proposal.getProposalTitle();
+		this.proposalEmail = proposal.getProposalEmail();
+		this.proposalMailCode = proposal.getProposalMailCode();
+		this.proposalExtension = proposal.getProposalExtension();
+	}
 	
 }

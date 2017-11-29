@@ -2,7 +2,10 @@ package eRSPG.controller;
 
 import eRSPG.Repository.*;
 import eRSPG.model.*;
+import eRSPG.model.form.*;
 import eRSPG.util.PresistProposal;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,15 +40,7 @@ import eRSPG.model.Proposal;
 import eRSPG.model.RequestAward;
 import eRSPG.model.Semester;
 import eRSPG.model.UploadFile;
-import eRSPG.model.form.AwardTypeForm;
-import eRSPG.model.form.BodyDetailsForm;
-import eRSPG.model.form.BodyForm;
-import eRSPG.model.form.BodyQuestionsForm;
-import eRSPG.model.form.BudgetForm;
-import eRSPG.model.form.DepartmentForm;
-import eRSPG.model.form.DetailForm;
-import eRSPG.model.form.UploadForm;
-import eRSPG.model.form.UserForm;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -166,9 +161,26 @@ public class ProposalController {
         String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
 
         // We need to add the user info to the user form here from the user stored in a session
-        User user = new User();
-        user = PresistProposal.getDummyUser();
+        //User user = new User();
+        User user = PresistProposal.getDummyUser(); // replaced by an actual user in the future
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        if(proposal != null){
+            deptForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+            awardForm.LoadProposalIntoForm(proposal);
+            budgetForm.LoadProposalIntoForm(proposal);
+          //bodyForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
+            userForm.setFirstName(user.getFirstName());
+            userForm.setLastName(user.getLastName());
+            userForm.setUserEmail(user.getEmail());
+
+
+        }
+
 
 		/*
 		 * Add all the form objects to the session
@@ -205,6 +217,9 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalDetail.jsp");
             return "projectIndex";
         }
+
+        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId());
 
         //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
@@ -701,6 +716,13 @@ public class ProposalController {
         newUser.setFirstName(userForm.getFirstName());
         newUser.setLastName(userForm.getLastName());
         userDAO.addNewOrUpdateUser(newUser);
+    }
+
+    //stores whats in the form into the proposal then saves it into the database
+    private void saveProposalState(BaseForm bf,Integer userId) {
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
+	    bf.LoadFormIntoProposal(proposal);
+	    proposalDao.addNewOrUpdateProposal(proposal);
     }
 	
 }
