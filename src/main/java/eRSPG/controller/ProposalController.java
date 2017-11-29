@@ -500,7 +500,7 @@ public class ProposalController {
 
 
     @RequestMapping("/eRSPG/proposal/submit")
-    public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
+    public String submit(@ModelAttribute("detailForm") DetailForm detailForm,
                                        @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
                                        @ModelAttribute("bodyForm") BodyForm bodyForm,
                                        @ModelAttribute("budgetForm") BudgetForm budgetForm,
@@ -513,7 +513,7 @@ public class ProposalController {
 
         processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
                 , userForm, uploadForm);
-        return "Successfully Submitted";
+        return "proposalSubmit";
 
     }
 
