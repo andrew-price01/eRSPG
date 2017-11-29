@@ -72,6 +72,7 @@ public class DetailForm extends BaseForm {
 		this.proposalEmail = proposal.getProposalEmail();
 		this.proposalMailCode = proposal.getProposalMailCode();
 		this.proposalExtension = proposal.getProposalExtension();
+		this.projectDirector = proposal.getProjectDirector();
 	}
 	
 }

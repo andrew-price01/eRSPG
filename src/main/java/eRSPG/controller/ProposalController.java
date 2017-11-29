@@ -174,11 +174,6 @@ public class ProposalController {
             detailForm.LoadProposalIntoForm(proposal);
           //bodyQuestionsForm.LoadProposalIntoForm(proposal);
 
-            userForm.setFirstName(user.getFirstName());
-            userForm.setLastName(user.getLastName());
-            userForm.setUserEmail(user.getEmail());
-
-
         }
 
 
@@ -271,6 +266,9 @@ public class ProposalController {
             return "projectIndex";
         }
 
+        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(deptForm,user.getUserId());
+
         System.out.println(nextPage);
 
         //return "redirect:/proposal/detail";
@@ -325,6 +323,9 @@ public class ProposalController {
 				semester = "Summer";
 			}
 
+            User user = PresistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
+
 			model.addAttribute("semester",semester);
 
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
@@ -349,7 +350,8 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-
+        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
@@ -402,6 +404,8 @@ public class ProposalController {
             model.addAttribute("collaborative",collaborative);
 
             model.addAttribute("contentPage", "proposalBody.jsp");
+            User user = PresistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
 
