@@ -2,7 +2,7 @@
     min-width: 250px;
     max-width: 250px;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 50px;
     left: 0;
     bottom: 0;
@@ -59,5 +59,22 @@ a, a:hover, a:focus {
 #content {
     text-align: center;
     padding-left: 250px;
+    position:relative;
+    margin: 0 auto;
+}
+
+#window{
+    width: 1000px;
+    border:solid 1px;
+    position:relative;
+    margin: 0 auto;
+}
+
+#box1{
+    background: #DFDFDF;
+}
+
+#box2{
+    background: #DFDFDF;
 }
 

@@ -47,20 +47,19 @@
 
     <!-- Page Content -->
     <div id="content" class="main">
-        <h1>Proposals</h1>
-
+        <h2> My Proposals</h2>
         <br>
-
         <div>
-            <input class="btn my-btn" type="button" value="New Proposal" />
-            <input class="btn my-btn" type="button" value="Edit Proposal" />
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/index'" value="Submit New Proposal" />
+            <input class="btn my-btn" type="button" value="Edit Existing Proposal" />
         </div>
-
         <br>
 
+        <h2> Manage Proposals</h2>
+        <br>
         <div>
-            <input class="btn my-btn" type="button" value="Review Proposal" />
-            <input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign Proposal" />
+            <input class="btn my-btn" type="button" value="Review A Proposal" />
+            <input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign A Proposal" />
         </div>
     </div>
 

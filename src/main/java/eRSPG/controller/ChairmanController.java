@@ -17,49 +17,54 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-    @SessionAttributes("AnnouncementForm")
-    public class ChairmanController {
+@SessionAttributes("AnnouncementForm")
+public class ChairmanController {
 
-        @Autowired
-        private ProposalDAO proposalDao;
+    @Autowired
+    private ProposalDAO proposalDao;
 
-        @Autowired
-        private AnnouncementDAO announcementDao;
+    @Autowired
+    private AnnouncementDAO announcementDao;
 
-        @Autowired
-        private ReviewerDAO reviewerDAO;
+    @Autowired
+    private ReviewerDAO reviewerDAO;
 
-        @Autowired
-        private UserDAO userDAO;
+    @Autowired
+    private UserDAO userDAO;
 
-        @Autowired
-        private UserRoleDAO userRoleDAO;
+    @Autowired
+    private UserRoleDAO userRoleDAO;
 
-        @Autowired
-        private DepartmentDAO departmentDAO;
+    @Autowired
+    private DepartmentDAO departmentDAO;
 
-        @Autowired
-        private ProposalStatusDAO proposalStatusDAO;
+    @Autowired
+    private ProposalStatusDAO proposalStatusDAO;
 
-        @RequestMapping("/eRSPG/chairman/home")
-        public String chairmanHome(){
+    @RequestMapping("/eRSPG/chairman/home")
+    public String chairmanHome() {
         return "chairmanHome";
     }
 
-        @RequestMapping("/eRSPG/chairman/makeAnnouncement")
-        public String makeAnnouncement()
-        {
-            return "makeAnnouncement";
-        }
+    @RequestMapping("/eRSPG/chairman/makeAnnouncement")
+    public String makeAnnouncement() {
+        return "makeAnnouncement";
+    }
 
-        @RequestMapping("/eRSPG/chairman/proposal")
-        public String chairmanProposal() { return "chairmanProposalHome"; }
+    @RequestMapping("/eRSPG/chairman/proposal")
+    public String chairmanProposal() {
+        return "chairmanProposalHome";
+    }
 
-        @RequestMapping("/eRSPG/chairman/committee")
-        public String chairmanCommittee() { return "manageCommittee"; }
+    @RequestMapping("/eRSPG/chairman/committee")
+    public String chairmanCommittee() {
+        return "manageCommittee";
+    }
 
-        @RequestMapping("/eRSPG/chairman/assignproposal")
-        public String chairmanAssignProposal() {return "assignProposal"; }
+    @RequestMapping("/eRSPG/chairman/assignproposal")
+    public String chairmanAssignProposal() {
+        return "assignProposal";
+    }
 
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
@@ -68,7 +73,7 @@ import java.util.stream.Collectors;
 
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.POST)
     public String saveAnnouncement(@Valid @ModelAttribute Announcement announcement,
-                         BindingResult result, Model model) {
+                                   BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return "error";
@@ -95,7 +100,8 @@ import java.util.stream.Collectors;
 */
 
     @RequestMapping(value = "/eRSPG/submittedproposal", method = RequestMethod.GET)
-    public @ResponseBody List<ProposalDTO> proposalListSubmitted(
+    public @ResponseBody
+    List<ProposalDTO> proposalListSubmitted(
             @RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
         Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : Integer.parseInt(proposalStatusId);
         List<Proposal> proposals = id == null ?
@@ -113,7 +119,8 @@ import java.util.stream.Collectors;
     }
 
     @RequestMapping(value = "/eRSPG/inreviewproposal", method = RequestMethod.GET)
-    public @ResponseBody List<ProposalDTO> proposalListInReview(
+    public @ResponseBody
+    List<ProposalDTO> proposalListInReview(
             @RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
         Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : Integer.parseInt(proposalStatusId);
         List<Proposal> proposals = id == null ?
@@ -137,7 +144,7 @@ import java.util.stream.Collectors;
 
     @RequestMapping(value = "/eRSPG/chairman/assignproposal", method = RequestMethod.POST)
     public String assignProposalsToAll(@Valid @ModelAttribute Reviewer reviewer,
-                                   BindingResult result, Model model) {
+                                       BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return "error";
@@ -149,10 +156,10 @@ import java.util.stream.Collectors;
         proposalList.addAll(proposalDao.findAllProposalByStatusId(2));
 
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
-        userRoleList.addAll(userRoleDAO.findAllUserRole());
+        userRoleList.addAll(userRoleDAO.findUserRoleByRoleTypeId(2));
 
-        for(UserRole role : userRoleList) {
-            for(Proposal proposal : proposalList) {
+        for (UserRole role : userRoleList) {
+            for (Proposal proposal : proposalList) {
 //                Reviewer review = new Reviewer();
                 reviewer.setUserId(role.getUserId());
                 reviewer.setProposalId(proposal.getProposalId());

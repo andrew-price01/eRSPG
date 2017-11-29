@@ -5,21 +5,21 @@
   Time: 6:36 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>"/>
     <%-- <link rel="stylesheet" type="text/css" href="<s:url value="/css/home.css"/>" /> --%>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/table.css"/> "/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/admin.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/admin.css"/>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
@@ -54,101 +54,81 @@
 
         <br>
 
-        <h3 align="left">Submitted Proposals</h3>
-        <table align="center">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody id="submitted"></tbody>
-        </table>
+        <div id="window">
+            <h3 align="left">Submitted Proposals</h3>
+            <input type='button' class="btn btn-info" style="float: right;" id='hideshow' value='hide/show'>
+            <div id="box1">
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Submitter</th>
+                        <th>Department</th>
+                        <th>Proposal Year</th>
+                        <th>Submission Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="submitted"></tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <br>
+
+        <form action="/eRSPG/chairman/assignproposal" method="post">
+            <input class="btn my-btn" type="submit" value="Assign To All"/>
+        </form>
 
         <br>
 
         <%--<input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign To All" />--%>
 
-        <form action="/eRSPG/chairman/assignproposal" method="post">
-            <input type="submit" value="Assign To All" />
-        </form>
-
         <br>
-        <h3 align="left">In Review</h3>
-        <table align="center">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody id="review"></tbody>
-        </table>
+        <div id="window">
+            <h3 align="left">In Review</h3>
+            <input type='button' class="btn btn-info" style="float: right;" id='hideshow1' value='hide/show'>
+            <div id="box2">
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Submitter</th>
+                        <th>Department</th>
+                        <th>Proposal Year</th>
+                        <th>Submission Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="review"></tbody>
+                </table>
+            </div>
+        </div>
 
-        <br>
+        <%--        <table align="center" border="1">
+                    <tr>
+                        <th>Title</th>
+                        <th>Submitter</th>
+                        <th>Project Director</th>
+                        <th>Department</th>
+                        <th>Proposal Year</th>
+                        <th>Submission Date</th>
+                        <th>Status</th>
+                    </tr>
 
-        <h3 align="left">Accepted</h3>
-        <table align="center">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody id="accepted"></tbody>
-        </table>
-
-        <br>
-
-        <h3 align="left">Rejected</h3>
-        <table align="center">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody id="rejected"></tbody>
-        </table>
-<%--        <table align="center" border="1">
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Project Director</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-
-            <c:forEach items="${proposal}" var="p">
-                <tr>
-                    <td><c:out value="${p.proposalTitle}"/></td>
-                    <td><c:out value="${p.userId}"/></td>
-                    <td><c:out value="${p.projectDirector}"/></td>
-                    <td><c:out value="${p.departmentId}"/></td>
-                    <td><c:out value="${p.proposalYear}"/></td>
-                    <td><c:out value="${p.submissionDate}"/></td>
-                    <td><c:out value="${p.proposalStatus}"/></td>
-                </tr>
-            </c:forEach>
-        </table>--%>
+                    <c:forEach items="${proposal}" var="p">
+                        <tr>
+                            <td><c:out value="${p.proposalTitle}"/></td>
+                            <td><c:out value="${p.userId}"/></td>
+                            <td><c:out value="${p.projectDirector}"/></td>
+                            <td><c:out value="${p.departmentId}"/></td>
+                            <td><c:out value="${p.proposalYear}"/></td>
+                            <td><c:out value="${p.submissionDate}"/></td>
+                            <td><c:out value="${p.proposalStatus}"/></td>
+                        </tr>
+                    </c:forEach>
+                </table>--%>
     </div>
 
 </div>

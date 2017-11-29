@@ -8,6 +8,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="RoleType")
 public class RoleType {
+
+	/*1 Faculty
+	* 2 Committee
+	* 3 Chairman*/
+
+	/*--TODO: Insert Roles--*/
+
 	@Id
 	@Column(name="roleTypeID")
 	private int roleTypeId;

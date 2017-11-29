@@ -2,8 +2,10 @@ package eRSPG.Repository;
 
 import java.util.List;
 
+import eRSPG.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ public class UserRoleImpl implements UserRoleDAO {
 	public UserRoleImpl(SessionFactory sf){
 		this.sessionFactory = sf;
 	}
-	
+
 	@Transactional
 	public List<UserRole> findAllUserRole(){
 		@SuppressWarnings("unchecked")
@@ -37,6 +39,16 @@ public class UserRoleImpl implements UserRoleDAO {
 	public UserRole findUserRoleById(int raid){
 		UserRole ra = sessionFactory.getCurrentSession().get(UserRole.class, raid);
 		return ra;
+	}
+
+	@Transactional
+	public List<UserRole> findUserRoleByRoleTypeId(int roleTypeId) {
+		List<UserRole> userRoleList = sessionFactory.getCurrentSession()
+				.createCriteria(UserRole.class)
+				.add(Restrictions.eq("roleTypeId", roleTypeId))
+				.list();
+
+		return userRoleList;
 	}
 	
 	@Transactional

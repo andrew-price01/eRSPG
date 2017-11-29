@@ -1,8 +1,23 @@
 $(function() {
     fetchSubmittedProposals();
     fetchInReviewProposals();
+    hideShow();
+    hideShow1();
 });
 
+function hideShow() {
+    $("#hideshow").click(function() {
+        // assumes element with id='button'
+        $("#box1").toggle();
+    });
+}
+
+function hideShow1() {
+    $("#hideshow1").click(function() {
+        // assumes element with id='button'
+        $("#box2").toggle();
+    });
+}
 const tableBuilder1 = (proposalList) => {
     const tableBodyElm = $("#submitted");
     if (jQuery.isArray(proposalList)) {
