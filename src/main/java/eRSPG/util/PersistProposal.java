@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 /**
  * Created by iNaS2 on 11/20/2017.
  */
-public class PresistProposal {
+public class PersistProposal {
 
 
 

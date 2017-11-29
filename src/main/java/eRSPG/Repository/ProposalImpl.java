@@ -1,7 +1,7 @@
 package eRSPG.Repository;
 
 import eRSPG.model.Proposal;
-import eRSPG.util.PresistProposal;
+import eRSPG.util.PersistProposal;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -70,7 +70,7 @@ public class ProposalImpl implements ProposalDAO {
 		}
 		catch(Exception e) //for testing
 		{
-			return PresistProposal.getDummyProposal();
+			return PersistProposal.getDummyProposal();
 
 		}
 

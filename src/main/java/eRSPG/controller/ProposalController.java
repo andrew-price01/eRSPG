@@ -3,9 +3,7 @@ package eRSPG.controller;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
-import eRSPG.util.PresistProposal;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import eRSPG.util.PersistProposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -162,7 +160,7 @@ public class ProposalController {
 
         // We need to add the user info to the user form here from the user stored in a session
         //User user = new User();
-        User user = PresistProposal.getDummyUser(); // replaced by an actual user in the future
+        User user = PersistProposal.getDummyUser(); // replaced by an actual user in the future
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
         if(proposal != null){
@@ -213,7 +211,7 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
         saveProposalState(detailForm,user.getUserId());
 
         //return "redirect:/proposal/awardType";
@@ -266,7 +264,7 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
         saveProposalState(deptForm,user.getUserId());
 
         System.out.println(nextPage);
@@ -323,7 +321,7 @@ public class ProposalController {
 				semester = "Summer";
 			}
 
-            User user = PresistProposal.getDummyUser(); // replace by logged in user
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
             saveProposalState(awardForm,user.getUserId());
 
 			model.addAttribute("semester",semester);
@@ -350,7 +348,7 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-        User user = PresistProposal.getDummyUser(); // replace by logged in user
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
         saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
@@ -404,7 +402,7 @@ public class ProposalController {
             model.addAttribute("collaborative",collaborative);
 
             model.addAttribute("contentPage", "proposalBody.jsp");
-            User user = PresistProposal.getDummyUser(); // replace by logged in user
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
             saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
