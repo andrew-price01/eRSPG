@@ -1,8 +1,10 @@
 package eRSPG.controller;
 
+import com.google.common.collect.ImmutableMap;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,10 +47,8 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -59,7 +59,14 @@ public class ProposalController {
 	 * Dependency injection for data access objects.
 	 * 
 	 */
-	
+
+    @Qualifier("awardTypeDao")
+    @Autowired
+    protected AwardTypeDAO awardTypeDAO;
+
+    @Autowired
+    protected ProjectTypeDAO projectTypeDAO;
+
 	@Autowired
 	protected ProposalDAO proposalDao;
 	
@@ -473,10 +480,67 @@ public class ProposalController {
     }
 
     @RequestMapping("/eRSPG/proposal/review")
-    public String reviewForm(Model model){
+    public String reviewForm(
+            @ModelAttribute("uploadForm") UploadForm uploadForm,
+            @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestionsForm,
+            @ModelAttribute("bodyForm") BodyForm bodyForm,
+            @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+            @ModelAttribute("awardTypeForm") AwardTypeForm awardTypeForm,
+            @ModelAttribute("departmentForm") DepartmentForm departmentForm,
+            Model model){
         String contentPage = "proposalReview.jsp";
+        model.addAttribute("departmentName", departmentDAO.findDepartment(departmentForm.getDepartmentID()).getDepartmentName());
+        model.addAttribute("semesterName", semesterDAO.findSemesterById(departmentForm.getSemesterID()).getSemesterName());
+        model.addAttribute("awardTypeList", awardTypeDAO
+                .findAwardTypesById(awardTypeForm.getAwardTypes())
+                .stream()
+                .map(AwardType::getAwardName)
+                .collect(Collectors.toList()));
+
+        model.addAttribute("bodyAnswers",
+                ImmutableMap.builder()
+                        .put("1", getAnswerText(bodyForm, 1))
+                        .put("2", getAnswerText(bodyForm, 2))
+                        .put("3", getAnswerText(bodyForm, 3))
+                        .put("4", getAnswerText(bodyForm, 4))
+                        .put("5", getAnswerText(bodyDetailsForm, 5))
+                        .put("6", getAnswerText(bodyDetailsForm, 6))
+                        .put("7", getAnswerText(bodyDetailsForm, 7))
+                        .put("8", getAnswerText(bodyDetailsForm, 8))
+                        .put("9", getAnswerText(bodyQuestionsForm,9))
+                        .put("10", getAnswerText(bodyQuestionsForm,10))
+                        .put("11", getAnswerText(bodyQuestionsForm, 11))
+                        .put("12", getAnswerText(bodyQuestionsForm,12))
+                        .put("13", getAnswerText(bodyQuestionsForm, 13))
+                        .put("14", getAnswerText(bodyQuestionsForm, 14))
+                        .put("15", getAnswerText(bodyQuestionsForm, 15)).build());
+        model.addAttribute("projectTypeName", projectTypeDAO.findProjectType(awardTypeForm.getProjectTypeID()).getProjectTypeName());
         model.addAttribute("contentPage",contentPage);
         return "projectIndex";
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyForm") BodyForm bodyForm,
+                                 Integer questionId) {
+                return bodyForm.generateEssayAnswers().stream()
+                        .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                        .map(EssayAnswer::getAnswer)
+                        .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyDetailsForm")BodyDetailsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
     }
 
 

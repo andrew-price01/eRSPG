@@ -3,6 +3,7 @@ package eRSPG.config;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.session.SingleSignOutFilter;
@@ -131,6 +132,12 @@ public class DataConfig {
     @Bean(name="proposalStatusDAO")
     public ProposalStatusDAO getProposalStatus(SessionFactory sessionFactory) {
         return new ProposalStatusImpl(sessionFactory);
+    }
+
+    @Autowired
+    @Bean(name="projectTypeDAO")
+    public ProjectTypeDAO getProjectTypeDao(SessionFactory sessionFactory) {
+        return new ProjectTypeImpl(sessionFactory);
     }
 
     @Bean

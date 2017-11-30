@@ -1,9 +1,12 @@
 package eRSPG.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import eRSPG.model.AwardType;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,7 @@ public class RequestAwardImpl implements RequestAwardDAO {
 		RequestAward ra = sessionFactory.getCurrentSession().get(RequestAward.class, raid);
 		return ra;
 	}
-	
+
 	@Transactional
 	public void addNewOrUpdateRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().saveOrUpdate(ra);
