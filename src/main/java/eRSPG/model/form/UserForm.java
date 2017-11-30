@@ -1,5 +1,8 @@
 package eRSPG.model.form;
 
+import eRSPG.Repository.ProposalDAO;
+import eRSPG.model.Proposal;
+
 import javax.validation.constraints.NotNull;
 
 public class UserForm {

@@ -3,6 +3,8 @@ package eRSPG.controller;
 import com.google.common.collect.ImmutableMap;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
+import eRSPG.model.form.*;
+import eRSPG.util.PersistProposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -47,8 +49,10 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -172,7 +176,21 @@ public class ProposalController {
         String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
 
         // We need to add the user info to the user form here from the user stored in a session
-        User user = new User();
+        //User user = new User();
+        User user = PersistProposal.getDummyUser(); // replaced by an actual user in the future
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        if(proposal != null){
+            deptForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+            awardForm.LoadProposalIntoForm(proposal);
+            budgetForm.LoadProposalIntoForm(proposal);
+          //bodyForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
+        }
+
 
 		/*
 		 * Add all the form objects to the session
@@ -209,6 +227,9 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalDetail.jsp");
             return "projectIndex";
         }
+
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId());
 
         //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
@@ -259,6 +280,9 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalDepartment.jsp");
             return "projectIndex";
         }
+
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(deptForm,user.getUserId());
 
         System.out.println(nextPage);
 
@@ -314,6 +338,9 @@ public class ProposalController {
 				semester = "Summer";
 			}
 
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
+
 			model.addAttribute("semester",semester);
 
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
@@ -338,7 +365,8 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
@@ -391,6 +419,8 @@ public class ProposalController {
             model.addAttribute("collaborative",collaborative);
 
             model.addAttribute("contentPage", "proposalBody.jsp");
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
 
@@ -402,6 +432,7 @@ public class ProposalController {
     public String bodyDetailsForm(Model model){
         String contentPage = "proposalBodyDetails.jsp";
         model.addAttribute("contentPage", contentPage);
+
         return "projectIndex";
     }
 
@@ -624,7 +655,7 @@ public class ProposalController {
 	
 		LocalDateTime time = LocalDateTime.now();
 
-		Proposal proposal = new Proposal();
+		Proposal proposal = new Proposal();// find incomplete proposal by user id
 
 		// weird work around for user data
         userForm.setUserEmail(detailForm.getProposalEmail());
@@ -762,5 +793,12 @@ public class ProposalController {
         newUser.setLastName(userForm.getLastName());
         userDAO.addNewOrUpdateUser(newUser);
     }
-	
+
+    //stores whats in the form into the proposal then saves it into the database
+    private void saveProposalState(BaseForm bf,Integer userId) {
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
+	    bf.LoadFormIntoProposal(proposal);
+	    proposalDao.addNewOrUpdateProposal(proposal);
+    }
+
 }

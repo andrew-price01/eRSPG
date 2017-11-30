@@ -1,6 +1,7 @@
 package eRSPG.Repository;
 
 import eRSPG.model.Proposal;
+import eRSPG.util.PersistProposal;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -56,5 +57,22 @@ public class ProposalImpl implements ProposalDAO {
 	public void deleteProposal(Proposal p){
 		sessionFactory.getCurrentSession().delete(p);
 	}
-	
+
+	@Transactional
+	public Proposal findIncompleteProposalByUserId(int userId){
+		try {
+			Proposal p = (Proposal) sessionFactory.getCurrentSession()
+					.createCriteria(Proposal.class)
+					.add(Restrictions.eq("userId", userId))
+					//.add(Restrictions.eq("proposalStatusID", 1))
+					.uniqueResult();
+			return p;
+		}
+		catch(Exception e) //for testing
+		{
+			return PersistProposal.getDummyProposal();
+
+		}
+
+	}
 }
