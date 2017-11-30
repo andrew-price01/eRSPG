@@ -68,7 +68,7 @@ public class Proposal implements Serializable {
 	private Integer userId;
 
 	public Proposal() {
-		
+
 	}
 
 	public Proposal(String proposalTitle, int semesterId, int proposalYear, int projectTypeId, LocalDateTime submissionDate, String projectDirector, int departmentId, String proposalEmail, String proposalMailCode, String proposalExtension, boolean proposalReqStdAsst, Integer proposalStatus, LocalDateTime updatedDate, String proposalParticipants, Integer userId) {

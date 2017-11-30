@@ -64,13 +64,13 @@ public class ProposalImpl implements ProposalDAO {
 			Proposal p = (Proposal) sessionFactory.getCurrentSession()
 					.createCriteria(Proposal.class)
 					.add(Restrictions.eq("userId", userId))
-					//.add(Restrictions.eq("proposalStatusID", 1))
+					.add(Restrictions.eq("proposalStatus", 1))
 					.uniqueResult();
 			return p;
 		}
 		catch(Exception e) //for testing
 		{
-			return PersistProposal.getDummyProposal();
+			return PersistProposal.getDummyProposal(userId);
 
 		}
 

@@ -134,7 +134,7 @@
                 <h3>File Upload</h3>
             </div>
             <div class="card-text">
-                <p>File Name: ${uploadForm.name}</p>
+                <p>File Name: ${uploadForm.name.isEmpty() ? uploadForm.name : "None"}</p>
             </div>
         </div>
 

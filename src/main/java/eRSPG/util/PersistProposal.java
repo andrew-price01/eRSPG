@@ -5,7 +5,10 @@ import eRSPG.model.Proposal;
 import eRSPG.model.User;
 import eRSPG.model.form.BaseForm;
 import org.joda.time.DateTime;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * Created by iNaS2 on 11/20/2017.
@@ -25,21 +28,22 @@ public class PersistProposal {
     }
 
 
-    public static Proposal getDummyProposal()
+    public static Proposal getDummyProposal(Integer userId)
     {
         LocalDateTime time = LocalDateTime.now();
         Proposal proposal = new Proposal();
         proposal.setProposalStatus(1);
-        proposal.setProjectDirector("megaDum");
-        proposal.setProposalMailCode("4888");
-        proposal.setProposalExtension("ext");
-        proposal.setProposalEmail("Dum@mail.com");
+        proposal.setUserId(userId);
+        proposal.setProjectDirector("");
+        proposal.setProposalMailCode("");
+        proposal.setProposalExtension("");
+        proposal.setProposalEmail("");
         proposal.setProposalReqStdAsst(false);
-        proposal.setProposalTitle("dummy");
+        proposal.setProposalTitle("");
         proposal.setSemesterId(1);
         proposal.setProjectTypeId(1);
         proposal.setDepartmentId(1);
-        proposal.setProposalYear(2020);
+        proposal.setProposalYear(LocalDate.now().getYear());
         proposal.setSubmissionDate(time);
         proposal.setUpdatedDate(time);
         return proposal;

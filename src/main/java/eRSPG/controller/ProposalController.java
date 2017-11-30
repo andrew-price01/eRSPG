@@ -5,6 +5,7 @@ import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
 import eRSPG.util.PersistProposal;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.xml.soap.Detail;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -49,10 +51,8 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -189,6 +189,9 @@ public class ProposalController {
             detailForm.LoadProposalIntoForm(proposal);
           //bodyQuestionsForm.LoadProposalIntoForm(proposal);
 
+        } else {
+            proposal = PersistProposal.getDummyProposal(user.getUserId());
+            proposalDao.addNewOrUpdateProposal(proposal);
         }
 
 
@@ -205,7 +208,6 @@ public class ProposalController {
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
         model.addAttribute("userForm", userForm);
 
-        //return "redirect:/eRSPG/proposal/department";		// why is department turned to detail?
         return "redirect:/eRSPG/proposal/detail";
     }
 
@@ -796,8 +798,8 @@ public class ProposalController {
 
     //stores whats in the form into the proposal then saves it into the database
     private void saveProposalState(BaseForm bf,Integer userId) {
-        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
-	    bf.LoadFormIntoProposal(proposal);
+	    Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
+        bf.LoadFormIntoProposal(proposal);
 	    proposalDao.addNewOrUpdateProposal(proposal);
     }
 
