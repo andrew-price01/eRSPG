@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ChairmanController {
 
-	@RequestMapping("/chairman/userManagement")
+	@RequestMapping("eRSPG/chairman/userManagement")
 	public String userManagement(Model model) {
 
 		String contentPage = "userManagement.jsp";
@@ -16,7 +16,7 @@ public class ChairmanController {
 		return "userManagement";
 	}
 
-	@RequestMapping("/chairman/changeChairman")
+	@RequestMapping("eRSPG/chairman/changeChairman")
 	public String changeChairman(Model model) {
 		String contentPage = "changeChairman.jsp";
 		model.addAttribute("contentPage",contentPage);

@@ -154,18 +154,18 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons-core -->
-        <!--  <dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons-core</artifactId>
             <version>${spring-data-commons.version}</version>
-        </dependency>-->
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
-        <!--  <dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
-        </dependency>-->
+        </dependency>
 
 
         <dependency>
@@ -259,21 +259,21 @@
 
 		<!-- CAS dependencies -->
 		<!-- CAS Java Core client -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-core</artifactId>
 			<version>${java.cas.client.version}</version>
-		</dependency> -->
+		</dependency>
 
 		 <!--CAS integration for tomcat v 8.5-->
-		<dependency>
+		<dependency> 
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-integration-tomcat-v85</artifactId>
 			<version>${java.cas.client.version}</version>
 		</dependency>
 
 		 <!--CAS Support for SAML functionality-->
-		<!--  <dependency>
+		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
 			<artifactId>cas-client-support-saml</artifactId>
 			<version>${java.cas.client.version}</version>
@@ -295,7 +295,7 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
-		</dependency>-->
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
@@ -304,7 +304,7 @@
 			<version>1.2.1</version>
 		</dependency>
 
-		<!--  <dependency>
+		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>${javax.inject.version}</version>
@@ -314,7 +314,7 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda-time.version}</version>
-        </dependency>-->
+        </dependency>
 
 
 	</dependencies>
