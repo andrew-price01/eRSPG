@@ -3,6 +3,12 @@ CREATE SCHEMA `erspg` ;
 
 USE erspg;
 
+CREATE TABLE Announcement(
+    announcementID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title nvarchar(200) NOT NULL,
+    message nvarchar(255) NOT NULL,
+    date nvarchar(100) NOT NULL
+);
 
 CREATE TABLE RoleType (
         roleTypeID              smallint        not null AUTO_INCREMENT PRIMARY KEY,
@@ -338,7 +344,14 @@ VALUES("If you are applying for release time or a stipend, please list what your
 INSERT INTO EssayQuestion(question)
 VALUES("For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.");
 
+INSERT INTO RoleType(roleDesc)
+VALUES("Faculty");
 
+INSERT INTO RoleType(roleDesc)
+VALUES("Committee");
+
+INSERT INTO RoleType(roleDesc)
+VALUES("Chairman");
 
 
 

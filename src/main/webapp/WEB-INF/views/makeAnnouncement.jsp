@@ -51,10 +51,12 @@
 
         <div class="col-md-6 col-md-offset-3 text-center">
 
-            <form:form method="post" action="/eRSPG/admin/makeAnnouncement" modelAttribute="announcement">
+            <form:form method="post" action="/eRSPG/chairman/makeAnnouncement" modelAttribute="announcement">
                 <div class="input-group-lg">
                     <form:input path="title" class="form-control" id="title" placeholder="Title" />
                 </div>
+
+                <br>
 
                 <div class="input-group-lg">
                     ​<form:textarea path="message" style="resize: none" id="message" rows="5" cols="80" />

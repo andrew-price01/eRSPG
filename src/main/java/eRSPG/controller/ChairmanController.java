@@ -66,6 +66,10 @@ public class ChairmanController {
         return "assignProposal";
     }
 
+    @RequestMapping("/eRSPG/chairman/announcementSuccess")
+    public String chairmanAnnouncmentSuccess() { return "announcementSuccess"; };
+
+
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
         return new ModelAndView("makeAnnouncement", "announcement", new AnnouncementForm());
@@ -87,6 +91,7 @@ public class ChairmanController {
         model.addAttribute("message", announcement.getMessage());
         model.addAttribute("date", announcement.getDate());
         announcementDao.addNewOrUpdateAnnouncement(announcement);
+
         return "announcementSuccess";
     }
 
@@ -160,14 +165,14 @@ public class ChairmanController {
 
         for (UserRole role : userRoleList) {
             for (Proposal proposal : proposalList) {
-//                Reviewer review = new Reviewer();
-                reviewer.setUserId(role.getUserId());
-                reviewer.setProposalId(proposal.getProposalId());
-                reviewer.setDepartmentId(1);
-                reviewer.setReviewComment("");
-                reviewer.setUpdatedAt(null);
+                Reviewer review = new Reviewer();
+                review.setUserId(role.getUserId());
+                review.setProposalId(proposal.getProposalId());
+                review.setDepartmentId(1);
+                review.setReviewComment("");
+                review.setUpdatedAt(null);
 
-                reviewerDAO.addReviewer(reviewer);
+                reviewerDAO.addReviewer(review);
 
                 proposal.setProposalStatus(3);
 
