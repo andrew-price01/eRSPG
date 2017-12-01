@@ -97,7 +97,24 @@ public class ChairmanController {
         return "announcementSuccess";
     }
 
-    // Maps all Submitted Proposals as JSON to /eRSPG/submittedproposal
+    // Gets all users who are committee members
+    // and maps them to JSON to /eRSPG/committeemembers
+    @RequestMapping(value = "/eRSPG/committeemembers", method = RequestMethod.GET)
+    public @ResponseBody List<CommitteeDTO> committeeList(
+            @RequestParam(value = "roleType", defaultValue = "", required = false) String userRoleId) {
+        Integer id = userRoleId == null || userRoleId.equals("") ? null : Integer.parseInt(userRoleId);
+        List<UserRole> userRoles = id == null ?
+                userRoleDAO.findUserRoleByRoleTypeId(2) :
+                userRoleDAO.findUserRoleByRoleTypeId(2);
+
+        return userRoles.stream()
+                .map(p -> new
+                            CommitteeDTO(p, userDAO.findUserById(p.getUserId())))
+                .collect(Collectors.toList());
+    }
+
+    // Gets all proposals with proposalStatus = "Submitted"
+    // and maps them to JSON to /eRSPG/submittedproposal
     @RequestMapping(value = "/eRSPG/submittedproposal", method = RequestMethod.GET)
     public @ResponseBody
     List<ProposalDTO> proposalListSubmitted(
@@ -117,11 +134,11 @@ public class ChairmanController {
                 .collect(Collectors.toList());
     }
 
-    // Maps all In Review Proposals as JSON to /eRSPG/inreviewproposal
+    // Gets all proposals with proposalStatus = "In Review"
+    // and maps them to JSON to /eRSPG/inreviewproposal
     @RequestMapping(value = "/eRSPG/inreviewproposal", method = RequestMethod.GET)
     public @ResponseBody
-    List<ProposalDTO> proposalListInReview(
-            @RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
+    List<ProposalDTO> proposalListInReview(@RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
         Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : Integer.parseInt(proposalStatusId);
         List<Proposal> proposals = id == null ?
                 proposalDao.findAllProposalByStatusId(3) :

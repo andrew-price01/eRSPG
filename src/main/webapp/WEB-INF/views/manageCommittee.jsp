@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>" />
     <%-- <link rel="stylesheet" type="text/css" href="<s:url value="/css/home.css"/>" /> --%>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/table.css"/> "/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
@@ -50,10 +51,31 @@
     <div id="content" class="main">
         <h1>Manage Committee</h1>
 
+        <br>
+
+        <div id="window">
+            <h3 align="left">Committee Members</h3>
+            <%--<input type='button' class="btn btn-info" style="float: right;" id='hideshow' value='hide/show'>--%>
+            <div id="box1">
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+                    <tbody id="members"></tbody>
+                </table>
+
+            </div>
+        </div>
+
     </div>
 
 </div>
 
 <jsp:include page="/WEB-INF/views/footer.jsp"/>
+<script type="text/javascript" src="<s:url value="/js/committeeList.js"/>"></script>
 </body>
 </html>

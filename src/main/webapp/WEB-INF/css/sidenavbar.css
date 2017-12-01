@@ -21,6 +21,7 @@ a, a:hover, a:focus {
     padding: 10px;
     background: rgb(73, 35,101);
     border-bottom: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
 }
 
 #sidebar ul.components {

@@ -107,29 +107,6 @@
             </div>
         </div>
 
-        <%--        <table align="center" border="1">
-                    <tr>
-                        <th>Title</th>
-                        <th>Submitter</th>
-                        <th>Project Director</th>
-                        <th>Department</th>
-                        <th>Proposal Year</th>
-                        <th>Submission Date</th>
-                        <th>Status</th>
-                    </tr>
-
-                    <c:forEach items="${proposal}" var="p">
-                        <tr>
-                            <td><c:out value="${p.proposalTitle}"/></td>
-                            <td><c:out value="${p.userId}"/></td>
-                            <td><c:out value="${p.projectDirector}"/></td>
-                            <td><c:out value="${p.departmentId}"/></td>
-                            <td><c:out value="${p.proposalYear}"/></td>
-                            <td><c:out value="${p.submissionDate}"/></td>
-                            <td><c:out value="${p.proposalStatus}"/></td>
-                        </tr>
-                    </c:forEach>
-                </table>--%>
     </div>
 
 </div>
