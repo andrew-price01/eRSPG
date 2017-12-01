@@ -1,8 +1,10 @@
 package eRSPG.model.form;
 
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +20,47 @@ public class BudgetForm extends BaseForm {
 	public boolean getStudentAssistants() {
 		return studentAssistants;
 	}
+
+	public BudgetForm(){
+
+	}
+
+	public void we(double ... b){
+
+	}
+
+	public void IterateOverBudget(){
+		try {
+			double i = 0;
+			for (Field field : this.getClass().getDeclaredFields()) {
+				field.setAccessible(true); // if you want to modify private fields
+				if (field.getType().toString().equals(double.class.getTypeName())) {
+					field.set(this, i);
+					i++;
+				} else if (field.getType().toString().equals("class java.lang.String")) {
+
+					if(field.getName().startsWith("a")){
+						field.set(this,"A");
+					}
+					else if(field.getName().startsWith("b")){
+						field.set(this,"B");
+					}
+					else{
+						field.set(this,"C");
+					}
+
+				}
+				field.setAccessible(false);
+				//System.out.println(field.getName()
+				//		+ " - " + field.getType()
+				//		+ " - " + field.get(this));
+			}
+		}
+		catch (IllegalAccessException e){
+			//do nothing
+		}
+	}
+
 
 	@Override
 	public void LoadFormIntoProposal(Proposal proposal){

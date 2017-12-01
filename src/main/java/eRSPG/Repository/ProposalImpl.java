@@ -60,19 +60,19 @@ public class ProposalImpl implements ProposalDAO {
 
 	@Transactional
 	public Proposal findIncompleteProposalByUserId(int userId){
-		try {
+		//try {
 			Proposal p = (Proposal) sessionFactory.getCurrentSession()
 					.createCriteria(Proposal.class)
 					.add(Restrictions.eq("userId", userId))
-					//.add(Restrictions.eq("proposalStatusID", 1))
+					.add(Restrictions.eq("proposalStatus", 1))
 					.uniqueResult();
 			return p;
-		}
-		catch(Exception e) //for testing
-		{
-			return PersistProposal.getDummyProposal();
-
-		}
+		//}
+		//catch(Exception e) //for testing
+		//{
+		//	return PersistProposal.getDummyProposal();
+//
+		//}
 
 	}
 }

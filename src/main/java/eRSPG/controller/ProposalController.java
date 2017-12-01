@@ -143,8 +143,7 @@ public class ProposalController {
     }
 
     @RequestMapping("/eRSPG/proposal/start")
-    public String startSubmission(Model model)
-    {
+    public String startSubmission(Model model) {
         DepartmentForm deptForm = new DepartmentForm();
         DetailForm detailForm = new DetailForm();
         AwardTypeForm awardForm = new AwardTypeForm();
@@ -154,7 +153,7 @@ public class ProposalController {
         BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
         BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
         UserForm userForm = new UserForm();
-
+        budgetForm.IterateOverBudget();
         // for debugging
         String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
 
@@ -721,9 +720,9 @@ public class ProposalController {
     }
 
     //stores whats in the form into the proposal then saves it into the database
-    private void saveProposalState(BaseForm bf,Integer userId) {
+    private void saveProposalState(BaseForm baseForm,Integer userId) {
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
-	    bf.LoadFormIntoProposal(proposal);
+        baseForm.LoadFormIntoProposal(proposal);
 	    proposalDao.addNewOrUpdateProposal(proposal);
     }
 	
