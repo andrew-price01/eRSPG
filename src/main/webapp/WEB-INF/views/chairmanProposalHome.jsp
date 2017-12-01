@@ -18,10 +18,12 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
     <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/admin.css"/>" />
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/chairman.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/sidenavbar.css"/>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
+
     <title>eRSPG</title>
 </head>
 <body>
@@ -51,7 +53,6 @@
         <br>
         <div>
             <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/index'" value="Submit New Proposal" />
-            <input class="btn my-btn" type="button" value="Edit Existing Proposal" />
         </div>
         <br>
 

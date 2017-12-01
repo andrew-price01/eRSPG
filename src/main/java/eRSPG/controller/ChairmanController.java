@@ -75,6 +75,8 @@ public class ChairmanController {
         return new ModelAndView("makeAnnouncement", "announcement", new AnnouncementForm());
     }
 
+
+    // Creates new announcement
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.POST)
     public String saveAnnouncement(@Valid @ModelAttribute Announcement announcement,
                                    BindingResult result, Model model) {
@@ -95,15 +97,7 @@ public class ChairmanController {
         return "announcementSuccess";
     }
 
-/*
-    @RequestMapping(value = "/eRSPG/chairman/assignproposal", method = RequestMethod.GET)
-    public ModelAndView listProposals() {
-        ArrayList<Proposal> model = new ArrayList<Proposal>();
-            model.addAll(proposalDao.findAllProposals());
-            return new ModelAndView("assignProposal", "proposal", model);
-    }
-*/
-
+    // Maps all Submitted Proposals as JSON to /eRSPG/submittedproposal
     @RequestMapping(value = "/eRSPG/submittedproposal", method = RequestMethod.GET)
     public @ResponseBody
     List<ProposalDTO> proposalListSubmitted(
@@ -123,6 +117,7 @@ public class ChairmanController {
                 .collect(Collectors.toList());
     }
 
+    // Maps all In Review Proposals as JSON to /eRSPG/inreviewproposal
     @RequestMapping(value = "/eRSPG/inreviewproposal", method = RequestMethod.GET)
     public @ResponseBody
     List<ProposalDTO> proposalListInReview(
@@ -142,11 +137,7 @@ public class ChairmanController {
                 .collect(Collectors.toList());
     }
 
-/*    @RequestMapping(value = "/eRSPG/chairman/assignproposal", method = RequestMethod.GET)
-    public ModelAndView assignProposal() {
-        return new ModelAndView("assignProposal", "proposal", null);
-    }*/
-
+    // Assigns Submitted proposals to each committee member as a Reviewer object
     @RequestMapping(value = "/eRSPG/chairman/assignproposal", method = RequestMethod.POST)
     public String assignProposalsToAll(@Valid @ModelAttribute Reviewer reviewer,
                                        BindingResult result, Model model) {
@@ -160,9 +151,11 @@ public class ChairmanController {
         ArrayList<Proposal> proposalList = new ArrayList<Proposal>();
         proposalList.addAll(proposalDao.findAllProposalByStatusId(2));
 
+        // Find all UserRoles who are Committee Members
         ArrayList<UserRole> userRoleList = new ArrayList<UserRole>();
         userRoleList.addAll(userRoleDAO.findUserRoleByRoleTypeId(2));
 
+        // Loop through UserRoles and Submitted Proposals and add new Reviewer
         for (UserRole role : userRoleList) {
             for (Proposal proposal : proposalList) {
                 Reviewer review = new Reviewer();
