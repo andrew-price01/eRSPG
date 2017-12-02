@@ -52,12 +52,12 @@ public class UserRoleImpl implements UserRoleDAO {
 	}
 	
 	@Transactional
-	public void addNewOrUpdateUserRole(UserRole ra){
-		sessionFactory.getCurrentSession().saveOrUpdate(ra);
+	public void addNewOrUpdateUserRole(UserRole userRole){
+		sessionFactory.getCurrentSession().saveOrUpdate(userRole);
 	}
 	
 	@Transactional
-	public void deleteUserRole(UserRole ra){
-		sessionFactory.getCurrentSession().delete(ra);
+	public void deleteUserRole(UserRole userRole){
+		sessionFactory.getCurrentSession().delete(userRole);
 	}
 }

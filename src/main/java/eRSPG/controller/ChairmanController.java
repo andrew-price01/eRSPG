@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 @Controller
 @SessionAttributes("AnnouncementForm")
 public class ChairmanController {
@@ -102,7 +104,7 @@ public class ChairmanController {
     @RequestMapping(value = "/eRSPG/committeemembers", method = RequestMethod.GET)
     public @ResponseBody List<CommitteeDTO> committeeList(
             @RequestParam(value = "roleType", defaultValue = "", required = false) String userRoleId) {
-        Integer id = userRoleId == null || userRoleId.equals("") ? null : Integer.parseInt(userRoleId);
+        Integer id = userRoleId == null || userRoleId.equals("") ? null : parseInt(userRoleId);
         List<UserRole> userRoles = id == null ?
                 userRoleDAO.findUserRoleByRoleTypeId(2) :
                 userRoleDAO.findUserRoleByRoleTypeId(2);
@@ -119,7 +121,7 @@ public class ChairmanController {
     public @ResponseBody
     List<ProposalDTO> proposalListSubmitted(
             @RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
-        Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : Integer.parseInt(proposalStatusId);
+        Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : parseInt(proposalStatusId);
         List<Proposal> proposals = id == null ?
                 proposalDao.findAllProposalByStatusId(2) :
                 proposalDao.findAllProposalByStatusId(2);
@@ -139,7 +141,7 @@ public class ChairmanController {
     @RequestMapping(value = "/eRSPG/inreviewproposal", method = RequestMethod.GET)
     public @ResponseBody
     List<ProposalDTO> proposalListInReview(@RequestParam(value = "proposalStatus", defaultValue = "", required = false) String proposalStatusId) {
-        Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : Integer.parseInt(proposalStatusId);
+        Integer id = proposalStatusId == null || proposalStatusId.equals("") ? null : parseInt(proposalStatusId);
         List<Proposal> proposals = id == null ?
                 proposalDao.findAllProposalByStatusId(3) :
                 proposalDao.findAllProposalByStatusId(3);
@@ -192,4 +194,14 @@ public class ChairmanController {
         return "assignProposal";
     }
 
+    // Changes Committee to Faculty UserRole
+    @RequestMapping(value = "/eRSPG/chairman/committee", method = RequestMethod.POST)
+    public String changeCommitteeToFaculty(@RequestParam("userId") String userId) {
+
+        UserRole user = userRoleDAO.findUserRoleById(parseInt(userId));
+        user.setRoleTypeId(1);
+        userRoleDAO.addNewOrUpdateUserRole(user);
+
+        return "manageCommittee";
+    }
 }

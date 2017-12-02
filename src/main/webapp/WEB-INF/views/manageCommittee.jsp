@@ -24,7 +24,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
+
     <title>eRSPG</title>
+
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/header.jsp"/>
@@ -55,14 +57,17 @@
 
         <div id="window">
             <h3 align="left">Committee Members</h3>
+            <input type='button' class="btn btn-info" style="float: right;" id='hideshow1' value='Add New Member'>
             <%--<input type='button' class="btn btn-info" style="float: right;" id='hideshow' value='hide/show'>--%>
             <div id="box1">
                 <table align="center">
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
+                        <th>Manage</th>
                     </tr>
                     </thead>
                     <tbody id="members"></tbody>
