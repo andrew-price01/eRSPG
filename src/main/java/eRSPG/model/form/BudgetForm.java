@@ -8,8 +8,13 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import eRSPG.Repository.FundDAO;
+import eRSPG.Repository.FundImpl;
 import eRSPG.model.Fund;
 import eRSPG.model.Proposal;
+import eRSPG.util.PersistProposal;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 public class BudgetForm extends BaseForm {
@@ -21,39 +26,44 @@ public class BudgetForm extends BaseForm {
 		return studentAssistants;
 	}
 
-	public BudgetForm(){
 
+	public BudgetForm loadBudgetForm(int proposalID,FundDAO fundDao){
+		ArrayList<Fund> fundList = new ArrayList<>();
+		fundList = fundDao.findFundsByProposalId(proposalID);
+
+
+
+		return null;
 	}
 
-	public void we(double ... b){
-
-	}
-
-	public void IterateOverBudget(){
+	public void saveBudgetForm(int proposalID,FundDAO fundDAO){
 		try {
-			double i = 0;
+			int fundIndex = 0; //helps locate fund fields
+			ArrayList<Fund> fundList = new ArrayList<>();
+			ArrayList<String> descList = new ArrayList<>();
 			for (Field field : this.getClass().getDeclaredFields()) {
-				field.setAccessible(true); // if you want to modify private fields
+				Fund fund = new Fund();
 				if (field.getType().toString().equals(double.class.getTypeName())) {
-					field.set(this, i);
-					i++;
-				} else if (field.getType().toString().equals("class java.lang.String")) {
-
-					if(field.getName().startsWith("a")){
-						field.set(this,"A");
-					}
-					else if(field.getName().startsWith("b")){
-						field.set(this,"B");
+					fund.setProposalId(proposalID);
+					fund.setFundAmount(field.getDouble(this));
+					fund.setFundTypeId(2);
+					fund.setSourceTypeId(((fundIndex+1)%4)+1);
+					fund.setComments("");
+					if(fundIndex<60){ //indicates the end of the fund fields and the beginning of the totals
+						fund.setFundCategoryId( (int)Math.floor(fundIndex/12 +1));
 					}
 					else{
-						field.set(this,"C");
+						fund.setFundCategoryId(5);
 					}
-
+					if(!descList.isEmpty() && descList.size() > fundIndex/5) {
+						fund.setDescription(descList.get(fundIndex / 5));
+					}
+					fundList.add(fund);
+					fundIndex++;
+				} else if (field.getType().toString().equals("class java.lang.String")) {
+					descList.add((String) field.get(this));
 				}
-				field.setAccessible(false);
-				//System.out.println(field.getName()
-				//		+ " - " + field.getType()
-				//		+ " - " + field.get(this));
+				fundDAO.addFundList(fundList);
 			}
 		}
 		catch (IllegalAccessException e){
@@ -65,29 +75,38 @@ public class BudgetForm extends BaseForm {
 	@Override
 	public void LoadFormIntoProposal(Proposal proposal){
 		proposal.setProposalReqStdAsst(studentAssistants);
+
 	}
+
 
 	public void setStudentAssistants(boolean studentAssistants) {
 		this.studentAssistants = studentAssistants;
 	}
-	
+
+	//TODO:Instead of having over 70 variables , consider using a list or a hash map
+	//For now, the saveBudgetForm() uses refelction and requires the members of this this class to be in
+	// a specific order for the iteration to work correctly.
+	//DONT MOVE OR DELETE ANYTHING UNLESS YOU COMPLETE THE TODO
 	private String a1;
-	private String a2;
-	private String a3;
-	private String a4;
-	private String aBen;
-	
 	private String b1;
-	private String b2;
-	private String b3;
-	private String b4;
-	private String bBen;
-	
 	private String c1;
-	private String c2;
-	private String c3;
-	private String c4;
+
+	private String aBen;
+	private String bBen;
 	private String cBen;
+
+	private String a2;
+	private String b2;
+	private String c2;
+
+	private String a3;
+	private String b3;
+	private String c3;
+
+	private String a4;
+	private String b4;
+	private String c4;
+
 	
 	private double source1_a_1;
 	private double source2_a_1;

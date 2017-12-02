@@ -153,7 +153,7 @@ public class ProposalController {
         BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
         BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
         UserForm userForm = new UserForm();
-        budgetForm.IterateOverBudget();
+
         // for debugging
         String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
 
@@ -161,7 +161,7 @@ public class ProposalController {
         //User user = new User();
         User user = PersistProposal.getDummyUser(); // replaced by an actual user in the future
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
-
+        budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
         if(proposal != null){
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
@@ -340,7 +340,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.POST)
-    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm budgetForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
     {
         if(result.hasErrors())
         {
@@ -348,7 +348,8 @@ public class ProposalController {
             return "projectIndex";
         }
         User user = PersistProposal.getDummyUser(); // replace by logged in user
-        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
+
+        saveProposalState(budgetForm,user.getUserId());
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
