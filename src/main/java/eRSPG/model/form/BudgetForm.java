@@ -30,9 +30,14 @@ public class BudgetForm extends BaseForm {
 	public BudgetForm loadBudgetForm(int proposalID,FundDAO fundDao){
 		ArrayList<Fund> fundList = new ArrayList<>();
 		fundList = fundDao.findFundsByProposalId(proposalID);
+		BudgetForm budgetForm = new BudgetForm();
+		for (Fund fund:
+			 fundList) {
+			//load into a BudgetForm object
+		}
 
 
-
+		//return that object
 		return null;
 	}
 
