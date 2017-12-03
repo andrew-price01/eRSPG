@@ -14,9 +14,29 @@ import java.util.Map;
 
 @Controller
 public class HomeController {
+	public static String STAFF_AFFILIATION = "staff:weber.edu";
 
 	@RequestMapping("/eRSPG/home")
     public String home(){
+//	public @ResponseBody
+//	String home(HttpServletRequest request,
+//				HttpServletResponse response) {
+
+		// The CAS client puts the Principal into the Request:
+//		AttributePrincipal principal = (AttributePrincipal)request.getUserPrincipal();
+//		if(principal != null){
+//            String uni = principal.getName();
+//        }
+//
+//		// Check if the user has a staff affil:
+//		Map attributes = (principal==null)
+//				? new HashMap()
+//				: principal.getAttributes();
+//		List affiliations = (List)attributes.get("affiliation");
+//		boolean isStaff = affiliations.contains(STAFF_AFFILIATION);
+//		if(isStaff){
+//			return "home";
+//		}
 		return "home";
 	}
 }

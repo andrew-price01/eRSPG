@@ -10,6 +10,8 @@ public interface UserRoleDAO {
 
 	UserRole findUserRoleById(int raid);
 
+	List<UserRole> findUserRoleByRoleTypeId(int roleTypeId);
+
 	void addNewOrUpdateUserRole(UserRole ra);
 
 	void deleteUserRole(UserRole ra);

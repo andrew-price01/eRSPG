@@ -339,8 +339,14 @@ INSERT INTO EssayQuestion(question)
 VALUES("For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.");
 
 
+create table Budget(
+	budgetID      int     not null AUTO_INCREMENT PRIMARY KEY,
+    budgetYear int not null,
+    totalBudget int not null
+);
 
-
+insert into Budget(budgetYear, totalBudget) values(2017, 2000);
+commit;
 
 
 CREATE USER 'erspg_admin'@'localhost' IDENTIFIED BY 'P@$$w0rd';

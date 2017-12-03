@@ -1,5 +1,6 @@
 package eRSPG.config;
 
+import eRSPG.model.*;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -15,12 +16,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
+
+import javax.sql.DataSource;
+
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import eRSPG.Repository.*;
 
 @Configuration
 @EnableTransactionManagement
@@ -44,9 +49,9 @@ public class DataConfig {
 
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 
-        sessionBuilder.addAnnotatedClasses(Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
+        sessionBuilder.addAnnotatedClasses(Announcement.class, Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
                 FundType.class, Participant.class, ProjectType.class, Proposal.class, ProposalStatus.class, RequestAward.class, RoleType.class,
-                Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
+                Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class, Budget.class);
         //sessionBuilder.scanPackages("eRPSG.model");
         sessionBuilder.addProperties(getHibernateProperties());
         return sessionBuilder.buildSessionFactory();
@@ -68,6 +73,10 @@ public class DataConfig {
 
         return transactionManager;
     }
+
+    @Autowired
+    @Bean(name = "announcementDao")
+    public AnnouncementDAO getAnnouncementDao(SessionFactory sessionFactory) { return new AnnouncementImpl(sessionFactory); }
 
     @Autowired
     @Bean(name = "proposalDao")
@@ -131,6 +140,18 @@ public class DataConfig {
     @Bean(name="proposalStatusDAO")
     public ProposalStatusDAO getProposalStatus(SessionFactory sessionFactory) {
         return new ProposalStatusImpl(sessionFactory);
+    }
+
+    @Autowired
+    @Bean(name="reviewerDAO")
+    public ReviewerDAO getReviewerDAO(SessionFactory sessionFactory) {
+        return new ReviewerImpl(sessionFactory);
+    }
+
+    @Autowired
+    @Bean(name = "budgetDAO")
+    public BudgetDAO getBudgetDao(SessionFactory sessionFactory) {
+        return new BudgetImpl(sessionFactory);
     }
 
     @Bean
