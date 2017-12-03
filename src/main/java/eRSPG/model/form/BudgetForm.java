@@ -33,6 +33,7 @@ public class BudgetForm extends BaseForm {
 		BudgetForm budgetForm = new BudgetForm();
 		for (Fund fund:
 			 fundList) {
+			System.out.println(fund.getFundId());
 			//load into a BudgetForm object
 		}
 
@@ -68,6 +69,7 @@ public class BudgetForm extends BaseForm {
 				} else if (field.getType().toString().equals("class java.lang.String")) {
 					descList.add((String) field.get(this));
 				}
+				//adds the funds to the database
 				fundDAO.addFundList(fundList);
 			}
 		}
@@ -89,9 +91,9 @@ public class BudgetForm extends BaseForm {
 	}
 
 	//TODO:Instead of having over 70 variables , consider using a list or a hash map
-	//For now, the saveBudgetForm() uses refelction and requires the members of this this class to be in
+	//For now, the saveBudgetForm() uses reflection and requires the members of this class to be in
 	// a specific order for the iteration to work correctly.
-	//DONT MOVE OR DELETE ANYTHING UNLESS YOU COMPLETE THE TODO
+	//DON'T MOVE OR DELETE ANYTHING UNLESS YOU COMPLETE THE TODO
 	private String a1;
 	private String b1;
 	private String c1;

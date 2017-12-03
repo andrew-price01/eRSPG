@@ -54,14 +54,16 @@ public class FundImpl implements FundDAO {
 		for (Fund f:
 			 fundList) {
 			sessionFactory.getCurrentSession().saveOrUpdate(f);
+
 		}
 	}
 
 	@Override
 	public ArrayList<Fund> findFundsByProposalId(int proposalID) {
-		ArrayList<Fund> result = (ArrayList<Fund>) sessionFactory.getCurrentSession().createCriteria(Fund.class)
-				.add(Restrictions.eq("proposalID",proposalID))
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-		return result;
+		//ArrayList<Fund> result = (ArrayList<Fund>) sessionFactory.getCurrentSession()
+		//		.createCriteria(Fund.class)
+		//		.add(Restrictions.eq("proposalID",proposalID))
+		//		.list();
+		return null;
 	}
 }

@@ -162,6 +162,8 @@ public class ProposalController {
         User user = PersistProposal.getDummyUser(); // replaced by an actual user in the future
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
         budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
+        //BudgetForm bf = new BudgetForm();
+        //bf.loadBudgetForm(22,fundDAO);
         if(proposal != null){
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
@@ -347,8 +349,10 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-        User user = PersistProposal.getDummyUser(); // replace by logged in user
 
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        budgetForm.saveBudgetForm(22,fundDAO);
         saveProposalState(budgetForm,user.getUserId());
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
