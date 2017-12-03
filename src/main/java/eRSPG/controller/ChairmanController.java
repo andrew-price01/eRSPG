@@ -206,7 +206,7 @@ public class ChairmanController {
     }
 
     // Edit Committee Member info
-    @RequestMapping(value = "/eRSPG/chairman/committee", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chairman/editcommittee", method = RequestMethod.POST)
     public String editCommittee(@RequestParam("userRoleId") String userRoleId,
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,

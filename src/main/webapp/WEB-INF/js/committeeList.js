@@ -44,8 +44,12 @@ function openDialog(firstName, lastName, email, id) {
     dialog = $( "#dialog-form" ).dialog({
         autoOpen: false,
         height: 400,
-        width: 350,
+        width: 400,
+        draggable: true,
         modal: true,
+        open: function (event, ui) {
+            $('#dialog-form').css('overflow', 'hidden');
+        },
         buttons: {
             "Save": addUser,
             Cancel: function() {
@@ -60,7 +64,7 @@ function openDialog(firstName, lastName, email, id) {
 
     form = dialog.find( "form" ).on( "submit", function( event ) {
         event.preventDefault();
-        addUser();
+        // addUser();
     });
 
     dialog.dialog( "open" );
@@ -76,14 +80,15 @@ function saveEdit(id, firstname, lastname, email) {
     };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/committee',
+        url: '/eRSPG/chairman/editcommittee',
         type:"POST",
         data: data,
         success: function(response){
             console.log('success!');
         },
-        error: function(exception) {
-            console.error('Exeption:', exception);
+        error: function(xhr, status, error) {
+            // console.error('Exeption:' + exception);
+            alert(xhr.responseText);
         },
     });
 }
