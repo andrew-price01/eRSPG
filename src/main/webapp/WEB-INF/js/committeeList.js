@@ -8,13 +8,12 @@ const tableBuilder = (committeeList) => {
         committeeList.map((p) => {
             tableBodyElm.append(`
             <tr>
-                <td data-label="ID">${p.id}</td>
                 <td data-label="First Name">${p.firstName}</td>
-                <td data-label="Last Name">${p.lastName}</td>
+                <td data-label="Last Name" class="last">${p.lastName}</td>
                 <td data-label="Email">${p.email}</td>
                 <td data-label="Manage">
-                    <a href="">Edit </a>
-                    <input type="button" value="Delete" onclick="confirm_decision(${p.id});"
+                    <input type="button" value="Edit" onclick="openDialog('${p.firstName}', '${p.lastName}', '${p.email}', '${p.id}');" />
+                    <input type="button" value="Remove" onclick="confirmDelete('${p.id}');" />
                 </td>
             </tr>
            `);
@@ -22,12 +21,79 @@ const tableBuilder = (committeeList) => {
     }
 };
 
-const confirm_decision = (user_id) => {
+function openDialog(firstName, lastName, email, id) {
+    var dialog, form,
+
+        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+        emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+        firstName = $("#firstName").val(firstName),
+        lastName = $("#lastName").val(lastName),
+        email = $( "#email" ).val(email),
+        id = id;
+        allFields = $( [] ).add( firstName ).add( lastName ).add( email );
+
+    function addUser() {
+        // console.log(document.getElementById("lastName").value);
+
+        saveEdit(id, document.getElementById("firstName").value, document.getElementById("lastName").value, document.getElementById("email").value);
+
+        dialog.dialog("close");
+        location.reload();
+    }
+
+    dialog = $( "#dialog-form" ).dialog({
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+            "Save": addUser,
+            Cancel: function() {
+                dialog.dialog( "close" );
+            }
+        },
+        close: function() {
+            form[ 0 ].reset();
+            allFields.removeClass( "ui-state-error" );
+        }
+    });
+
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        addUser();
+    });
+
+    dialog.dialog( "open" );
+
+};
+
+function saveEdit(id, firstname, lastname, email) {
+    var data = {
+        userRoleId : id,
+        firstName : firstname,
+        lastName : lastname,
+        email : email
+    };
+
+    jQuery.ajax({
+        url: '/eRSPG/chairman/committee',
+        type:"POST",
+        data: data,
+        success: function(response){
+            console.log('success!');
+        },
+        error: function(exception) {
+            console.error('Exeption:', exception);
+        },
+    });
+}
+
+function confirmDelete(user_id) {
 
     var data = {
         userId : user_id
-    }
-    if(confirm("Are you sure you want to remove this member from the committee?")) // this will pop up confirmation box and if yes is clicked it call servlet else return to page
+    };
+    if(confirm("Are you sure you want to remove this member from the committee?"))
     {
         jQuery.ajax({
             url: '/eRSPG/chairman/committee',
@@ -35,9 +101,14 @@ const confirm_decision = (user_id) => {
             data: data,
             success: function(response){
                 console.log('success!');
+                location.reload();
+            },
+            error: function() {
+                console.error('error!');
             },
         });
     }else{
+        console.log(data);
         return false;
     }
     return true;

@@ -1,7 +1,14 @@
+
+#wrapper {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    position: relative;
+}
+
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    height: 100%;
     position: fixed;
     top: 50px;
     left: 0;
@@ -48,13 +55,6 @@ a, a:hover, a:focus {
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
     background: #000;
-}
-
-#wrapper {
-    display: flex;
-    align-items: stretch;
-    height: 100%;
-    position: relative;
 }
 
 #content {

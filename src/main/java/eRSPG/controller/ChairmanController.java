@@ -204,4 +204,24 @@ public class ChairmanController {
 
         return "manageCommittee";
     }
+
+    // Edit Committee Member info
+    @RequestMapping(value = "/eRSPG/chairman/committee", method = RequestMethod.POST)
+    public String editCommittee(@RequestParam("userRoleId") String userRoleId,
+                                @RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("email") String email) {
+
+        UserRole userRole = userRoleDAO.findUserRoleById(Integer.parseInt(userRoleId));
+
+        User user = userDAO.findUserById(userRole.getUserId());
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+
+        userDAO.addNewOrUpdateUser(user);
+
+        return "manageCommittee";
+    }
 }
