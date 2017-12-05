@@ -8,6 +8,10 @@ CREATE TABLE RoleType (
         roleTypeID              smallint        not null AUTO_INCREMENT PRIMARY KEY,
     roleDesc                text not null
 );
+
+INSERT INTO roletype (roleDesc) VALUES ('user');
+INSERT INTO roletype (roleDesc) VALUES ('admin');
+INSERT INTO roletype (roleDesc) VALUES ('chairman');
     
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
