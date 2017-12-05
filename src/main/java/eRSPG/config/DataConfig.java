@@ -128,6 +128,13 @@ public class DataConfig {
         return new ProposalStatusImpl(sessionFactory);
     }
 
+    @Autowired
+    @Bean(name="projectTypeDAO")
+    public ProjectTypeDAO getProjectTypeDao(SessionFactory sessionFactory) {
+        return new ProjectTypeImpl(sessionFactory);
+    }
+
+
 //    @Bean
 //    public AuthenticationFilter authenticationFilter(){
 //        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
@@ -206,84 +213,6 @@ public class DataConfig {
 //    public SingleSignOutHttpSessionListener singleSignOutListener(){
 //        return new SingleSignOutHttpSessionListener();
 //    }
-    @Autowired
-    @Bean(name="projectTypeDAO")
-    public ProjectTypeDAO getProjectTypeDao(SessionFactory sessionFactory) {
-        return new ProjectTypeImpl(sessionFactory);
-    }
-
-    @Bean
-    public AuthenticationFilter authenticationFilter(){
-        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
-        mAuthenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
-        mAuthenticationFilter.setRenew(false);
-        mAuthenticationFilter.setGateway(false);
-        //mAuthenticationFilter.setServerName(Constants.APP_SERVER);
-        mAuthenticationFilter.setService(Constants.CAS_SERVICE_URL);
-        return mAuthenticationFilter;
-    }
-
-    @Bean
-    public Cas10TicketValidationFilter cas10TicketValidationFilter(){
-        Cas10TicketValidationFilter mCas10TicketValidationFilter = new Cas10TicketValidationFilter();
-        mCas10TicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas10TicketValidationFilter.setUseSession(true);
-        mCas10TicketValidationFilter.setRedirectAfterValidation(true);
-        mCas10TicketValidationFilter.setTicketValidator(cas10TicketValidator());
-        return mCas10TicketValidationFilter;
-    }
-
-    @Bean
-    public Cas10TicketValidator cas10TicketValidator(){
-        return  new Cas10TicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Saml11TicketValidationFilter saml11TicketValidationFilter(){
-        Saml11TicketValidationFilter mSaml11TicketValidationFilter = new Saml11TicketValidationFilter();
-        mSaml11TicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mSaml11TicketValidationFilter.setUseSession(true);
-        mSaml11TicketValidationFilter.setRedirectAfterValidation(true);
-        mSaml11TicketValidationFilter.setTicketValidator(saml11TicketValidator());
-        return mSaml11TicketValidationFilter;
-    }
-
-    @Bean
-    public Saml11TicketValidator saml11TicketValidator(){
-        return  new Saml11TicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Cas20ProxyReceivingTicketValidationFilter cas20ProxyReceivingTicketValidationFilter(){
-        Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        //mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
-        mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
-        mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
-        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
-        return mCas20ProxyReceivingTicketValidationFilter;
-    }
-
-    @Bean
-    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
-        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Cas30ProxyReceivingTicketValidationFilter cas30ProxyReceivingTicketValidationFilter(){
-        Cas30ProxyReceivingTicketValidationFilter mCas30ProxyReceivingTicketValidationFilter = new Cas30ProxyReceivingTicketValidationFilter();
-        mCas30ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
-        mCas30ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas30ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
-        mCas30ProxyReceivingTicketValidationFilter.setUseSession(true);
-        mCas30ProxyReceivingTicketValidationFilter.setTicketValidator(cas30ProxyTicketValidator());
-        return mCas30ProxyReceivingTicketValidationFilter;
-    }
-
-    @Bean
-    public Cas30ProxyTicketValidator cas30ProxyTicketValidator(){
-        return new Cas30ProxyTicketValidator(Constants.CAS_URL_PREFIX);
-    }
 
     @Bean
     public CommonsMultipartResolver multipartResolver(){

@@ -721,4 +721,10 @@ public class ProposalController {
 		
 	}
 
+    //stores whats in the form into the proposal then saves it into the database
+    private void saveProposalState(BaseForm bf,Integer userId) {
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
+        bf.LoadFormIntoProposal(proposal);
+        proposalDao.addNewOrUpdateProposal(proposal);
+    }
 }
