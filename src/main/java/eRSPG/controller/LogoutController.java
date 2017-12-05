@@ -25,7 +25,6 @@ public class LogoutController {
 
     @Autowired
     protected UserDAO userDAO;
-    // this will be removed and is temporary to create default users from logins
     @Autowired
     protected UserRoleDAO userRoleDAO;
     // what I think the staff affiliation might look like / may be removed later
@@ -69,7 +68,7 @@ public class LogoutController {
             if(!attributes.isEmpty() && username != null){
                 List affiliations = (List)attributes.get(Constants.CAS_ATTRIBUTE_MEMBEROF);
                 boolean isStaff = affiliations.contains(STAFF_AFFILIATION); // Still need to see what this memberOf looks like
-                // if the user loging in is staff and they are not already in the database add the user to the database
+                // if the user logging in is staff and they are not already in the database add the user to the database
                 User user = getNewUserFromDatabase(username);
                 if(user == null){
                     // check they are staff
@@ -86,7 +85,7 @@ public class LogoutController {
                         user = getNewUserFromDatabase(username);
                         int userID = user.getUserId();
                         addNewUserRoleToDatabase(userID, Constants.USERROLE_USER); // roletype = 1 means User , the default will actually be 1 for lowest authorities
-
+                        // add user to the session
                         addUserInformationToSession(request, response, user);
                         return "redirect:/eRSPG/home";
                     }else{
@@ -100,35 +99,13 @@ public class LogoutController {
                         return "redirect:"+ Constants.CAS_URL_LOGOUT;
                     }
                 }else{
-                    // user is in database
+                    // user is in database, add to session and redirect
                     addUserInformationToSession(request, response, user);
                     return "redirect:/eRSPG/home";
                 }
-
-
-
             }
-//            else if(username != null){
-//                // this will be removed but is here while we can't get attributes
-//                // REMOVE THE WHOLE ELSE IF WHEN TESTING IS DONE
-//                User user = getNewUserFromDatabase(username);
-//                if(user == null){
-//                    // create a user
-//                    String firstName = username;
-//                    String lastName =  username;
-//                    String email =  username+"@fake.email";
-//                    addNewUserToDatabase(email, firstName, lastName, username);
-//                    // query db again because we want the userID in the User object
-//                    user = getNewUserFromDatabase(username);
-//                    int userID = user.getUserId();
-//                    // add the user role to the DB for new user
-//                    addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman
-//                }
-//                addUserInformationToSession(request, response, user);
-//                return "redirect:/eRSPG/home";
-//            }
         }
-        // user already in session and DB
+        // user already in session and DB so redirect
         return "redirect:/eRSPG/home";
     }
 

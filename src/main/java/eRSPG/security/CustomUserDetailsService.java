@@ -1,7 +1,5 @@
 package eRSPG.security;
 
-import com.sun.deploy.net.HttpRequest;
-import com.sun.deploy.net.HttpResponse;
 import eRSPG.Repository.RoleTypeDAO;
 import eRSPG.Repository.UserDAO;
 import eRSPG.Repository.UserRoleDAO;
@@ -17,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,18 +37,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         String lowercaseUsername = username.toLowerCase();
 
         User userFromDatabase = userDAO.findUserByUsername(lowercaseUsername);
+        UserRole userRoleFromDatabase = userRoleDAO.findUserRoleByUserId(userFromDatabase.getUserId());
+
         if (userFromDatabase == null) {
-//            Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-//            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(roleUser);
-//            grantedAuthorities.add(grantedAuthority);
-//            return new org.springframework.security.core.userdetails.User(lowercaseUsername,lowercaseUsername, grantedAuthorities);
+
             throw new UsernameNotFoundException("User " + lowercaseUsername + " was not found in the database");
         }
-//        else if (userRoleFromDatabase.getRevoked() != null) {
-//            throw new UserNotActivatedException("User " + lowercaseUsername + " role was revoked");
-//        }
+        else if (userRoleFromDatabase.getRevoked() != null) {
+            throw new UserNotActivatedException("User " + lowercaseUsername + " role was revoked");
+        }
 
-        UserRole userRoleFromDatabase = userRoleDAO.findUserRoleByUserId(userFromDatabase.getUserId());
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         RoleType roleTypeFromDatabase = roleTypeDAO.findRoleTypeByRoleTypeId(userRoleFromDatabase.getRoleTypeId());
         String roleFromDB = roleTypeFromDatabase.getRoleDesc();

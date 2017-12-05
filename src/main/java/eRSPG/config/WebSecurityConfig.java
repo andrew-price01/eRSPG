@@ -78,11 +78,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
-        //webSecurity.ignoring().antMatchers("/login");
-    }
-
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //auth.authenticationProvider(preAuthAuthProvider());
 //        auth.inMemoryAuthentication()
@@ -125,7 +120,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsByNameServiceWrapper userDetailsServiceWrapper(){
         UserDetailsByNameServiceWrapper mUserDetailsByNameServiceWrapper = new UserDetailsByNameServiceWrapper();
-        //mUserDetailsByNameServiceWrapper.setUserDetailsService(userDetailsService());
         mUserDetailsByNameServiceWrapper.setUserDetailsService(getUserService());
         return mUserDetailsByNameServiceWrapper;
     }
@@ -217,14 +211,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filterInvocationSecurityMetadataSource;
     }
 
-//    @Bean
-//    public RunAsManager runAsManager() throws Exception {
-//        RunAsManagerImpl runAsManager = new RunAsManagerImpl();
-//        runAsManager.setKey("ROLE_ADMIN");
-//        runAsManager.afterPropertiesSet();
-//        return runAsManager;
-//    }
-
     @Bean
     public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter(){
         return new SecurityContextHolderAwareRequestFilter();
@@ -271,25 +257,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return ticketValidator;
     }
 
-    @Bean
-    public Cas20ProxyReceivingTicketValidationFilter ticketValidationFilterCas20(){
-        Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.CAS_SERVER);
-        mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        //mCas20ProxyReceivingTicketValidationFilter.setProxyReceptorUrl("/proxy/receptor");
-        mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
-        mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
-        mCas20ProxyReceivingTicketValidationFilter.setExceptionOnValidationFailure(true);
-        mCas20ProxyReceivingTicketValidationFilter.setProxyGrantingTicketStorage(proxyGrantingTicketStorage());
-        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
-        return mCas20ProxyReceivingTicketValidationFilter;
-    }
-
-    @Bean
-    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
-        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
+    // These aren't used but are here if the desire is to proxy
+//    @Bean
+//    public Cas20ProxyReceivingTicketValidationFilter ticketValidationFilterCas20(){
+//        Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
+//        mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.CAS_SERVER);
+//        mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
+//        //mCas20ProxyReceivingTicketValidationFilter.setProxyReceptorUrl("/proxy/receptor");
+//        mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
+//        mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
+//        mCas20ProxyReceivingTicketValidationFilter.setExceptionOnValidationFailure(true);
+//        mCas20ProxyReceivingTicketValidationFilter.setProxyGrantingTicketStorage(proxyGrantingTicketStorage());
+//        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
+//        return mCas20ProxyReceivingTicketValidationFilter;
+//    }
+//
+//    @Bean
+//    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
+//        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
+//    }
+//
 //    @Bean
 //    public Cas20ServiceTicketValidator ticketValidator(){
 //        Cas20ServiceTicketValidator mCas20ServiceTicketValidator = new Cas20ServiceTicketValidator(Constants.CAS_URL_PREFIX);
