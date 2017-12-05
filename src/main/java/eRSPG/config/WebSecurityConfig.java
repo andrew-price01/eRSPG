@@ -18,6 +18,7 @@ import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.*;
@@ -52,16 +53,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(springSecurityFilterChain(), FilterChainProxy.class)
                 .httpBasic().realmName("eRSPG")
                 .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .failureUrl(Constants.CAS_URL_LOGOUT)
+                    .permitAll()
+                .and()
                 .logout()
-                    .logoutUrl("/eRSPG/logout")
-                    .logoutSuccessUrl("/welcome")
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl(Constants.CAS_URL_LOGOUT)
                     .logoutSuccessHandler((LogoutSuccessHandler) securityContextLogoutHandler())
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                     .permitAll()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/welcome", "/about", "/contact").permitAll()
+                    .antMatchers("/welcome", "/about", "/contact", "/logout", "/login").permitAll()
                     .antMatchers("/eRSPG/**").hasAuthority("ROLE_USER")
                     .antMatchers("/eRSPG/admin/**").hasAuthority("ROLE_ADMIN")
                     .antMatchers("/eRSPG/chairman/**").hasAuthority("ROLE_CHAIRMAN")
@@ -72,12 +78,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        //webSecurity.ignoring().antMatchers("/login");
+    }
+
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(preAuthAuthProvider());
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password").authorities("ROLE_USER")
-                .and()
-                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN");
+        //auth.authenticationProvider(preAuthAuthProvider());
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password("password").authorities("ROLE_USER")
+//                .and()
+//                .withUser("admin").password("password").authorities("ROLE_USER", "ROLE_ADMIN");
 //                .and()
 //                .withUser("casuser").password("casuser").authorities("ROLE_USER", "ROLE_ADMIN", "ROLE_CHAIRMAN");
     }
@@ -86,6 +97,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public FilterChainProxy springSecurityFilterChain(){
         // To change to Cas20 protocol change the authicationFilter and ticketValidationFilter below
         List listOfFilterChains = new ArrayList();
+        listOfFilterChains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/login"),
+                authenticationFilterSaml(), ticketValidationFilterSaml()));
+        listOfFilterChains.add(new DefaultSecurityFilterChain(
+                new AntPathRequestMatcher("/logout"),
+                logoutFilter(), etf(), fsi()));
         listOfFilterChains.add(new DefaultSecurityFilterChain(
                 new AntPathRequestMatcher("/eRSPG/**"),
                 authenticationFilterSaml(), ticketValidationFilterSaml(), wrappingFilter(), sif(),

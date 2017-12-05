@@ -1,8 +1,11 @@
 package eRSPG.security;
 
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
 import eRSPG.Repository.RoleTypeDAO;
 import eRSPG.Repository.UserDAO;
 import eRSPG.Repository.UserRoleDAO;
+import eRSPG.config.Constants;
 import eRSPG.model.RoleType;
 import eRSPG.model.User;
 import eRSPG.model.UserRole;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,18 +38,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        String roleUser = "ROLE_USER";
-        String roleAdmin = "ROLE_ADMIN";
-        String roleChair = "ROLE_CHAIRMAN";
         String lowercaseUsername = username.toLowerCase();
 
         User userFromDatabase = userDAO.findUserByUsername(lowercaseUsername);
         if (userFromDatabase == null) {
-            Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(roleUser);
-            grantedAuthorities.add(grantedAuthority);
-            return new org.springframework.security.core.userdetails.User(lowercaseUsername,lowercaseUsername, grantedAuthorities);
-            //throw new UsernameNotFoundException("User " + lowercaseUsername + " was not found in the database");
+//            Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+//            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(roleUser);
+//            grantedAuthorities.add(grantedAuthority);
+//            return new org.springframework.security.core.userdetails.User(lowercaseUsername,lowercaseUsername, grantedAuthorities);
+            throw new UsernameNotFoundException("User " + lowercaseUsername + " was not found in the database");
         }
 //        else if (userRoleFromDatabase.getRevoked() != null) {
 //            throw new UserNotActivatedException("User " + lowercaseUsername + " role was revoked");
@@ -57,21 +59,21 @@ public class CustomUserDetailsService implements UserDetailsService {
         GrantedAuthority grantedAuthority = null;
         switch(roleFromDB){
             case "user":
-                grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
                 break;
             case "admin":
-                grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
-                grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
                 grantedAuthorities.add(grantedAuthority);
                 break;
             case "chairman":
-                grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
-                grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
                 grantedAuthorities.add(grantedAuthority);
-                grantedAuthority = new SimpleGrantedAuthority(roleChair);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_CHAIRMAN);
                 grantedAuthorities.add(grantedAuthority);
                 break;
             default:
