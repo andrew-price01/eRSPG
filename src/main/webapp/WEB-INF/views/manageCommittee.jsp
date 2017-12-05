@@ -31,7 +31,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="<s:url value="/js/committeeList.js"/>"></script>
 
-
     <title>eRSPG</title>
 
 </head>
@@ -95,8 +94,8 @@
                     </li>
                 </ul>
 
-                <div class="ui-widget" id="tabSearch" align="center">
-                    <label for="newEmail">Find faculty by email</label>
+                <div class="ui-front" id="tabSearch" align="center">
+                    <label for="searchEmail">Find faculty by email</label>
                     <input type="text" id="searchEmail">
                 </div>
 
@@ -149,15 +148,15 @@
 
 <jsp:include page="/WEB-INF/views/footer.jsp"/>
 
-<script type="text/javascript">
+<%--<script type="text/javascript">
     $(document).ready(function() {
         var list = [
             "Yong",
             "Dan",
             "Brian"
         ];
-        $("#searchEmail").autocomplete({lookup: list});
+        $("#searchEmail").autocomplete({source: list});
     })
-</script>
+</script>--%>
 </body>
 </html>

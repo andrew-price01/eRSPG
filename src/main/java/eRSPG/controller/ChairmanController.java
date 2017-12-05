@@ -224,4 +224,19 @@ public class ChairmanController {
 
         return "manageCommittee";
     }
+
+    @RequestMapping(value = "/eRSPG/emaillist", method = RequestMethod.GET)
+    public @ResponseBody
+    List<EmailDTO> retrieveAllCommitteeEmail() {
+
+        List<UserRole> userRoles = userRoleDAO.findUserRoleByRoleTypeId(1);
+        List<String> emails = new ArrayList<String>();
+        for (UserRole u : userRoles)
+        {
+            User user = userDAO.findUserById(u.getUserId());
+            emails.add(user.getEmail().toString());
+        }
+        return emails.stream().map(p -> new EmailDTO(p))
+                .collect(Collectors.toList());
+    }
 }

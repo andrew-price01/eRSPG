@@ -31,3 +31,7 @@ input.text {
 #tabSearch {
     height: 100px;
 }
+
+#searchEmail {
+    width: 250px;
+}

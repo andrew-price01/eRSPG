@@ -1,14 +1,14 @@
 $(function() {
     fetchCommittee();
+    autoComplete();
+    fetchEmails();
 });
 
-function autoComplete() {
-    var list = [
-        "Yong",
-        "Dan",
-        "Brian"
-    ];
-    $("#searchEmail").autocomplete({source: list});
+function autoComplete(list) {
+    var arr = $.map(list, function(el) { return JSON.parse(JSON.stringify(el.email)) });
+    // console.log(JSON.stringify(arr[0]));
+    console.log(arr[0]);
+    $("#searchEmail").autocomplete({source: arr});
 }
 
 function addMember() {
@@ -173,3 +173,16 @@ const fetchCommittee = () => {
     });
 };
 
+const fetchEmails = () => {
+    jQuery.ajax({
+        dataType: 'json',
+        url: '/eRSPG/emaillist',
+        success: (data) => {
+            console.log('success!');
+            autoComplete(data);
+        },
+        error: function() {
+            console.error('error!');
+        },
+    });
+};
