@@ -2,6 +2,43 @@ $(function() {
     fetchCommittee();
 });
 
+function autoComplete() {
+    var list = [
+        "Yong",
+        "Dan",
+        "Brian"
+    ];
+    $("#searchEmail").autocomplete({source: list});
+}
+
+function addMember() {
+    $('#dialogTabForm').dialog({
+        resizable: false,
+        draggable: true,
+        show: 'fade',
+        hide: 'fade',
+        modal: true,
+        width: 450,
+        open: function (event, ui) {
+            $('#dialogTabForm').css('overflow', 'hidden');
+            jQuery('.ui-widget-overlay').bind('click',function(){
+                jQuery('#dialogTabForm').dialog('close');
+            })
+        },
+        create: function() {
+            $('#tabs').tabs();
+        },
+        buttons:{
+            Add:function () {},
+            Cancel:function () {$(this).dialog("close");}
+        }
+    });
+
+    $('#OpenDialog').click(function() {
+        $('#dialog-movie-info').dialog('open');
+    });
+}
+
 const tableBuilder = (committeeList) => {
     const tableBodyElm = $('#members');
     if (jQuery.isArray(committeeList)) {
@@ -49,6 +86,9 @@ function openDialog(firstName, lastName, email, id) {
         modal: true,
         open: function (event, ui) {
             $('#dialog-form').css('overflow', 'hidden');
+            jQuery('.ui-widget-overlay').bind('click', function() {
+                jQuery("#dialog-form").dialog("close");
+            })
         },
         buttons: {
             "Save": addUser,
@@ -57,14 +97,14 @@ function openDialog(firstName, lastName, email, id) {
             }
         },
         close: function() {
-            form[ 0 ].reset();
-            allFields.removeClass( "ui-state-error" );
+            /*form[ 0 ].reset();
+            allFields.removeClass( "ui-state-error" );*/
+            dialog.dialog( "close" );
         }
     });
 
     form = dialog.find( "form" ).on( "submit", function( event ) {
         event.preventDefault();
-        // addUser();
     });
 
     dialog.dialog( "open" );
