@@ -23,7 +23,10 @@ public class User {
 
 	@Column(name="username")
 	private String username;
-	
+
+	@Column(name="wNumber")
+	private String wNumber;
+
 	public User(){
 		
 	}
@@ -76,7 +79,15 @@ public class User {
 		return username;
 	}
 
-	public void setUsername(String loginName) {
-		this.username = loginName;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getwNumber() {
+		return wNumber;
+	}
+
+	public void setwNumber(String wNumber) {
+		this.wNumber = wNumber;
 	}
 }

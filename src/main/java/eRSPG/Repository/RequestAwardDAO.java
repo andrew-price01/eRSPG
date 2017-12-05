@@ -2,6 +2,7 @@ package eRSPG.Repository;
 
 import java.util.List;
 
+import eRSPG.model.AwardType;
 import eRSPG.model.RequestAward;
 
 public interface RequestAwardDAO {

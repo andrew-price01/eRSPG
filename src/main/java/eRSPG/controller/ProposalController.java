@@ -1,8 +1,13 @@
 package eRSPG.controller;
 
+import com.google.common.collect.ImmutableMap;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
+import eRSPG.model.form.*;
+import eRSPG.util.PersistProposal;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.xml.soap.Detail;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -58,7 +64,14 @@ public class ProposalController {
 	 * Dependency injection for data access objects.
 	 * 
 	 */
-	
+
+    @Qualifier("awardTypeDao")
+    @Autowired
+    protected AwardTypeDAO awardTypeDAO;
+
+    @Autowired
+    protected ProjectTypeDAO projectTypeDAO;
+
 	@Autowired
 	protected ProposalDAO proposalDao;
 	
@@ -123,6 +136,30 @@ public class ProposalController {
         BodyForm bodyForm = new BodyForm();
         BodyDetailsForm bodyDetailsForm = new BodyDetailsForm();
         BodyQuestionsForm bodyQuestionsForm = new BodyQuestionsForm();
+        UserForm userForm = new UserForm();
+
+        // for debugging
+        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
+
+        // We need to add the user info to the user form here from the user stored in a session
+        //User user = new User();
+        User user = PersistProposal.getDummyUser(); // replaced by an actual user in the future
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        if(proposal != null){
+            deptForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+            awardForm.LoadProposalIntoForm(proposal);
+            budgetForm.LoadProposalIntoForm(proposal);
+          //bodyForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
+        } else {
+            proposal = PersistProposal.getDummyProposal(user.getUserId());
+            proposalDao.addNewOrUpdateProposal(proposal);
+        }
+
 
 		/*
 		 * Add all the form objects to the session
@@ -158,6 +195,10 @@ public class ProposalController {
             return "projectIndex";
         }
 
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId());
+
+        //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -203,6 +244,9 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalDepartment.jsp");
             return "projectIndex";
         }
+
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(deptForm,user.getUserId());
 
         System.out.println(nextPage);
 
@@ -256,6 +300,9 @@ public class ProposalController {
 				semester = "Summer";
 			}
 
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
+
 			model.addAttribute("semester",semester);
 
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
@@ -280,7 +327,9 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-
+        User user = PersistProposal.getDummyUser(); // replace by logged in user
+        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
+        //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -330,6 +379,8 @@ public class ProposalController {
             model.addAttribute("collaborative",collaborative);
 
             model.addAttribute("contentPage", "proposalBody.jsp");
+            User user = PersistProposal.getDummyUser(); // replace by logged in user
+            saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
 
@@ -340,6 +391,7 @@ public class ProposalController {
     public String bodyDetailsForm(Model model){
         String contentPage = "proposalBodyDetails.jsp";
         model.addAttribute("contentPage", contentPage);
+
         return "projectIndex";
     }
 
@@ -411,8 +463,41 @@ public class ProposalController {
     }
 
     @RequestMapping("/eRSPG/proposal/review")
-    public String reviewForm(Model model){
+    public String reviewForm(
+            @ModelAttribute("uploadForm") UploadForm uploadForm,
+            @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestionsForm,
+            @ModelAttribute("bodyForm") BodyForm bodyForm,
+            @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+            @ModelAttribute("awardTypeForm") AwardTypeForm awardTypeForm,
+            @ModelAttribute("departmentForm") DepartmentForm departmentForm,
+            Model model){
         String contentPage = "proposalReview.jsp";
+        model.addAttribute("departmentName", departmentDAO.findDepartment(departmentForm.getDepartmentID()).getDepartmentName());
+        model.addAttribute("semesterName", semesterDAO.findSemesterById(departmentForm.getSemesterID()).getSemesterName());
+        model.addAttribute("awardTypeList", awardTypeDAO
+                .findAwardTypesById(awardTypeForm.getAwardTypes())
+                .stream()
+                .map(AwardType::getAwardName)
+                .collect(Collectors.toList()));
+
+        model.addAttribute("bodyAnswers",
+                ImmutableMap.builder()
+                        .put("1", getAnswerText(bodyForm, 1))
+                        .put("2", getAnswerText(bodyForm, 2))
+                        .put("3", getAnswerText(bodyForm, 3))
+                        .put("4", getAnswerText(bodyForm, 4))
+                        .put("5", getAnswerText(bodyDetailsForm, 5))
+                        .put("6", getAnswerText(bodyDetailsForm, 6))
+                        .put("7", getAnswerText(bodyDetailsForm, 7))
+                        .put("8", getAnswerText(bodyDetailsForm, 8))
+                        .put("9", getAnswerText(bodyQuestionsForm,9))
+                        .put("10", getAnswerText(bodyQuestionsForm,10))
+                        .put("11", getAnswerText(bodyQuestionsForm, 11))
+                        .put("12", getAnswerText(bodyQuestionsForm,12))
+                        .put("13", getAnswerText(bodyQuestionsForm, 13))
+                        .put("14", getAnswerText(bodyQuestionsForm, 14))
+                        .put("15", getAnswerText(bodyQuestionsForm, 15)).build());
+        model.addAttribute("projectTypeName", projectTypeDAO.findProjectType(awardTypeForm.getProjectTypeID()).getProjectTypeName());
         model.addAttribute("contentPage",contentPage);
         return "projectIndex";
     }
@@ -434,6 +519,30 @@ public class ProposalController {
                 , uploadForm, request);
         return "proposalSubmit";
 
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyForm") BodyForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyDetailsForm")BodyDetailsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
     }
 
 	@RequestMapping(value = "/eRSPG/proposal/list", method = RequestMethod.GET)
@@ -498,7 +607,7 @@ public class ProposalController {
 	
 		LocalDateTime time = LocalDateTime.now();
 
-		Proposal proposal = new Proposal();
+		Proposal proposal = new Proposal();// find incomplete proposal by user id
 
         // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session

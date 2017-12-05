@@ -13,7 +13,9 @@ CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
     email                       nvarchar(100)       not null,
     userFirstName       nvarchar(50)        not null,
-    userLastName        nvarchar(50)        not null
+    userLastName        nvarchar(50)        not null,
+    username            nvarchar(50),
+    wNumber             nvarchar(9)
 );
     
 CREATE TABLE UserRole (
