@@ -8,6 +8,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/css/proposalReview.css"/>"/>
+</head>
+<body>
 <div class="container">
     <div align="center">
         <!--         <h1>Spring MVC - File Upload to Database Demo</h1> -->
@@ -94,58 +99,71 @@
                     <span class="answer">${bodyAnswers.get("8")}</span>
                 </p>
             </div>
-        <div class="card">
-            <div class="card-title">
-                <h3>Questions</h3>
+            <div class="card">
+                <div class="card-title">
+                    <h3>Questions</h3>
+                </div>
+                <div class="card-text">
+                    <div>
+                        <p class="question">1. What RSPG funding have you applied for or have been awarded in the past 5
+                            years. For awarded projects, please provide information regarding these projects including
+                            (1) the project title, (2) the status of the project, and (3) the outcome(s) of the project.
+                            Please indicate whether a final report has been submitted for each RSPG award.</p>
+                        <p class="answer">${bodyAnswers.get("9")}</p>
+                    </div>
+                    <div>
+                        <p class="question">2. What other sources of funding have you sought for this project?</p>
+                        <p class="answer">${bodyAnswers.get("10")}</p>
+                    </div>
+                    <div>
+                        <p class="question">3. Have you checked with the Office of Sponsored Projects to determine if
+                            this office is an appropriate place to seek additional funding? Please explain.</p>
+                        <p class="answer">${bodyAnswers.get("11")}</p>
+                    </div>
+                    <div>
+                        <p class="question">4. Is this the type of project your department or college would normally
+                            fund? Please explain?</p>
+                        <p class="answer">${bodyAnswers.get("12")}</p>
+                    </div>
+                    <div>
+                        <p class="question">5. Would completion of this project create opportunities for external
+                            funding (for example, is this proposal a request for a pilot study or seed money that may
+                            lead to a larger project)?</p>
+                        <p class="answer">${bodyAnswers.get("13")}</p>
+                    </div>
+                    <div>
+                        <p class="question">6. If you are applying for release time or a stipend, please list what your
+                            course load would be if you received the reassigned time. You MUST include any overload
+                            courses which you plan on teaching.</p>
+                        <p class="answer">${bodyAnswers.get("14")}</p>
+                    </div>
+                    <div>
+                        <p class="question">7. For instructional improvement proposals, are course fees an appropriate
+                            place to seek additional funding? Please explain.</p>
+                        <p class="answer">${bodyAnswers.get("15")}</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-text">
-                <div>
-                    <p class="question">1. What RSPG funding have you applied for or have been awarded in the past 5 years. For awarded projects, please provide information regarding these projects including (1) the project title, (2) the status of the project, and (3) the outcome(s) of the project. Please indicate whether a final report has been submitted for each RSPG award.</p>
-                    <p class="answer">${bodyAnswers.get("9")}</p>
+            <div class="card">
+                <div class="card-title">
+                    <h3>File Upload</h3>
                 </div>
-                <div>
-                    <p class="question">2. What other sources of funding have you sought for this project?</p>
-                    <p class="answer">${bodyAnswers.get("10")}</p>
-                </div>
-                <div>
-                    <p class="question">3. Have you checked with the Office of Sponsored Projects to determine if this office is an appropriate place to seek additional funding? Please explain.</p>
-                    <p class="answer">${bodyAnswers.get("11")}</p>
-                </div>
-                <div>
-                    <p class="question">4. Is this the type of project your department or college would normally fund? Please explain?</p>
-                    <p class="answer">${bodyAnswers.get("12")}</p>
-                </div>
-                <div>
-                    <p class="question">5. Would completion of this project create opportunities for external funding (for example, is this proposal a request for a pilot study or seed money that may lead to a larger project)?</p>
-                    <p class="answer">${bodyAnswers.get("13")}</p>
-                </div>
-                <div>
-                    <p class="question">6. If you are applying for release time or a stipend, please list what your course load would be if you received the reassigned time. You MUST include any overload courses which you plan on teaching.</p>
-                    <p class="answer">${bodyAnswers.get("14")}</p>
-                </div>
-                <div>
-                    <p class="question">7. For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.</p>
-                    <p class="answer">${bodyAnswers.get("15")}</p>
+                <div class="card-text">
+                    <p>File Name: ${uploadForm.name.isEmpty() ? uploadForm.name : "None"}</p>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-title">
-                <h3>File Upload</h3>
-            </div>
-            <div class="card-text">
-                <p>File Name: ${uploadForm.name.isEmpty() ? uploadForm.name : "None"}</p>
-            </div>
-        </div>
 
-        <div class="button-row">
-            <button type="button" class="btn my-btn pull-left"
-                    onclick='window.location.href="<s:url value="/eRSPG/proposal/upload"/>"'>Back
-            </button>
-            <%--<button type="button" class="btn my-btn pull-center" onclick='window.location.href="<s:url value="/proposal/review" />"'>Save</button>--%>
-            <button type="button" class="btn my-btn pull-right"
-                    onclick='window.location.href="<s:url value="/eRSPG/proposal/submit"/>"'>Submit
-            </button>
+            <div class="button-row">
+                <button type="button" class="btn my-btn pull-left"
+                        onclick='window.location.href="<s:url value="/eRSPG/proposal/upload"/>"'>Back
+                </button>
+                <%--<button type="button" class="btn my-btn pull-center" onclick='window.location.href="<s:url value="/proposal/review" />"'>Save</button>--%>
+                <button type="button" class="btn my-btn pull-right"
+                        onclick='window.location.href="<s:url value="/eRSPG/proposal/submit"/>"'>Submit
+                </button>
+            </div>
         </div>
     </div>
 </div>
+</body>
+</html>
