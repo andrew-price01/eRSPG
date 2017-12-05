@@ -20,6 +20,11 @@ public final class Constants {
     public static final String SPRING_ROLE_CHAIRMAN = "ROLE_CHAIRMAN";
     public static final String SPRING_ROLE_LOGIN = "ROLE_LOGIN";  // THIS IS TEMPORARY FOR TESTING
 
+    /* This Enum is for User Role Types*/
+    public static final int USERROLE_USER = 1;
+    public static final int USERROLE_ADMIN = 2;
+    public static final int USERROLE_CHAIRMAN = 3;
+
     /* These Constants are for attribute keys required to get attributes from CAS */
     public static final String CAS_ATTRIBUTE_MEMBEROF = "dev";          // affiliation's in cas  NOTE: concern not all staff will have this affiliation
     public static final String CAS_ATTRIBUTE_DISPLAYNAME = "dev";       // displayName returned as "FirstName LastName"

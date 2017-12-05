@@ -85,7 +85,7 @@ public class LogoutController {
                         // query db again because we want the userID in the User object
                         user = getNewUserFromDatabase(username);
                         int userID = user.getUserId();
-                        addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman , the default will actually be 1 for lowest authorities
+                        addNewUserRoleToDatabase(userID, Constants.USERROLE_USER); // roletype = 1 means User , the default will actually be 1 for lowest authorities
 
                         addUserInformationToSession(request, response, user);
                         return "redirect:/eRSPG/home";
