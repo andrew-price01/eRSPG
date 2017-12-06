@@ -464,6 +464,7 @@ public class ProposalController {
 
     @RequestMapping("/eRSPG/proposal/review")
     public String reviewForm(
+            @ModelAttribute("budgetForm") BudgetForm budgetForm,
             @ModelAttribute("uploadForm") UploadForm uploadForm,
             @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestionsForm,
             @ModelAttribute("bodyForm") BodyForm bodyForm,

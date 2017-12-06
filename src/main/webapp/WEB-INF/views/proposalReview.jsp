@@ -1,3 +1,4 @@
+<jsp:useBean id="budgetForm" scope="session" type="eRSPG.model.form.BudgetForm"/>
 <jsp:useBean id="uploadForm" scope="request" type="eRSPG.model.form.UploadForm"/>
 <jsp:useBean id="bodyQuestionsForm" scope="session" type="eRSPG.model.form.BodyQuestionsForm"/>
 <jsp:useBean id="bodyDetailsForm" scope="session" type="eRSPG.model.form.BodyDetailsForm"/>
@@ -15,8 +16,7 @@
 <body>
 <div class="container">
     <div align="center">
-        <!--         <h1>Spring MVC - File Upload to Database Demo</h1> -->
-        <legend>
+            <legend>
             <h2 style="text-align: center;">Review Proposal</h2>
         </legend>
         <div>
@@ -53,7 +53,54 @@
                 <p>Project Type: ${projectTypeName}</p>
             </div>
         </div>
-        <%-- todo: add budget --%>
+        <div class="card">
+            <div class="card-title">
+                <h3>Budget</h3>
+            </div>
+            <div class="card-text">
+                <p>Require student assistance: ${budgetForm.studentAssistants ? "Yes" : "No"}</p>
+                <div>
+                    <h4>Personnel Resources</h4>
+                    <p>Total Committed: $<span>${
+                            String.format("%,.2f",budgetForm.source1_a_1 + budgetForm.source2_a_1 + budgetForm.source3_a_1 +
+                                    budgetForm.source1_b_1 + budgetForm.source2_b_1 + budgetForm.source3_b_1 +
+                                    budgetForm.source1_c_1 + budgetForm.source2_c_1 + budgetForm.source3_c_1)}</span></p>
+                    <p>Total Requested: $<span>${String.format("%,.2f",budgetForm.requested_a_1 + budgetForm.requested_b_1+ budgetForm.requested_c_1)}</span></p>
+                </div>
+                <div>
+                    <h4>Benefits for Personnel Resources</h4>
+                    <p>Total Committed: $<span>${
+                        String.format("%,.2f",budgetForm.source1_a_ben + budgetForm.source2_a_ben + budgetForm.source3_a_1 +
+                        budgetForm.source1_b_ben + budgetForm.source2_b_ben + budgetForm.source3_b_ben +
+                        budgetForm.source1_c_ben + budgetForm.source2_c_ben + budgetForm.source3_c_ben)}</span></p>
+                    <p>Total Requested: $<span>${String.format("%,.2f",budgetForm.requested_a_ben + budgetForm.requested_b_ben + budgetForm.requested_c_ben)}</span></p>
+                </div>
+                <div>
+                    <h4>Equipment & Materials</h4>
+                    <p>Total Committed: $<span>${
+                            String.format("%,.2f",budgetForm.source1_a_2 + budgetForm.source2_a_2 + budgetForm.source3_a_2 +
+                                    budgetForm.source1_b_2 + budgetForm.source2_b_2 + budgetForm.source3_b_2 +
+                                    budgetForm.source1_c_2 + budgetForm.source2_c_2 + budgetForm.source3_c_2)}</span></p>
+                    <p>Total Requested: $<span>${String.format("%,.2f",budgetForm.requested_a_2 + budgetForm.requested_b_2 + budgetForm.requested_c_2)}</span></p>
+                </div>
+                <div>
+                    <h4>Travel</h4>
+                    <p>Total Committed: $<span>${
+                            String.format("%,.2f",budgetForm.source1_a_3 + budgetForm.source2_a_3 + budgetForm.source3_a_3 +
+                                    budgetForm.source1_b_3 + budgetForm.source2_b_3 + budgetForm.source3_b_3 +
+                                    budgetForm.source1_c_3 + budgetForm.source2_c_3 + budgetForm.source3_c_3)}</span></p>
+                    <p>Total Requested: $<span>${String.format("%,.2f",budgetForm.requested_a_3 + budgetForm.requested_b_3 + budgetForm.requested_c_3)}</span></p>
+                </div>
+                <div>
+                    <h4>Other</h4>
+                    <p>Total Committed: $<span>${
+                            String.format("%,.2f",budgetForm.source1_a_4 + budgetForm.source2_a_4 + budgetForm.source3_a_4 +
+                                    budgetForm.source1_b_4 + budgetForm.source2_b_4 + budgetForm.source3_b_4 +
+                                    budgetForm.source1_c_4 + budgetForm.source2_c_4 + budgetForm.source3_c_4)}</span></p>
+                    <p>Total Requested: $<span>${String.format("%,.2f",budgetForm.requested_a_4 + budgetForm.requested_b_4 + budgetForm.requested_c_4)}</span></p>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-title">
                 <h3>Body</h3>

@@ -32,9 +32,15 @@
 	padding: 0 10px 0 30px;
 	background: white;
 	position: relative;
-	width: 14%;
-	/*width: 12.5%;*/
+	/*width: 14%;*/
+	width: 12.5%;
 	cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+	.breadcrumb a {
+		width: fit-content;
+	}
 }
 
 .breadcrumb a.color {
@@ -46,7 +52,7 @@
 }
 /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
 .breadcrumb a:first-child {
-	padding-left: 46px;
+	/*padding-left: 46px;*/
 	border-radius: 5px 0 0 5px; /*to match with the parent's radius*/
 }
 .breadcrumb a:first-child:before {
