@@ -18,4 +18,22 @@ public class ReviewerControllerTest {
 				.build();
 		mockMvc.perform(get("/reviewer/announcements")).andExpect(view().name("projectIndex"));
 	}
+
+	@Test
+	public void showProposalList() throws Exception {
+		ReviewerController controller = new ReviewerController();
+		MockMvc mockMvc = standaloneSetup(controller)
+				.setSingleView(new InternalResourceView("/WEB-INF/views/proposalList.jsp"))
+				.build();
+		mockMvc.perform(get("/reviewer/proposalList")).andExpect(view().name("projectIndex"));
+	}
+
+	@Test
+	public void showReview() throws Exception {
+		ReviewerController controller = new ReviewerController();
+		MockMvc mockMvc = standaloneSetup(controller)
+				.setSingleView(new InternalResourceView("/WEB-INF/views/review.jsp"))
+				.build();
+		mockMvc.perform(get("/reviewer/reviewProposal")).andExpect(view().name("projectIndex"));
+	}
 }
