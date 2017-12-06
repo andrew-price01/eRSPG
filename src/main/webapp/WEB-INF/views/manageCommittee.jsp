@@ -104,11 +104,11 @@
                     <form>
                         <fieldset>
                             <label for="newfirstName">First Name</label>
-                            <input type="text" name="firstName" id="newfirstName"
+                            <input type="text" name="firstName" id="newFirstName"
                                    class="text ui-widget-content ui-corner-all">
 
                             <label for="newlastName">Last Name</label>
-                            <input type="text" name="lastName" id="newlastName"
+                            <input type="text" name="lastName" id="newLastName"
                                    class="text ui-widget-content ui-corner-all">
 
                             <label for="newEmail">Email</label>

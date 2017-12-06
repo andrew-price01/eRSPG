@@ -241,7 +241,7 @@ public class ChairmanController {
                 .collect(Collectors.toList());
     }
 
-    // TODO Change faculty user to committee member (Search)
+    // Searches for a faculty member by email, then sets that Users Role to Committee
     @RequestMapping(value = "/eRSPG/chairman/addcommittee", method = RequestMethod.POST)
     public String addNewCommittee(@RequestParam("fEmail") String email) {
 
@@ -253,5 +253,24 @@ public class ChairmanController {
 
         return "manageCommittee";
     }
+
     // TODO Add new user and set to committee member (Add)
+    @RequestMapping(value = "/eRSPG/chairman/addnewuser")
+    public String addNewUser(@RequestParam("firstName") String firstName,
+                             @RequestParam("lastName") String lastName,
+                             @RequestParam("email") String email) {
+
+        // TODO Add new user
+        User newUser = new User(email, firstName, lastName);
+        userDAO.addNewOrUpdateUser(newUser);
+
+        User user = userDAO.findUserByEmail(email);
+
+        // TODO Set new user RoleType to 2
+        UserRole userRole = new UserRole(user.getUserId(), 2, null, null);
+
+        userRoleDAO.addNewOrUpdateUserRole(userRole);
+
+        return "manageCommittee";
+    }
 }

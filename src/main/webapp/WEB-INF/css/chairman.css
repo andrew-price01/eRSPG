@@ -35,3 +35,7 @@ input.text {
 #searchEmail {
     width: 250px;
 }
+
+#tabs {
+    height: 500px;
+}
