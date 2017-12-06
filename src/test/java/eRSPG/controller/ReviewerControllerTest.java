@@ -16,6 +16,6 @@ public class ReviewerControllerTest {
 		MockMvc mockMvc = standaloneSetup(controller)
 				.setSingleView(new InternalResourceView("/WEB-INF/views/announcements.jsp"))
 				.build();
-		mockMvc.perform(get("/chairman/userManagement")).andExpect(view().name("projectIndex"));
+		mockMvc.perform(get("/reviewer/announcements")).andExpect(view().name("projectIndex"));
 	}
 }
