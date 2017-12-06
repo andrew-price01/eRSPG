@@ -1,17 +1,15 @@
 $(function() {
     fetchCommittee();
-    autoComplete();
     fetchEmails();
 });
 
 function autoComplete(list) {
     var arr = $.map(list, function(el) { return JSON.parse(JSON.stringify(el.email)) });
     // console.log(JSON.stringify(arr[0]));
-    console.log(arr[0]);
     $("#searchEmail").autocomplete({source: arr});
 }
 
-function addMember() {
+function addMemberDialog() {
     $('#dialogTabForm').dialog({
         resizable: false,
         draggable: true,
@@ -29,7 +27,20 @@ function addMember() {
             $('#tabs').tabs();
         },
         buttons:{
-            Add:function () {},
+            Add:function () {
+                // returns 0(tab1) or 1(tab2)
+                var active = $( ".tabs" ).tabs( "option", "active" );
+
+                if (active == 0) {
+                    var email = document.getElementById("searchEmail").value;
+                    addNewMember(document.getElementById("searchEmail").value);
+                    {$(this).dialog("close");}
+                    location.reload();
+                }
+                else if (active == 1) {
+                    alert("tab2");
+                }
+            },
             Cancel:function () {$(this).dialog("close");}
         }
     });
@@ -69,15 +80,6 @@ function openDialog(firstName, lastName, email, id) {
         id = id;
         allFields = $( [] ).add( firstName ).add( lastName ).add( email );
 
-    function addUser() {
-        // console.log(document.getElementById("lastName").value);
-
-        saveEdit(id, document.getElementById("firstName").value, document.getElementById("lastName").value, document.getElementById("email").value);
-
-        dialog.dialog("close");
-        location.reload();
-    }
-
     dialog = $( "#dialog-form" ).dialog({
         autoOpen: false,
         height: 400,
@@ -91,7 +93,12 @@ function openDialog(firstName, lastName, email, id) {
             })
         },
         buttons: {
-            "Save": addUser,
+            "Save": function() {
+                saveEdit(id, document.getElementById("firstName").value, document.getElementById("lastName").value, document.getElementById("email").value);
+
+                dialog.dialog("close");
+                location.reload();
+            },
             Cancel: function() {
                 dialog.dialog( "close" );
             }
@@ -145,11 +152,11 @@ function confirmDelete(user_id) {
             type:"POST",
             data: data,
             success: function(response){
-                console.log('success!');
+                console.log('confirmDelete success!');
                 location.reload();
             },
             error: function() {
-                console.error('error!');
+                console.error('confirmDelete error!');
             },
         });
     }else{
@@ -159,16 +166,33 @@ function confirmDelete(user_id) {
     return true;
 }
 
+function addNewMember(email) {
+    var e = { fEmail : email };
+
+    jQuery.ajax({
+        url: '/eRSPG/chairman/addcommittee',
+        type:"POST",
+        data: e,
+        success: function(response) {
+            console.log("success");
+        },
+        error: function(exception) {
+            console.error('Exeption:' + exception);
+        },
+
+    });
+}
+
 const fetchCommittee = () => {
     jQuery.ajax({
         dataType: 'json',
         url: '/eRSPG/committeemembers',
         success: (data) => {
-            console.log('success!');
+            console.log(' fetchCommittee success!');
             tableBuilder(data);
         },
         error: function() {
-            console.error('error!');
+            console.error('fetchCommittee error!');
         },
     });
 };
@@ -178,11 +202,11 @@ const fetchEmails = () => {
         dataType: 'json',
         url: '/eRSPG/emaillist',
         success: (data) => {
-            console.log('success!');
+            console.log('fetchEmails success!');
             autoComplete(data);
         },
         error: function() {
-            console.error('error!');
+            console.error('fetchEmails error!');
         },
     });
 };

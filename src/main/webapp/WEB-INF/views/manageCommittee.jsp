@@ -68,7 +68,7 @@
         <div id="window">
             <h3 align="left">Committee Members</h3>
             <input type='button' class="btn btn-info" style="float: right;" id='btnAddMember' value='Add New Member'
-                   onclick="addMember();">
+                   onclick="addMemberDialog();">
 
             <div id="box1">
                 <table align="center">
@@ -87,15 +87,15 @@
         </div>
 
         <div id="dialogTabForm" style="display:none;" class="ui-helper-hidden tabdialog">
-            <div id="tabs">
+            <div id="tabs" class="tabs">
                 <ul>
-                    <li><a href="#tabSearch">Search</a></li>
-                    <li><a href="#tabNew">New</a></li>
+                    <li id="tab1" class="myTabs"><a href="#tabSearch">Search</a></li>
+                    <li id="tab2" class="myTabs"><a href="#tabNew">New</a></li>
                     </li>
                 </ul>
 
                 <div class="ui-front" id="tabSearch" align="center">
-                    <label for="searchEmail">Find faculty by email</label>
+                    <label for="searchEmail">Add faculty by email</label>
                     <input type="text" id="searchEmail">
                 </div>
 

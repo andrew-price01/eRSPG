@@ -225,6 +225,7 @@ public class ChairmanController {
         return "manageCommittee";
     }
 
+    // Returns all faculty email and maps to JSON at 'eRSPG/emaillist'
     @RequestMapping(value = "/eRSPG/emaillist", method = RequestMethod.GET)
     public @ResponseBody
     List<EmailDTO> retrieveAllCommitteeEmail() {
@@ -239,4 +240,18 @@ public class ChairmanController {
         return emails.stream().map(p -> new EmailDTO(p))
                 .collect(Collectors.toList());
     }
+
+    // TODO Change faculty user to committee member (Search)
+    @RequestMapping(value = "/eRSPG/chairman/addcommittee", method = RequestMethod.POST)
+    public String addNewCommittee(@RequestParam("fEmail") String email) {
+
+        User facultyMember = userDAO.findUserByEmail(email);
+        List<UserRole> list = userRoleDAO.findUserRoleByUserId(facultyMember.getUserId());
+        UserRole newCommittee = list.get(0);
+        newCommittee.setRoleTypeId(2);
+        userRoleDAO.addNewOrUpdateUserRole(newCommittee);
+
+        return "manageCommittee";
+    }
+    // TODO Add new user and set to committee member (Add)
 }

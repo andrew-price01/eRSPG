@@ -50,6 +50,16 @@ public class UserRoleImpl implements UserRoleDAO {
 
 		return userRoleList;
 	}
+
+	@Transactional
+	public List<UserRole> findUserRoleByUserId(int userId) {
+		List<UserRole> userRoleList = sessionFactory.getCurrentSession()
+				.createCriteria(UserRole.class)
+				.add(Restrictions.eq("userId", userId))
+				.list();
+
+		return userRoleList;
+	}
 	
 	@Transactional
 	public void addNewOrUpdateUserRole(UserRole userRole){
