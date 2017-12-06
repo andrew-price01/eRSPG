@@ -60,6 +60,7 @@ function addMemberDialog() {
     });
 }
 
+// calls server to add new user to DB and to create a UserRole with RoleTypeId 2 (Committee)
 function addNewUser(first, last, email) {
     var user = {
       "firstName" : first,
@@ -79,8 +80,9 @@ function addNewUser(first, last, email) {
         },
     });
 }
+
 // fills table with current committee members
-const tableBuilder = (committeeList) => {
+const committeeTableBuilder = (committeeList) => {
     const tableBodyElm = $('#members');
     if (jQuery.isArray(committeeList)) {
         committeeList.map((p) => {
@@ -221,7 +223,7 @@ const fetchCommittee = () => {
         url: '/eRSPG/committeemembers',
         success: (data) => {
             console.log(' fetchCommittee success!');
-            tableBuilder(data);
+            committeeTableBuilder(data);
         },
         error: function() {
             console.error('fetchCommittee error!');

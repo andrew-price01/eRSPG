@@ -49,6 +49,21 @@
     <!-- Page Content -->
     <div id="content" class="main">
         <h1>Home</h1>
+
+        <div>
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/assignproposal'" value="Assign Proposals" />
+
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '#'" value="Review Proposals" />
+        </div>
+
+        <br>
+
+        <div>
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/committee'" value="Manage Committee" />
+
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '#'" value="Manage Funds" />
+        </div>
+
     </div>
 
 </div>
