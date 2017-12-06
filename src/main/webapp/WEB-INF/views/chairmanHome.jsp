@@ -53,7 +53,7 @@
         <div>
             <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/assignproposal'" value="Assign Proposals" />
 
-            <input class="btn my-btn" type="button"  onclick="window.location.href = '#'" value="Review Proposals" />
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/reviewproposal'" value="Review Proposals" />
         </div>
 
         <br>

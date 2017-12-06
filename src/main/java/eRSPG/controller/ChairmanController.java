@@ -71,6 +71,9 @@ public class ChairmanController {
     @RequestMapping("/eRSPG/chairman/announcementSuccess")
     public String chairmanAnnouncmentSuccess() { return "announcementSuccess"; };
 
+    @RequestMapping("/eRSPG/chairman/reviewproposal")
+    public String chairmanReviewProposal() { return "chairmanReviewProposal"; };
+
 
     @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
