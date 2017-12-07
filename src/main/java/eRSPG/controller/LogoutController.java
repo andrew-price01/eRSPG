@@ -30,7 +30,7 @@ public class LogoutController {
     // what I think the staff affiliation might look like / may be removed later
     private static String STAFF_AFFILIATION = "staff:weber.edu";
 
-    @RequestMapping("/logout")
+    @RequestMapping("/eRSPG/logout")
     public String logout(HttpServletRequest request,
                 HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,7 +38,7 @@ public class LogoutController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         request.getSession().invalidate();
-        return "redirect:"+ Constants.CAS_URL_LOGOUT;
+        return "redirect:"+ Constants.CAS_URL_LOGOUT_SUCCESS;
     }
 
     @RequestMapping("/login")
@@ -69,35 +69,64 @@ public class LogoutController {
                 List affiliations = (List)attributes.get(Constants.CAS_ATTRIBUTE_MEMBEROF);
                 boolean isStaff = affiliations.contains(STAFF_AFFILIATION); // Still need to see what this memberOf looks like
                 // if the user logging in is staff and they are not already in the database add the user to the database
-                User user = getNewUserFromDatabase(username);
+                User user = getNewUserFromDatabaseByUsername(username);
                 if(user == null){
-                    // check they are staff
-                    if(isStaff){
-                        // create a user
-                        String wNumber = attributes.get(Constants.CAS_ATTRIBUTE_WNUMBER).toString();
-                        String email = attributes.get(Constants.CAS_ATTRIBUTE_EMAIL).toString();
-                        String displayName = attributes.get(Constants.CAS_ATTRIBUTE_DISPLAYNAME).toString();
-                        int index = displayName.indexOf(" ");
-                        String firstName = displayName.substring(0, index);
-                        String lastName = displayName.substring(index+1);
-                        addNewUserToDatabase(email, firstName, lastName, username);
-                        // query db again because we want the userID in the User object
-                        user = getNewUserFromDatabase(username);
+                    // check for them by email
+                    String email = attributes.get(Constants.CAS_ATTRIBUTE_EMAIL).toString();
+                    user = getNewUserFromDatabaseByEmail(email);
+                    // user not in db by email or username
+                    if(user == null){
+                        // check they are staff
+                        if(isStaff){
+                            // create a user
+                            String wNumber = attributes.get(Constants.CAS_ATTRIBUTE_WNUMBER).toString();
+                            //email = attributes.get(Constants.CAS_ATTRIBUTE_EMAIL).toString();
+                            String displayName = attributes.get(Constants.CAS_ATTRIBUTE_DISPLAYNAME).toString();
+                            int index = displayName.indexOf(" ");
+                            String firstName = displayName.substring(0, index);
+                            String lastName = displayName.substring(index+1);
+                            addNewUserToDatabase(email, firstName, lastName, username);
+                            // query db again because we want the userID in the User object
+                            user = getNewUserFromDatabaseByUsername(username);
+                            int userID = user.getUserId();
+                            addNewUserRoleToDatabase(userID, Constants.USERROLE_USER); // roletype = 1 means User , the default will actually be 1 for lowest authorities
+                            // add user to the session
+                            addUserInformationToSession(request, response, user);
+                            return "redirect:/eRSPG/home";
+                        }else{
+                            //user is not staff and not in database then logout
+                            // decided to go with redirect to logout and invalidate the session
+                            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                            if(authentication != null){
+                                new SecurityContextLogoutHandler().logout(request, response, authentication);
+                            }
+                            request.getSession().invalidate();
+                            return "redirect:"+ Constants.CAS_URL_LOGOUT;
+                        }
+                    }
+                    else{
+                        // user in DB but without a username
+                        user = updateUserNameInDatabase(user, username);
+                        // check for W#
+                        if(user.getwNumber() == null || user.getwNumber().isEmpty()){
+                            // no W# retrieve it from Cas attribute
+                            String wNum = attributes.get(Constants.CAS_ATTRIBUTE_WNUMBER).toString();
+                            // if retrieved update the user's W#
+                            if(wNum != null && !wNum.isEmpty()){
+                                user = updateWNumberInDatabase(user, wNum);
+                            }
+                        }
                         int userID = user.getUserId();
-                        addNewUserRoleToDatabase(userID, Constants.USERROLE_USER); // roletype = 1 means User , the default will actually be 1 for lowest authorities
+                        // check for user role
+                        UserRole userRole = userRoleDAO.findUserRoleByUserId(userID);
+                        if(userRole == null){
+                            addNewUserRoleToDatabase(userID, Constants.USERROLE_USER); // roletype = 1 means User , the default will actually be 1 for lowest authorities
+                        }
                         // add user to the session
                         addUserInformationToSession(request, response, user);
                         return "redirect:/eRSPG/home";
-                    }else{
-                        //user is not staff and not in database then logout
-                        // decided to go with redirect to logout and invalidate the session
-                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                        if(authentication != null){
-                            new SecurityContextLogoutHandler().logout(request, response, authentication);
-                        }
-                        request.getSession().invalidate();
-                        return "redirect:"+ Constants.CAS_URL_LOGOUT;
                     }
+
                 }else{
                     // user is in database, add to session and redirect
                     addUserInformationToSession(request, response, user);
@@ -121,6 +150,18 @@ public class LogoutController {
         userDAO.addNewOrUpdateUser(newUser);
     }
 
+    private User updateUserNameInDatabase(User user, String username){
+        user.setUsername(username);
+        userDAO.addNewOrUpdateUser(user);
+        return user;
+    }
+
+    private User updateWNumberInDatabase(User user, String wNumber){
+        user.setwNumber(wNumber);
+        userDAO.addNewOrUpdateUser(user);
+        return user;
+    }
+
     private void addNewUserRoleToDatabase(int userID, int roleType) {
         UserRole ur = new UserRole();
         ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chairman
@@ -128,10 +169,20 @@ public class LogoutController {
         userRoleDAO.addNewOrUpdateUserRole(ur);
     }
 
-    private User getNewUserFromDatabase(String username){
+    private User getNewUserFromDatabaseByUsername(String username){
         User user = null;
         try{
             user = userDAO.findUserByUsername(username);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private User getNewUserFromDatabaseByEmail(String email){
+        User user = null;
+        try{
+            user = userDAO.findUserByEmail(email);
         }catch (Exception e){
             e.printStackTrace();
         }

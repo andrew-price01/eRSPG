@@ -59,16 +59,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                 .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl(Constants.CAS_URL_LOGOUT)
+                    .logoutUrl("/eRSPG/logout")
+                    .logoutSuccessUrl(Constants.CAS_URL_LOGOUT_SUCCESS)
                     .logoutSuccessHandler((LogoutSuccessHandler) securityContextLogoutHandler())
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                     .permitAll()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/welcome", "/about", "/contact", "/logout", "/login").permitAll()
-                    .antMatchers("/eRSPG/**").hasAuthority("ROLE_USER")
+                    //.antMatchers("/welcome", "/about", "/contact").permitAll()
+                    .antMatchers("/eRSPG/home").hasAuthority("ROLE_USER")
+                    .antMatchers("/eRSPG/proposal/**").hasAuthority("ROLE_USER")
+                    .antMatchers("/eRSPG/comittee/**").hasAuthority("ROLE_COMMITTEE")
                     .antMatchers("/eRSPG/admin/**").hasAuthority("ROLE_ADMIN")
                     .antMatchers("/eRSPG/chairman/**").hasAuthority("ROLE_CHAIRMAN")
                     .anyRequest().authenticated()
@@ -155,7 +157,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LogoutFilter logoutFilter(){
-        LogoutFilter logoutFilter = new LogoutFilter("/welcome", securityContextLogoutHandler());
+        LogoutFilter logoutFilter = new LogoutFilter(Constants.APP_SERVER, securityContextLogoutHandler());
         return logoutFilter;
     }
 
@@ -198,9 +200,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
         LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<>();
-        requestMap.put(new AntPathRequestMatcher("/eRSPG/**"), SecurityConfig.createList("hasRole('ROLE_USER')"));
+        requestMap.put(new AntPathRequestMatcher("/eRSPG/home"), SecurityConfig.createList("hasRole('ROLE_USER')"));
+        requestMap.put(new AntPathRequestMatcher("/eRSPG/proposal/**"), SecurityConfig.createList("hasRole('ROLE_USER')"));
+        requestMap.put(new AntPathRequestMatcher("/eRSPG/committee**"), SecurityConfig.createList("hasRole('ROLE_COMMITTEE')"));
         requestMap.put(new AntPathRequestMatcher("/eRSPG/admin/**"),SecurityConfig.createList("hasRole('ROLE_ADMIN')"));
-        requestMap.put(new AntPathRequestMatcher("/eRSPG/chair/**"),SecurityConfig.createList("hasRole('ROLE_CHAIRMAN')"));
+        requestMap.put(new AntPathRequestMatcher("/eRSPG/chairman/**"),SecurityConfig.createList("hasRole('ROLE_CHAIRMAN')"));
         FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource = new ExpressionBasedFilterInvocationSecurityMetadataSource(requestMap, new DefaultWebSecurityExpressionHandler());
         return filterInvocationSecurityMetadataSource;
     }
@@ -265,12 +269,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
 //        return mCas20ProxyReceivingTicketValidationFilter;
 //    }
-//
+
 //    @Bean
 //    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
 //        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
 //    }
-//
+
 //    @Bean
 //    public Cas20ServiceTicketValidator ticketValidator(){
 //        Cas20ServiceTicketValidator mCas20ServiceTicketValidator = new Cas20ServiceTicketValidator(Constants.CAS_URL_PREFIX);

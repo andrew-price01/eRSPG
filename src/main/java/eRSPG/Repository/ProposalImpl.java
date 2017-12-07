@@ -1,6 +1,7 @@
 package eRSPG.Repository;
 
 import eRSPG.model.Proposal;
+import eRSPG.util.PersistProposal;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -15,9 +16,7 @@ public class ProposalImpl implements ProposalDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public ProposalImpl(){
-		
-	}
+	public ProposalImpl(){ }
 	
 	public ProposalImpl(SessionFactory sf){
 		this.sessionFactory = sf;
@@ -46,7 +45,16 @@ public class ProposalImpl implements ProposalDAO {
 				.add(Restrictions.eq("userId",userId))
 				.list();
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Proposal> findAllProposalByStatusId(Integer proposalStatus) {
+		return (List<Proposal>) sessionFactory.getCurrentSession()
+				.createCriteria(Proposal.class)
+				.add(Restrictions.eq("proposalStatus", proposalStatus))
+				.list();
+	}
+
 	@Transactional
 	public void addNewOrUpdateProposal(Proposal p){
 		sessionFactory.getCurrentSession().saveOrUpdate(p);
@@ -56,5 +64,22 @@ public class ProposalImpl implements ProposalDAO {
 	public void deleteProposal(Proposal p){
 		sessionFactory.getCurrentSession().delete(p);
 	}
-	
+
+	@Transactional
+	public Proposal findIncompleteProposalByUserId(int userId){
+		try {
+			Proposal p = (Proposal) sessionFactory.getCurrentSession()
+					.createCriteria(Proposal.class)
+					.add(Restrictions.eq("userId", userId))
+					.add(Restrictions.eq("proposalStatus", 1))
+					.uniqueResult();
+			return p;
+		}
+		catch(Exception e) //for testing
+		{
+			return PersistProposal.getDummyProposal(userId);
+
+		}
+
+	}
 }

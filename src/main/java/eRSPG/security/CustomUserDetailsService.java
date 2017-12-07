@@ -56,14 +56,23 @@ public class CustomUserDetailsService implements UserDetailsService {
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
                 break;
+            case "committee":
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_COMMITTEE);
+                grantedAuthorities.add(grantedAuthority);
             case "admin":
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_COMMITTEE);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
                 grantedAuthorities.add(grantedAuthority);
                 break;
             case "chairman":
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_COMMITTEE);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
                 grantedAuthorities.add(grantedAuthority);

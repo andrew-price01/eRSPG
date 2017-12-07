@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class UserRoleImpl implements UserRoleDAO {
 	public UserRoleImpl(SessionFactory sf){
 		this.sessionFactory = sf;
 	}
-	
+
 	@Transactional
 	public List<UserRole> findAllUserRole(){
 		@SuppressWarnings("unchecked")
@@ -40,18 +41,28 @@ public class UserRoleImpl implements UserRoleDAO {
 	}
 
 	@Transactional
+	public List<UserRole> findUserRoleByRoleTypeId(int roleTypeId) {
+		List<UserRole> userRoleList = sessionFactory.getCurrentSession()
+				.createCriteria(UserRole.class)
+				.add(Restrictions.eq("roleTypeId", roleTypeId))
+				.list();
+
+		return userRoleList;
+	}
+
+	@Transactional
 	public UserRole findUserRoleByUserId(int userId){
 		UserRole ur = (UserRole)sessionFactory.getCurrentSession().createQuery("from UserRole ur where ur.userId = :userId").setParameter("userId", userId).uniqueResult();
 		return ur;
 	}
-	
+
 	@Transactional
-	public void addNewOrUpdateUserRole(UserRole ra){
-		sessionFactory.getCurrentSession().saveOrUpdate(ra);
+	public void addNewOrUpdateUserRole(UserRole userRole){
+		sessionFactory.getCurrentSession().saveOrUpdate(userRole);
 	}
 	
 	@Transactional
-	public void deleteUserRole(UserRole ra){
-		sessionFactory.getCurrentSession().delete(ra);
+	public void deleteUserRole(UserRole userRole){
+		sessionFactory.getCurrentSession().delete(userRole);
 	}
 }

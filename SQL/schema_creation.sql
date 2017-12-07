@@ -3,17 +3,30 @@ CREATE SCHEMA `erspg` ;
 
 USE erspg;
 
+CREATE TABLE Announcement(
+    announcementID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title nvarchar(200) NOT NULL,
+    message nvarchar(255) NOT NULL,
+    date nvarchar(100) NOT NULL
+);
 
 CREATE TABLE RoleType (
         roleTypeID              smallint        not null AUTO_INCREMENT PRIMARY KEY,
     roleDesc                text not null
 );
+
+INSERT INTO roletype (roleDesc) VALUES ('user');
+INSERT INTO roletype (roleDesc) VALUES ('committee');
+INSERT INTO roletype (roleDesc) VALUES ('admin');
+INSERT INTO roletype (roleDesc) VALUES ('chairman');
     
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
     email                       nvarchar(100)       not null,
     userFirstName       nvarchar(50)        not null,
-    userLastName        nvarchar(50)        not null
+    userLastName        nvarchar(50)        not null,
+    username            nvarchar(50),
+    wNumber             nvarchar(9)
 );
     
 CREATE TABLE UserRole (
@@ -339,8 +352,14 @@ INSERT INTO EssayQuestion(question)
 VALUES("For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.");
 
 
+create table Budget(
+	budgetID      int     not null AUTO_INCREMENT PRIMARY KEY,
+    budgetYear int not null,
+    totalBudget int not null
+);
 
-
+insert into Budget(budgetYear, totalBudget) values(2017, 2000);
+commit;
 
 
 CREATE USER 'erspg_admin'@'localhost' IDENTIFIED BY 'P@$$w0rd';
