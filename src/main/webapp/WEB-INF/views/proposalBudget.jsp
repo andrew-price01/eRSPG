@@ -288,3 +288,4 @@ function check_digit(e,obj,intsize,deczize) {
        </div>
 	</form:form>
 </div>
+<script type="text/javascript" src="<s:url value="/js/PersistProposalBudget.js"/>"></script>

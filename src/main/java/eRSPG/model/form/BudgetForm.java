@@ -1,13 +1,20 @@
 package eRSPG.model.form;
 
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import eRSPG.Repository.FundDAO;
+import eRSPG.Repository.FundImpl;
 import eRSPG.model.Fund;
 import eRSPG.model.Proposal;
+import eRSPG.util.PersistProposal;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 public class BudgetForm extends BaseForm {
@@ -19,32 +26,95 @@ public class BudgetForm extends BaseForm {
 		return studentAssistants;
 	}
 
+
+	public BudgetForm loadBudgetForm(int proposalID,FundDAO fundDao){
+		ArrayList<Fund> fundList = new ArrayList<>();
+		fundList = fundDao.findFundsByProposalId(proposalID);
+		BudgetForm budgetForm = new BudgetForm();
+		for (Fund fund:
+			 fundList) {
+			System.out.println(fund.getFundId());
+			//load into a BudgetForm object
+		}
+
+
+		//return that object
+		return null;
+	}
+
+	public void saveBudgetForm(int proposalID,FundDAO fundDAO){
+		try {
+			int fundIndex = 0; //helps locate fund fields
+			ArrayList<Fund> fundList = new ArrayList<>();
+			ArrayList<String> descList = new ArrayList<>();
+			for (Field field : this.getClass().getDeclaredFields()) {
+				Fund fund = new Fund();
+				if (field.getType().toString().equals(double.class.getTypeName())) {
+					fund.setProposalId(proposalID);
+					fund.setFundAmount(field.getDouble(this));
+					fund.setFundTypeId(2);
+					fund.setSourceTypeId(((fundIndex+1)%4)+1);
+					fund.setComments("");
+					if(fundIndex<60){ //indicates the end of the fund fields and the beginning of the totals
+						fund.setFundCategoryId( (int)Math.floor(fundIndex/12 +1));
+					}
+					else{
+						fund.setFundCategoryId(5);
+					}
+					if(!descList.isEmpty() && descList.size() > fundIndex/5) {
+						fund.setDescription(descList.get(fundIndex / 5));
+					}
+					fundList.add(fund);
+					fundIndex++;
+				} else if (field.getType().toString().equals("class java.lang.String")) {
+					descList.add((String) field.get(this));
+				}
+				//adds the funds to the database
+				if(!field.getName().contains("Total"))
+				fundDAO.addFundList(fundList);
+			}
+		}
+		catch (IllegalAccessException e){
+			//do nothing
+		}
+	}
+
+
 	@Override
 	public void LoadFormIntoProposal(Proposal proposal){
 		proposal.setProposalReqStdAsst(studentAssistants);
+
 	}
+
 
 	public void setStudentAssistants(boolean studentAssistants) {
 		this.studentAssistants = studentAssistants;
 	}
-	
+
+	//TODO:Instead of having over 70 variables , consider using a list or a hash map
+	//For now, the saveBudgetForm() uses reflection and requires the members of this class to be in
+	// a specific order for the iteration to work correctly.
+	//DON'T MOVE OR DELETE ANYTHING UNLESS YOU COMPLETE THE TODO
 	private String a1;
-	private String a2;
-	private String a3;
-	private String a4;
-	private String aBen;
-	
 	private String b1;
-	private String b2;
-	private String b3;
-	private String b4;
-	private String bBen;
-	
 	private String c1;
-	private String c2;
-	private String c3;
-	private String c4;
+
+	private String aBen;
+	private String bBen;
 	private String cBen;
+
+	private String a2;
+	private String b2;
+	private String c2;
+
+	private String a3;
+	private String b3;
+	private String c3;
+
+	private String a4;
+	private String b4;
+	private String c4;
+
 	
 	private double source1_a_1;
 	private double source2_a_1;
