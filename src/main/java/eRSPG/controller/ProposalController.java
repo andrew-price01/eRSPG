@@ -59,13 +59,8 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 @Controller
@@ -162,6 +157,7 @@ public class ProposalController {
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
         if(proposal != null){
+
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
             awardForm.LoadProposalIntoForm(proposal);
@@ -209,12 +205,94 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session
-        saveProposalState(detailForm,user.getUserId());
+        //saveProposalState(detailForm,user.getUserId());
 
         //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
+    }
+
+
+    @RequestMapping(value = "/eRSPG/proposalDetailData", method = RequestMethod.POST)
+    public @ResponseBody Proposal UpdateDetailsAjax(String title,String director,
+                                                    String email,String mailCode,String extension, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        proposal.setProposalTitle(title);
+        proposal.setProjectDirector(director);
+        proposal.setProposalEmail(email);
+        proposal.setProposalMailCode(mailCode);
+        proposal.setProposalExtension(extension);
+
+        proposalDao.addNewOrUpdateProposal(proposal);
+
+       return proposal;
+    }
+
+
+    @RequestMapping(value = "/eRSPG/proposalDepartmentData", method = RequestMethod.POST)
+    public @ResponseBody Proposal UpdateDepratmentAjax(String department, String semester, String year, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        proposal.setDepartmentId(Integer.valueOf(department));
+        proposal.setSemesterId(Integer.valueOf(semester));
+        proposal.setProposalYear(Integer.valueOf(year));
+
+        proposalDao.addNewOrUpdateProposal(proposal);
+
+        return proposal;
+    }
+
+    //depends on selected semester
+    @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.GET)
+    public @ResponseBody List<String> GetRequestedAwardAjax(HttpServletRequest request){
+        
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<RequestAward> requestAwardList = requestAwardDao
+                .findRequestAwardByProposalId(proposal.getProposalId());
+        List<String> awardTypeslist = new ArrayList<>();
+        for (RequestAward req:
+             requestAwardList) {
+            awardTypeslist.add(String.valueOf(req.getAwardTypeId()));
+        }
+        return awardTypeslist;
+    }
+
+    @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
+    public @ResponseBody String[] UpdateBudgetAjax(String[] fund1, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        return null;
+
+    }
+
+    // depends on semester
+    @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.POST)
+    public @ResponseBody void UpdateRequestedAwardAjax(String award1,
+                                                               String award2,
+                                                               String award3,
+                                                       HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<RequestAward> requestAwardList = requestAwardDao
+                .findRequestAwardByProposalId(proposal.getProposalId());
+
+        for (RequestAward req:
+             requestAwardList) {
+            requestAwardDao.deleteRequestAward(req);
+        }
+
+        if(award1 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award1,proposal.getProposalId()));
+        if(award2 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award2,proposal.getProposalId()));
+        if(award3 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award3,proposal.getProposalId()));
+
     }
 
     @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
@@ -261,9 +339,8 @@ public class ProposalController {
             return "projectIndex";
         }
 
-        // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session
-        saveProposalState(deptForm,user.getUserId());
+        //saveProposalState(deptForm,user.getUserId());
 
         System.out.println(nextPage);
 
@@ -318,7 +395,7 @@ public class ProposalController {
 			}
 
             User user = (User) request.getSession().getAttribute("User");  //get user from session
-            saveProposalState(awardForm,user.getUserId());
+            //saveProposalState(awardForm,user.getUserId());
 
 			model.addAttribute("semester",semester);
 
@@ -337,7 +414,7 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.POST)
-    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
+    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm budgetForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
     {
         if(result.hasErrors())
         {
@@ -345,7 +422,12 @@ public class ProposalController {
             return "projectIndex";
         }
         User user = (User) request.getSession().getAttribute("User");  //get user from session
-        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
+        //saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
+
+        Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        if (fundDAO.findFundsByProposalId(proposal.getProposalId()) == null) // prevent dupes until ajax is complete
+        budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
+
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
@@ -394,7 +476,7 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBody.jsp");
 
             User user = (User) request.getSession().getAttribute("User");  //get user from session
-            saveProposalState(awardForm,user.getUserId());
+            //saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
 
@@ -618,39 +700,65 @@ public class ProposalController {
                     HttpServletRequest request) {
 
         LocalDateTime time = LocalDateTime.now();
+//
+//        // user is now in the session at login
+//        User user = (User) request.getSession().getAttribute("User");  //get user from session
+//
+//        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+//
+//        proposal.setUserId(user.getUserId());
+//        proposal.setProjectDirector(detailForm.getProjectDirector());
+//        proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
+//        proposal.setProposalMailCode(detailForm.getProposalMailCode());
+//        proposal.setProposalExtension(detailForm.getProposalExtension());
+//        proposal.setProposalEmail(detailForm.getProposalEmail());
+//        proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
+//        proposal.setProposalTitle(detailForm.getProposalTitle());
+//        proposal.setSemesterId(deptForm.getSemesterID());
+//        proposal.setProjectTypeId(awardForm.getProjectTypeID());
+//        proposal.setDepartmentId(deptForm.getDepartmentID());
+//        proposal.setProposalYear(deptForm.getYear());
+//        proposal.setSubmissionDate(time);
+//        proposal.setUpdatedDate(time);
+//
+//        //save proposal to database
+//        proposalDao.addNewOrUpdateProposal(proposal);
+//        int proposalID = proposal.getProposalId();
+//
+//        for (int i = 0; i < awardForm.getAwardTypes().size(); i++) {
+//            RequestAward requestAward = new RequestAward();
+//            requestAward.setProposalId(proposalID);
+//            requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
+//            requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+//        }
+//
+        List<Fund> fundList = budgetForm.generateFundObjects();
 
-        // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session
 
-        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+		Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
-        proposal.setUserId(user.getUserId());
-        proposal.setProjectDirector(detailForm.getProjectDirector());
-        proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
-        proposal.setProposalMailCode(detailForm.getProposalMailCode());
-        proposal.setProposalExtension(detailForm.getProposalExtension());
-        proposal.setProposalEmail(detailForm.getProposalEmail());
-        proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-        proposal.setProposalTitle(detailForm.getProposalTitle());
-        proposal.setSemesterId(deptForm.getSemesterID());
-        proposal.setProjectTypeId(awardForm.getProjectTypeID());
-        proposal.setDepartmentId(deptForm.getDepartmentID());
-        proposal.setProposalYear(deptForm.getYear());
-        proposal.setSubmissionDate(time);
-        proposal.setUpdatedDate(time);
 
-        //save proposal to database
-        proposalDao.addNewOrUpdateProposal(proposal);
-        int proposalID = proposal.getProposalId();
-
-        for (int i = 0; i < awardForm.getAwardTypes().size(); i++) {
-            RequestAward requestAward = new RequestAward();
-            requestAward.setProposalId(proposalID);
-            requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
-            requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+        if(user != null){
+            int userID = user.getUserId();
+            // added code to get user id
+            proposal.setUserId(userID);
         }
 
-        List<Fund> fundList = budgetForm.generateFundObjects();
+		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
+
+		
+		//save proposal to database
+		proposalDao.addNewOrUpdateProposal(proposal);
+		int proposalID = proposal.getProposalId();
+		
+		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
+		{
+			RequestAward requestAward = new RequestAward();
+			requestAward.setProposalId(proposalID);
+			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
+			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+		}
 
         // iterate through the all fund objects and set the proposal id
         for (Fund fund : fundList) {
@@ -738,9 +846,9 @@ public class ProposalController {
 
 
     //stores whats in the form into the proposal then saves it into the database
-    private void saveProposalState(BaseForm bf,Integer userId) {
+    private void saveProposalState(BaseForm baseForm,Integer userId) {
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
-        bf.LoadFormIntoProposal(proposal);
-        proposalDao.addNewOrUpdateProposal(proposal);
+        baseForm.LoadFormIntoProposal(proposal);
+	    proposalDao.addNewOrUpdateProposal(proposal);
     }
 }

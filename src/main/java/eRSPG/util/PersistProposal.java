@@ -1,14 +1,19 @@
 package eRSPG.util;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import eRSPG.Repository.FundDAO;
+import eRSPG.model.Fund;
 import eRSPG.model.Proposal;
 import eRSPG.model.User;
 import eRSPG.model.form.BaseForm;
 import org.joda.time.DateTime;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by iNaS2 on 11/20/2017.
@@ -43,9 +48,16 @@ public class PersistProposal {
         proposal.setSemesterId(1);
         proposal.setProjectTypeId(1);
         proposal.setDepartmentId(1);
-        proposal.setProposalYear(LocalDate.now().getYear());
+        proposal.setProposalYear(time.getYear());
         proposal.setSubmissionDate(time);
         proposal.setUpdatedDate(time);
         return proposal;
+    }
+
+    public static void SaveFunds(List<Fund> funds, FundDAO fundDao) {
+        for (Fund fund:
+                funds) {
+            fundDao.addNewOrUpdateFund(fund);
+        }
     }
 }

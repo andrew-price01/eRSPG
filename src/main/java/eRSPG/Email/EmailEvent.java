@@ -53,19 +53,19 @@ public class EmailEvent {
 		                InternetAddress.parse(toUser));
 		        message.setSubject("Message from eRSPG");
 		        //message.setText("<li><ul>Test</ul></li>","utf-8", "html");
-		        
 
 		        MimeBodyPart messageBodyPart = new MimeBodyPart();
 
 		        Multipart multipart = new MimeMultipart();
 
 		        messageBodyPart = new MimeBodyPart();
-		        String fileSource = file.getAbsolutePath();
-		        String fileName = file.getName();
-		        DataSource source = new FileDataSource(fileSource);
-		        messageBodyPart.setDataHandler(new DataHandler(source));
-		        messageBodyPart.setFileName(fileName);
-		        messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
+//		        String fileSource = file.getAbsolutePath();
+//		        String fileName = file.getName();
+//		        DataSource source = new FileDataSource(fileSource);
+//		        messageBodyPart.setDataHandler(new DataHandler(source));
+//		        messageBodyPart.setFileName(fileName);
+                messageBodyPart.setContent("Your proposal was submitted successfully","text/html");
+		        //messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
 		        //message.setText("<html><ul><li>Test</li></ul></html>");
 		        multipart.addBodyPart(messageBodyPart);
 		        message.setContent(multipart);
@@ -80,7 +80,4 @@ public class EmailEvent {
 		        e.printStackTrace();
 		    }
 	}
-	
-
-
 }
