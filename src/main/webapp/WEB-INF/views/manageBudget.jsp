@@ -66,18 +66,21 @@
         <form:form method="get" action="/eRSPG/chairman/budgetDetails" modelAttribute="BudgetDetails">
             <table>
                 <tr>
-                    <th>Status</th>
-                    <th>Proposal Description</th>
-                    <th>Comments</th>
-                    <th>Requested Amount</th>
-
+                    <th>Accept</th>
+                    <th>Decline</th>
+                    <th>Proposal ID</th>
+                    <th>Proposal Title</th>
+                    <th>Fund Category</th>
+                    <th>Funds Requested</th>
                 </tr>
-                <c:forEach items="${BudgetDetails}" var="test">
+                <c:forEach items="${BudgetDetails}" var="budget">
                     <tr>
-                        <td>${test.proposalDescription}</td>
-                        <td>${test.description}</td>
-                        <td>${test.comments}</td>
-                        <td>${test.fundAmount}</td>
+                        <td><input type="checkbox" style="background-color: green"/></td>
+                        <td><input type="checkbox" style="background-color: red"/></td>
+                        <td>${budget.proposalID}</td>
+                        <td>${budget.proposalTitle}</td>
+                        <td>${budget.fundCategoryName}</td>
+                        <td>${budget.fundAmount}</td>
                     </tr>
                 </c:forEach>
             </table>

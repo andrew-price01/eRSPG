@@ -65,9 +65,9 @@ public class EmailEvent {
 		        DataSource source = new FileDataSource(fileSource);
 		        messageBodyPart.setDataHandler(new DataHandler(source));
 		        messageBodyPart.setFileName(fileName);
-		        //messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
-		        message.setText("<html><ul><li>Test</li></ul></html>");
-		        multipart.addBodyPart(messageBodyPart);    
+		        messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
+		        //message.setText("<html><ul><li>Test</li></ul></html>");
+		        multipart.addBodyPart(messageBodyPart);
 		        message.setContent(multipart);
 
 		        System.out.println("Sending");

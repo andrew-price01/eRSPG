@@ -41,12 +41,15 @@ public class BudgetImpl implements BudgetDAO {
 
     @Transactional
     public ArrayList<BudgetDetails> getBudgetDetails() {
-        final String sql = "select f.fundAmount, f.description, f.comments, ps.proposalDescription  \n" +
-                "\tfrom fund f \n" +
-                "    join proposal p \n" +
-                "\t\ton f.proposalID = p.proposalID \n" +
-                "\tjoin proposalstatus ps \n" +
-                "\t\ton ps.proposalStatusID = p.proposalStatusID";
+        final String sql = "select p.proposalID, p.proposalTitle, fc.fundCategoryName, sum(f.fundAmount) as fundAmount\n" +
+                "                from fund f join proposal p \n" +
+                "\t\t\t\t\ton f.proposalID = p.proposalID \n" +
+                "                join proposalstatus ps \n" +
+                "\t\t\t\t\ton ps.proposalStatusID = p.proposalStatusID\n" +
+                "\t\t\t\tjoin FundCategory fc\n" +
+                "\t\t\t\t\ton f.fundCategoryID = fc.fundCategoryID\n" +
+                "group by p.proposalID, p.proposalTitle, fc.fundCategoryName\n" +
+                "order by p.proposalID";
 
 
         ArrayList<BudgetDetails> budgetDetailsList = (ArrayList<BudgetDetails>) sessionFactory.getCurrentSession().createSQLQuery(sql)

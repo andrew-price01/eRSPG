@@ -1,5 +1,6 @@
 package eRSPG.controller;
 
+import eRSPG.Email.EmailEvent;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -669,6 +671,14 @@ public class ProposalController {
                     // store saved file locations to  database
                     fileUploadDAO.save(uploadFile);
                 }
+
+                EmailEvent emailEvent = new EmailEvent();
+
+                try {
+                    emailEvent.sendEmail(detailForm, bodyForm, file, "nicholaslindquist@mail.weber.edu");
+                }catch(MessagingException me){
+                    me.printStackTrace();
+                }
             }
 
 		}
@@ -677,6 +687,7 @@ public class ProposalController {
 			e.printStackTrace();
 		}
 		//TODO: clear session form data
+
 		
 	}
 

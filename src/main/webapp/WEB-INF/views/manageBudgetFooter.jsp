@@ -38,6 +38,7 @@
                         <form:input path="remainingBudget" placeholder="Remaining Budget"/>
                     </label>
                 </form:form>
+                <div class="btn my-btn" type="button">Save</div>
             </div>
         </div>
     </div>
