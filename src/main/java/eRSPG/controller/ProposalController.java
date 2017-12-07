@@ -619,13 +619,13 @@ public class ProposalController {
 
         LocalDateTime time = LocalDateTime.now();
 
-        Proposal proposal = new Proposal();// find incomplete proposal by user id
-
         // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session
+
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
         proposal.setUserId(user.getUserId());
         proposal.setProjectDirector(detailForm.getProjectDirector());
-        //proposal.setProposalComplete(true);
         proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
         proposal.setProposalMailCode(detailForm.getProposalMailCode());
         proposal.setProposalExtension(detailForm.getProposalExtension());
@@ -711,6 +711,7 @@ public class ProposalController {
             List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
             // Added this code to stop null exceptions because duh not everyone uploads a file with submission
             if (uploadFiles != null && uploadFiles.size() > 0) {
+
                 for (UploadFile uploadFile : uploadFiles) {
                     uploadFile.setProposalId(proposalID);
                     uploadFile.setPath(this.uploadDirectory + fileName);
@@ -723,7 +724,7 @@ public class ProposalController {
                 EmailEvent emailEvent = new EmailEvent();
 
                 try {
-                    emailEvent.sendEmail(detailForm, bodyForm, file, "nicholaslindquist@mail.weber.edu");
+                    emailEvent.sendEmail(detailForm, bodyForm, file, "daddymooch@gmail.com");
                 } catch (MessagingException me) {
                     me.printStackTrace();
                 }

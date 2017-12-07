@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                     .logoutUrl("/eRSPG/logout")
-                    .logoutSuccessUrl("/welcome")
+                    .logoutSuccessUrl(Constants.CAS_URL_LOGOUT_SUCCESS)
                     .logoutSuccessHandler((LogoutSuccessHandler) securityContextLogoutHandler())
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
@@ -145,7 +145,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LogoutFilter logoutFilter(){
-        LogoutFilter logoutFilter = new LogoutFilter("/welcome", securityContextLogoutHandler());
+        LogoutFilter logoutFilter = new LogoutFilter(Constants.APP_SERVER, securityContextLogoutHandler());
         return logoutFilter;
     }
 

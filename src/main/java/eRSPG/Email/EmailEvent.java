@@ -50,7 +50,7 @@ public class EmailEvent {
 		        Message message = new MimeMessage(session);
 		        message.setFrom(new InternetAddress(username));
 		        message.setRecipients(Message.RecipientType.TO,
-		                InternetAddress.parse("nicholaslindquist@mail.weber.edu"));
+		                InternetAddress.parse(toUser));
 		        message.setSubject("Message from eRSPG");
 		        //message.setText("<li><ul>Test</ul></li>","utf-8", "html");
 		        
