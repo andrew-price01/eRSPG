@@ -70,6 +70,7 @@ public class BudgetForm extends BaseForm {
 					descList.add((String) field.get(this));
 				}
 				//adds the funds to the database
+				if(!field.getName().contains("Total"))
 				fundDAO.addFundList(fundList);
 			}
 		}
