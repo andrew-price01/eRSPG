@@ -2,15 +2,14 @@ package eRSPG.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="Reviewer")
 public class Reviewer {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="reviewerID")
 	private int reviewerId;
 	
@@ -22,15 +21,14 @@ public class Reviewer {
 	
 	@Column(name="departmentID")
 	private int departmentId;
-	
+
 	@Column(name="reviewComment")
 	private String reviewComment;
 	
 	@Column(name="updatedAt")
 	private LocalDateTime updatedAt;
-	
-	public Reviewer(){
-		
+
+	public Reviewer() {
 	}
 
 	public int getReviewerId() {
@@ -80,5 +78,4 @@ public class Reviewer {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
 }

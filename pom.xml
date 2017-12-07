@@ -94,7 +94,17 @@
 			<scope>provided</scope>
 		</dependency>
 
-
+		<dependency>
+		   <groupId>commons-fileupload</groupId>
+		   <artifactId>commons-fileupload</artifactId>
+		   <version>1.2.1</version> 
+		</dependency>
+		
+		<dependency> 
+		  <groupId>commons-io</groupId>
+		  <artifactId>commons-io</artifactId> 
+		  <version>2.0</version> 
+		</dependency> 
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -195,15 +205,15 @@
 		</dependency>
         
         <dependency>
-    		<groupId>org.apache.commons</groupId>
-    		<artifactId>commons-dbcp2</artifactId>
-    		<version>${apache-commons.version}</version>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-dbcp2</artifactId>
+    			<version>${apache-commons.version}</version>
 		</dependency>
 		
 		<dependency>
-    		<groupId>mysql</groupId>
-    		<artifactId>mysql-connector-java</artifactId>
-    		<version>${mysql-version.connector}</version>
+    			<groupId>mysql</groupId>
+    			<artifactId>mysql-connector-java</artifactId>
+    			<version>${mysql-version.connector}</version>
 		</dependency>
 
 		<dependency>
@@ -234,6 +244,78 @@
 			<version>2.10.0</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+    			<groupId>javax.mail</groupId>
+    			<artifactId>mail</artifactId>
+    			<version>1.4</version>
+		</dependency>
+		
+		<dependency>
+    			<groupId>javax.activation</groupId>
+    			<artifactId>activation</artifactId>
+    			<version>1.1.1</version>
+		</dependency>
+
+		<!-- CAS dependencies -->
+		<!-- CAS Java Core client -->
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-core</artifactId>
+			<version>${java.cas.client.version}</version>
+		</dependency>
+
+		 <!--CAS integration for tomcat v 8.5-->
+		<dependency> 
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-integration-tomcat-v85</artifactId>
+			<version>${java.cas.client.version}</version>
+		</dependency>
+
+		 <!--CAS Support for SAML functionality-->
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-support-saml</artifactId>
+			<version>${java.cas.client.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${javax.inject.version}</version>
+		</dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
+
 
 		<!-- CAS dependencies -->
 		<!-- CAS Java Core client -->

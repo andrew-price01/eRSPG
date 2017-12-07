@@ -16,4 +16,6 @@ public interface UserRoleDAO {
 
 	void deleteUserRole(UserRole ra);
 
+	List<UserRole> findUserRoleByRoleTypeId(int roleTypeId);
+
 }

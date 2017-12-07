@@ -1,6 +1,7 @@
 package eRSPG.controller;
 
 import com.google.common.collect.ImmutableMap;
+import eRSPG.Email.EmailEvent;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.xml.soap.Detail;
@@ -52,8 +54,10 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -711,6 +715,14 @@ public class ProposalController {
                     // store saved file locations to  database
                     fileUploadDAO.save(uploadFile);
                 }
+
+                EmailEvent emailEvent = new EmailEvent();
+
+                try {
+                    emailEvent.sendEmail(detailForm, bodyForm, file, "nicholaslindquist@mail.weber.edu");
+                }catch(MessagingException me){
+                    me.printStackTrace();
+                }
             }
 
 		}
@@ -719,7 +731,8 @@ public class ProposalController {
 			e.printStackTrace();
 		}
 		//TODO: clear session form data
-		
+
+
 	}
 
     //stores whats in the form into the proposal then saves it into the database

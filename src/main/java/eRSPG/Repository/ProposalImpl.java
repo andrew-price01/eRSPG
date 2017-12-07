@@ -1,6 +1,8 @@
 package eRSPG.Repository;
 
+
 import eRSPG.model.Proposal;
+import eRSPG.model.ProposalStatus;
 import eRSPG.util.PersistProposal;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -16,9 +18,7 @@ public class ProposalImpl implements ProposalDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public ProposalImpl(){
-		
-	}
+	public ProposalImpl(){ }
 	
 	public ProposalImpl(SessionFactory sf){
 		this.sessionFactory = sf;
@@ -47,7 +47,16 @@ public class ProposalImpl implements ProposalDAO {
 				.add(Restrictions.eq("userId",userId))
 				.list();
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Proposal> findAllProposalByStatusId(Integer proposalStatus) {
+		return (List<Proposal>) sessionFactory.getCurrentSession()
+				.createCriteria(Proposal.class)
+				.add(Restrictions.eq("proposalStatus", proposalStatus))
+				.list();
+	}
+
 	@Transactional
 	public void addNewOrUpdateProposal(Proposal p){
 		sessionFactory.getCurrentSession().saveOrUpdate(p);
