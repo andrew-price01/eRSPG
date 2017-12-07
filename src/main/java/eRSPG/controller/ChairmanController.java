@@ -3,6 +3,9 @@ package eRSPG.controller;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.AnnouncementForm;
+import eRSPG.model.form.BudgetDetails;
+import eRSPG.model.form.DepartmentForm;
+import eRSPG.model.form.ManageBudgetForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.parseInt;
 
 @Controller
-@SessionAttributes("AnnouncementForm")
+@SessionAttributes({"AnnouncementForm", "ManageBudgetForm", "BudgetDetails"})
 public class ChairmanController {
 
     @Autowired
@@ -42,6 +45,12 @@ public class ChairmanController {
 
     @Autowired
     private ProposalStatusDAO proposalStatusDAO;
+
+    @Autowired
+    private SemesterDAO semesterDAO;
+
+    @Autowired
+    private BudgetDAO budgetDAO;
 
     @RequestMapping("/eRSPG/chairman/home")
     public String chairmanHome() {
@@ -195,6 +204,44 @@ public class ChairmanController {
             }
         }
         return "assignProposal";
+    }
+
+    @RequestMapping(value = "/eRSPG/chairman/manageBudget", method = RequestMethod.GET)
+    public String manageBudget(Model model){
+        ManageBudgetForm manageBudgetForm = new ManageBudgetForm();
+
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Budget budget = budgetDAO.getBudgetForYear(year);
+
+        int remainingBudget = 0;
+        int totalBudget = 0;
+
+        if(budget != null){
+            remainingBudget = budget.getTotalBudget();
+            totalBudget = budget.getTotalBudget();
+        }
+
+        manageBudgetForm.setTotalBudget(totalBudget);
+        manageBudgetForm.setRemainingBudget(remainingBudget);
+
+        model.addAttribute("ManageBudgetForm", manageBudgetForm);
+        model.addAttribute("totalBudget", manageBudgetForm.getTotalBudget());
+        model.addAttribute("remainingBudget", manageBudgetForm.getRemainingBudget());
+
+
+        return budgetDetails(model);
+    }
+
+
+    @RequestMapping(value = "/eRSPG/chairman/budgetDetails", method = RequestMethod.GET)
+    public String budgetDetails(Model model){
+        ArrayList<BudgetDetails> budgetDetails = new ArrayList<BudgetDetails>();
+
+        budgetDetails = budgetDAO.getBudgetDetails();
+
+        model.addAttribute("BudgetDetails", budgetDetails);
+
+        return "manageBudget";
     }
 
     // Changes Committee to Faculty UserRole

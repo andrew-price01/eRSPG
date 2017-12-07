@@ -1,6 +1,7 @@
 package eRSPG.controller;
 
 import com.google.common.collect.ImmutableMap;
+import eRSPG.Email.EmailEvent;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.xml.soap.Detail;
@@ -121,7 +123,7 @@ public class ProposalController {
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
 			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
 		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        //Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		List<Proposal> proposals = id == null ?
 				proposalDao.findAllProposals() :
 				proposalDao.findProposalByUserId(id);
@@ -395,6 +397,7 @@ public class ProposalController {
             saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
+
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -612,106 +615,102 @@ public class ProposalController {
 					BodyQuestionsForm bodyQuestForm,
 					BodyDetailsForm bodyDetailsForm,
 					UploadForm uploadForm,
-                    HttpServletRequest request)
-	{
-	
-		LocalDateTime time = LocalDateTime.now();
+                    HttpServletRequest request) {
 
-		Proposal proposal = new Proposal();// find incomplete proposal by user id
+        LocalDateTime time = LocalDateTime.now();
+
+        Proposal proposal = new Proposal();// find incomplete proposal by user id
 
         // user is now in the session at login
         User user = (User) request.getSession().getAttribute("User");  //get user from session
         proposal.setUserId(user.getUserId());
-		proposal.setProjectDirector(detailForm.getProjectDirector());
-		//proposal.setProposalComplete(true);
-		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
-		proposal.setProposalMailCode(detailForm.getProposalMailCode());
-		proposal.setProposalExtension(detailForm.getProposalExtension());
-		proposal.setProposalEmail(detailForm.getProposalEmail());
-		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-		proposal.setProposalTitle(detailForm.getProposalTitle());
-		proposal.setSemesterId(deptForm.getSemesterID());
-		proposal.setProjectTypeId(awardForm.getProjectTypeID());
-		proposal.setDepartmentId(deptForm.getDepartmentID());
-		proposal.setProposalYear(deptForm.getYear());
-		proposal.setSubmissionDate(time);
-		proposal.setUpdatedDate(time);
-		
-		//save proposal to database
-		proposalDao.addNewOrUpdateProposal(proposal);
-		int proposalID = proposal.getProposalId();
-		
-		for(int i = 0; i < awardForm.getAwardTypes().size(); i++)
-		{
-			RequestAward requestAward = new RequestAward();
-			requestAward.setProposalId(proposalID);
-			requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
-			requestAwardDao.addNewOrUpdateRequestAward(requestAward);
-		}
+        proposal.setProjectDirector(detailForm.getProjectDirector());
+        //proposal.setProposalComplete(true);
+        proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
+        proposal.setProposalMailCode(detailForm.getProposalMailCode());
+        proposal.setProposalExtension(detailForm.getProposalExtension());
+        proposal.setProposalEmail(detailForm.getProposalEmail());
+        proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
+        proposal.setProposalTitle(detailForm.getProposalTitle());
+        proposal.setSemesterId(deptForm.getSemesterID());
+        proposal.setProjectTypeId(awardForm.getProjectTypeID());
+        proposal.setDepartmentId(deptForm.getDepartmentID());
+        proposal.setProposalYear(deptForm.getYear());
+        proposal.setSubmissionDate(time);
+        proposal.setUpdatedDate(time);
 
-		List<Fund> fundList = budgetForm.generateFundObjects();
-		
-		// iterate through the all fund objects and set the proposal id
-		for (Fund fund : fundList) {
-			fund.setProposalId(proposalID);
-			fundDAO.addNewOrUpdateFund(fund);
-		}
+        //save proposal to database
+        proposalDao.addNewOrUpdateProposal(proposal);
+        int proposalID = proposal.getProposalId();
 
-		// save essay question answers
-		List<EssayAnswer> answerList = bodyForm.generateEssayAnswers();
-		
-		List<EssayAnswer> bodyQuestionsAnswers = bodyQuestForm.generateEssayAnswers();
-		
-		List<EssayAnswer> bodyDetailAnswers = bodyDetailsForm.generateEssayAnswers();
-		
-		answerList.addAll(bodyQuestionsAnswers);
-		answerList.addAll(bodyDetailAnswers);
-		
-		for (EssayAnswer essayAnswer : answerList) {
-			
-			essayAnswer.setProposalId(proposalID);
-			essayAnswer.setUpdatedDate(time);
-			essayAnswerDAO.addNewOrUpdateEssayAnswer(essayAnswer);
-		}
-		
-		//create the file on the server
-		String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
-		
-		File file = new File(this.uploadDirectory + fileName);
-		
-		if(file.exists())
-		{
-			file.delete();
-			
-		}
-		try
-		{
-			// add code to check if directory exists and if not make it with write permissions
+        for (int i = 0; i < awardForm.getAwardTypes().size(); i++) {
+            RequestAward requestAward = new RequestAward();
+            requestAward.setProposalId(proposalID);
+            requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
+            requestAwardDao.addNewOrUpdateRequestAward(requestAward);
+        }
+
+        List<Fund> fundList = budgetForm.generateFundObjects();
+
+        // iterate through the all fund objects and set the proposal id
+        for (Fund fund : fundList) {
+            fund.setProposalId(proposalID);
+            fundDAO.addNewOrUpdateFund(fund);
+        }
+
+        // save essay question answers
+        List<EssayAnswer> answerList = bodyForm.generateEssayAnswers();
+
+        List<EssayAnswer> bodyQuestionsAnswers = bodyQuestForm.generateEssayAnswers();
+
+        List<EssayAnswer> bodyDetailAnswers = bodyDetailsForm.generateEssayAnswers();
+
+        answerList.addAll(bodyQuestionsAnswers);
+        answerList.addAll(bodyDetailAnswers);
+
+        for (EssayAnswer essayAnswer : answerList) {
+
+            essayAnswer.setProposalId(proposalID);
+            essayAnswer.setUpdatedDate(time);
+            essayAnswerDAO.addNewOrUpdateEssayAnswer(essayAnswer);
+        }
+
+        //create the file on the server
+        String fileName = proposalID + "_" + uploadForm.getFileUpload().getOriginalFilename();
+
+        File file = new File(this.uploadDirectory + fileName);
+
+        if (file.exists()) {
+            file.delete();
+
+        }
+        try {
+            // add code to check if directory exists and if not make it with write permissions
             File directory = new File(this.uploadDirectory);
-			if (! directory.exists()){
+            if (!directory.exists()) {
                 // Throws exception on failure
                 directory.mkdirs();
                 directory.setReadable(true);
                 directory.setWritable(true);
                 directory.setExecutable(true);
-			}
+            }
 
-			file.createNewFile();
+            file.createNewFile();
             file.setReadable(true);
             file.setWritable(true);
             file.setExecutable(true);
-			OutputStream output = new FileOutputStream(file);
+            OutputStream output = new FileOutputStream(file);
 
             // Added this code to stop null exceptions because duh not everyone uploads a file with submission
-			if(uploadForm.getBytes() != null){
+            if (uploadForm.getBytes() != null) {
                 output.write(uploadForm.getBytes());
             }
 
-			output.close();
+            output.close();
 
             List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
             // Added this code to stop null exceptions because duh not everyone uploads a file with submission
-            if(uploadFiles != null && uploadFiles.size() > 0){
+            if (uploadFiles != null && uploadFiles.size() > 0) {
                 for (UploadFile uploadFile : uploadFiles) {
                     uploadFile.setProposalId(proposalID);
                     uploadFile.setPath(this.uploadDirectory + fileName);
@@ -720,16 +719,22 @@ public class ProposalController {
                     // store saved file locations to  database
                     fileUploadDAO.save(uploadFile);
                 }
+
+                EmailEvent emailEvent = new EmailEvent();
+
+                try {
+                    emailEvent.sendEmail(detailForm, bodyForm, file, "nicholaslindquist@mail.weber.edu");
+                } catch (MessagingException me) {
+                    me.printStackTrace();
+                }
             }
 
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 		//TODO: clear session form data
-		
-	}
+
 
     //stores whats in the form into the proposal then saves it into the database
     private void saveProposalState(BaseForm bf,Integer userId) {

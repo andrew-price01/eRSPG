@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-<<<<<<< HEAD
     <filter>
         <filter-name>CAS Assertion Thread Local Filter</filter-name>
         <filter-class>org.jasig.cas.client.util.AssertionThreadLocalFilter</filter-class>
@@ -22,7 +21,6 @@
         <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
         <url-pattern>/eRSPG/*</url-pattern>
     </filter-mapping>
-=======
     <!--<filter>-->
         <!--<filter-name>CAS Assertion Thread Local Filter</filter-name>-->
         <!--<filter-class>org.jasig.cas.client.util.AssertionThreadLocalFilter</filter-class>-->
@@ -40,6 +38,5 @@
         <!--<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>-->
         <!--<url-pattern>/eRSPG/*</url-pattern>-->
     <!--</filter-mapping>-->
->>>>>>> develop
 
 </web-app>

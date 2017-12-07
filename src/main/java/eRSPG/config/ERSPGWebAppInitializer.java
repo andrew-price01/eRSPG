@@ -1,17 +1,15 @@
 package eRSPG.config;
 
+import org.jasig.cas.client.session.SingleSignOutFilter;
+import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import java.util.EnumSet;
 
 public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
-
-    private final Logger log = LoggerFactory.getLogger(ERSPGWebAppInitializer.class);
 
     @Override
     protected String[] getServletMappings()
@@ -50,4 +48,5 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
 
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
     }
+
 }

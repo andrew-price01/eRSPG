@@ -2,7 +2,6 @@ package eRSPG.Repository;
 
 import java.util.List;
 
-import eRSPG.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -56,7 +55,7 @@ public class UserRoleImpl implements UserRoleDAO {
 		UserRole ur = (UserRole)sessionFactory.getCurrentSession().createQuery("from UserRole ur where ur.userId = :userId").setParameter("userId", userId).uniqueResult();
 		return ur;
 	}
-	
+
 	@Transactional
 	public void addNewOrUpdateUserRole(UserRole userRole){
 		sessionFactory.getCurrentSession().saveOrUpdate(userRole);
