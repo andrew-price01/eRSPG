@@ -39,10 +39,7 @@ import eRSPG.model.RequestAward;
 import eRSPG.model.Semester;
 import eRSPG.model.UploadFile;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -165,6 +162,7 @@ public class ProposalController {
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
         if(proposal != null){
+
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
             awardForm.LoadProposalIntoForm(proposal);
@@ -173,6 +171,10 @@ public class ProposalController {
             detailForm.LoadProposalIntoForm(proposal);
           //bodyQuestionsForm.LoadProposalIntoForm(proposal);
 
+        }else{
+            proposal = PersistProposal.getEmptyProposal();
+            proposal.setUserId(user.getUserId());
+            proposalDao.addNewOrUpdateProposal(proposal);
         }
 
 
@@ -250,6 +252,55 @@ public class ProposalController {
         proposalDao.addNewOrUpdateProposal(proposal);
 
         return proposal;
+    }
+
+    //depends on selected semester
+    @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.GET)
+    public @ResponseBody List<String> GetRequestedAwardAjax(){
+        
+        User user = PersistProposal.getDummyUser();
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<RequestAward> requestAwardList = requestAwardDao
+                .findRequestAwardByProposalId(proposal.getProposalId());
+        List<String> awardTypeslist = new ArrayList<>();
+        for (RequestAward req:
+             requestAwardList) {
+            awardTypeslist.add(String.valueOf(req.getAwardTypeId()));
+        }
+        return awardTypeslist;
+    }
+
+    @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
+    public @ResponseBody String[] UpdateBudgetAjax(String[] fund1){
+        User user = PersistProposal.getDummyUser();
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        return null;
+
+    }
+
+    // depends on semester
+    @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.POST)
+    public @ResponseBody void UpdateRequestedAwardAjax(String award1,
+                                                               String award2,
+                                                               String award3){
+
+        User user = PersistProposal.getDummyUser();
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<RequestAward> requestAwardList = requestAwardDao
+                .findRequestAwardByProposalId(proposal.getProposalId());
+
+        for (RequestAward req:
+             requestAwardList) {
+            requestAwardDao.deleteRequestAward(req);
+        }
+
+        if(award1 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award1,proposal.getProposalId()));
+        if(award2 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award2,proposal.getProposalId()));
+        if(award3 != "")
+            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award3,proposal.getProposalId()));
+
     }
 
     @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
@@ -384,9 +435,10 @@ public class ProposalController {
         }
 
         User user = PersistProposal.getDummyUser(); // replace by logged in user
-        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        if (fundDAO.findFundsByProposalId(proposal.getProposalId()) == null) // prevent dupes until ajax is complete
         budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
-        saveProposalState(budgetForm,user.getUserId());
+
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
@@ -618,31 +670,19 @@ public class ProposalController {
 	
 		LocalDateTime time = LocalDateTime.now();
 
-		Proposal proposal = new Proposal();// find incomplete proposal by user id
+		User user = PersistProposal.getDummyUser();
 
-		// weird work around for user data
-        userForm.setUserEmail(detailForm.getProposalEmail());
-        User user = checkIfUserAlreadyExists(userForm);
+		Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+
         if(user != null){
             int userID = user.getUserId();
             // added code to get user id
             proposal.setUserId(userID);
         }
 
-		proposal.setProjectDirector(detailForm.getProjectDirector());
-		//proposal.setProposalComplete(true);
 		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
-		proposal.setProposalMailCode(detailForm.getProposalMailCode());
-		proposal.setProposalExtension(detailForm.getProposalExtension());
-		proposal.setProposalEmail(detailForm.getProposalEmail());
-		proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-		proposal.setProposalTitle(detailForm.getProposalTitle());
-		proposal.setSemesterId(deptForm.getSemesterID());
-		proposal.setProjectTypeId(awardForm.getProjectTypeID());
-		proposal.setDepartmentId(deptForm.getDepartmentID());
-		proposal.setProposalYear(deptForm.getYear());
-		proposal.setSubmissionDate(time);
-		proposal.setUpdatedDate(time);
+
 		
 		//save proposal to database
 		proposalDao.addNewOrUpdateProposal(proposal);

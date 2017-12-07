@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +45,16 @@ public class RequestAwardImpl implements RequestAwardDAO {
 	
 	public void deleteRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().delete(ra);
+	}
+
+	@Transactional
+	public List<RequestAward> findRequestAwardByProposalId(int id){
+
+		List<RequestAward> requestAwardList = sessionFactory.getCurrentSession()
+				.createCriteria(RequestAward.class)
+				.add(Restrictions.eq("proposalId", id))
+				.list();
+
+		return requestAwardList;
 	}
 }

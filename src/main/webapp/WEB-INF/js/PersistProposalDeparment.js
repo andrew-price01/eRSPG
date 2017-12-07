@@ -16,9 +16,8 @@ function updateProposalDepartment() {
             cache: false,
             success: (data) => {
                 $('#departmentID').val(data.department);
-                $('#semesterID').val(data.semester);
+                $('#semesterID').selectedIndex = data.semester -1;
                 $('#year').val(data.year);
-
             }
         })
         return false;

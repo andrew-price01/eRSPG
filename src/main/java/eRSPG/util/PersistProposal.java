@@ -30,7 +30,7 @@ public class PersistProposal {
     }
 
 
-    public static Proposal getDummyProposal()
+    public static Proposal getEmptyProposal()
     {
         LocalDateTime time = LocalDateTime.now();
         Proposal proposal = new Proposal();
