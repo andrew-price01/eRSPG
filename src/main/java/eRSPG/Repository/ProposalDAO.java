@@ -16,4 +16,8 @@ public interface ProposalDAO {
 
 	List<Proposal> findProposalByUserId(Integer userId);
 
+	List<Proposal> findAllProposalByStatusId(Integer proposalStatusId);
+
+	Proposal findIncompleteProposalByUserId(int id);
+
 }

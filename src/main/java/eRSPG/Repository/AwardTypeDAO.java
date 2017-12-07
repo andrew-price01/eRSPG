@@ -14,4 +14,6 @@ public interface AwardTypeDAO {
 
 	boolean deleteAwardType(AwardType a);
 
+	List<AwardType> findAwardTypesById(List<Integer> awardTypeIds);
+
 }

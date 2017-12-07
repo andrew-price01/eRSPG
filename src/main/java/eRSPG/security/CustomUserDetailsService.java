@@ -34,6 +34,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+<<<<<<< HEAD
+=======
+        String roleUser = "ROLE_USER";
+        String roleCommittee = "ROLE_COMMITTEE";
+        String roleAdmin = "ROLE_ADMIN";
+        String roleChair = "ROLE_CHAIRMAN";
+>>>>>>> dmariluch_CAS
         String lowercaseUsername = username.toLowerCase();
 
         User userFromDatabase = userDAO.findUserByUsername(lowercaseUsername);
@@ -56,16 +63,33 @@ public class CustomUserDetailsService implements UserDetailsService {
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
                 break;
+            case "committee":
+                grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
+                grantedAuthorities.add(grantedAuthority);
             case "admin":
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
+<<<<<<< HEAD
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
+=======
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
+>>>>>>> dmariluch_CAS
                 grantedAuthorities.add(grantedAuthority);
                 break;
             case "chairman":
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_USER);
                 grantedAuthorities.add(grantedAuthority);
+<<<<<<< HEAD
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_ADMIN);
+=======
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
+>>>>>>> dmariluch_CAS
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(Constants.SPRING_ROLE_CHAIRMAN);
                 grantedAuthorities.add(grantedAuthority);

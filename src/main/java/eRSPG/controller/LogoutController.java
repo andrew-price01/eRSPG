@@ -30,7 +30,7 @@ public class LogoutController {
     // what I think the staff affiliation might look like / may be removed later
     private static String STAFF_AFFILIATION = "staff:weber.edu";
 
-    @RequestMapping("/logout")
+    @RequestMapping("/eRSPG/logout")
     public String logout(HttpServletRequest request,
                 HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,7 +38,7 @@ public class LogoutController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         request.getSession().invalidate();
-        return "redirect:"+ Constants.CAS_URL_LOGOUT;
+        return "redirect:"+ Constants.CAS_URL_LOGOUT_SUCCESS;
     }
 
     @RequestMapping("/login")

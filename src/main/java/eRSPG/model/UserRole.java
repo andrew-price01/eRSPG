@@ -2,15 +2,13 @@ package eRSPG.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="UserRole")
 public class UserRole {
 	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="userRoleID")
 	private int userRoleId;
 	
@@ -25,7 +23,14 @@ public class UserRole {
 	
 	@Column(name="updateAt")
 	private LocalDateTime updatedAt;
-	
+
+	public UserRole(int userId, int roleTypeId, LocalDateTime revoked, LocalDateTime updatedAt) {
+		this.userId = userId;
+		this.roleTypeId = roleTypeId;
+		this.revoked = revoked;
+		this.updatedAt = updatedAt;
+	}
+
 	public UserRole(){
 		
 	}
