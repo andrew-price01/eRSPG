@@ -14,12 +14,19 @@ CREATE TABLE RoleType (
         roleTypeID              smallint        not null AUTO_INCREMENT PRIMARY KEY,
     roleDesc                text not null
 );
+
+INSERT INTO roletype (roleDesc) VALUES ('user');
+INSERT INTO roletype (roleDesc) VALUES ('committee');
+INSERT INTO roletype (roleDesc) VALUES ('admin');
+INSERT INTO roletype (roleDesc) VALUES ('chairman');
     
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
     email                       nvarchar(100)       not null,
     userFirstName       nvarchar(50)        not null,
-    userLastName        nvarchar(50)        not null
+    userLastName        nvarchar(50)        not null,
+    username            nvarchar(50),
+    wNumber             nvarchar(9)
 );
     
 CREATE TABLE UserRole (

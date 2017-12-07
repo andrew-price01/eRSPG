@@ -1,15 +1,27 @@
 package eRSPG.controller;
 
+import com.google.common.collect.ImmutableMap;
 import eRSPG.Repository.*;
 import eRSPG.model.*;
+import eRSPG.model.form.*;
+import eRSPG.util.PersistProposal;
+
+import org.apache.commons.logging.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.xml.soap.Detail;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -51,15 +63,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Controller
-@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm", "userForm"})
+@SessionAttributes({"departmentForm","detailForm","awardTypeForm","uploadForm","budgetForm","bodyForm","bodyDetailsForm","bodyQuestionsForm"})
 public class ProposalController {
 	
 	/**
 	 * Dependency injection for data access objects.
 	 * 
 	 */
-	
+
+    @Qualifier("awardTypeDao")
+    @Autowired
+    protected AwardTypeDAO awardTypeDAO;
+
+    @Autowired
+    protected ProjectTypeDAO projectTypeDAO;
+
 	@Autowired
 	protected ProposalDAO proposalDao;
 	
@@ -99,6 +121,7 @@ public class ProposalController {
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
 			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
 		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		List<Proposal> proposals = id == null ?
 				proposalDao.findAllProposals() :
 				proposalDao.findProposalByUserId(id);
@@ -108,48 +131,15 @@ public class ProposalController {
                     ProposalDTO(
                         p,
                         departmentDAO.findDepartment(p.getDepartmentId()),
-                        userDAO.findUserById(p.getUserId()),
+
+                        p.getUserId() == null ? new User("","") : userDAO.findUserById(p.getUserId()),
                         proposalStatusDAO.findProposalStatus(p.getProposalStatus())))
 				.collect(Collectors.toList());
 	}
 
-    @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.GET)
-    public String UserForm(Model model){
-        String contentPage = "proposalStart.jsp";
-        UserForm userForm = new UserForm();
-
-        model.addAttribute("contentPage",contentPage);
-        model.addAttribute("userForm", userForm);
-
-        return "projectIndex";
-    }
-
-
-    @RequestMapping(value="/eRSPG/proposal/index", method=RequestMethod.POST)
-    public String saveUserForm(@ModelAttribute @Valid UserForm userForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
-    {
-        //for debugging
-        String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
-
-        if(result.hasErrors())
-        {
-            model.addAttribute("contentPage", "proposalStart.jsp");
-            return "projectIndex";
-        }
-
-        User user = checkIfUserAlreadyExists(userForm);
-        if(user == null){
-            addNewUserToDatabase(userForm);
-
-            // add user to the session here ( We wont need this soon as index will be removed )
-        }
-
-        //return "redirect:/proposal/body";
-        return "redirect:/eRSPG/" + nextPage;
-    }
 
     @RequestMapping("/eRSPG/proposal/start")
-    public String startSubmission(Model model)
+    public String startSubmission(Model model, HttpServletRequest request)
     {
         DepartmentForm deptForm = new DepartmentForm();
         DetailForm detailForm = new DetailForm();
@@ -165,7 +155,23 @@ public class ProposalController {
         String userinfo = "User Info:  "+ "Name : " + userForm.getFirstName() + "  " + userForm.getLastName() + "    Email: " + userForm.getUserEmail();
 
         // We need to add the user info to the user form here from the user stored in a session
-        User user = new User();
+        // user is now in the session at login
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        if(proposal != null){
+            deptForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+            awardForm.LoadProposalIntoForm(proposal);
+            budgetForm.LoadProposalIntoForm(proposal);
+          //bodyForm.LoadProposalIntoForm(proposal);
+            detailForm.LoadProposalIntoForm(proposal);
+          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
+        } else {
+            proposal = PersistProposal.getDummyProposal(user.getUserId());
+            proposalDao.addNewOrUpdateProposal(proposal);
+        }
 
 		/*
 		 * Add all the form objects to the session
@@ -178,9 +184,7 @@ public class ProposalController {
         model.addAttribute("bodyForm", bodyForm);
         model.addAttribute("bodyDetailsForm", bodyDetailsForm);
         model.addAttribute("bodyQuestionsForm", bodyQuestionsForm);
-        model.addAttribute("userForm", userForm);
 
-        //return "redirect:/eRSPG/proposal/department";		// why is department turned to detail?
         return "redirect:/eRSPG/proposal/detail";
     }
 
@@ -195,13 +199,17 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/detail", method=RequestMethod.POST)
-    public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    public String saveProposalDetail(@ModelAttribute @Valid DetailForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
     {
         if(result.hasErrors())
         {
             model.addAttribute("contentPage", "proposalDetail.jsp");
             return "projectIndex";
         }
+
+        // user is now in the session at login
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        saveProposalState(detailForm,user.getUserId());
 
         //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
@@ -242,10 +250,8 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.POST)
-    public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    public String saveDepartmentForm(@ModelAttribute @Valid DepartmentForm deptForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
     {
-        //String contentPage = "proposalDepartment.jsp";
-        //model.addAttribute("contentPage",contentPage );
 
         if(result.hasErrors())
         {
@@ -253,10 +259,12 @@ public class ProposalController {
             return "projectIndex";
         }
 
+        // user is now in the session at login
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        saveProposalState(deptForm,user.getUserId());
+
         System.out.println(nextPage);
 
-        //return "redirect:/proposal/detail";
-        //return "redirect:/proposal/awardType";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -288,7 +296,7 @@ public class ProposalController {
 	}
 
 	@RequestMapping(value="/eRSPG/proposal/awardType", method=RequestMethod.POST)
-	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+	public String saveAwardType(@ModelAttribute("departmentForm") DepartmentForm deptForm,@ModelAttribute @Valid AwardTypeForm awardForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
 	{
 		if(result.hasErrors())
 		{
@@ -307,6 +315,9 @@ public class ProposalController {
 				semester = "Summer";
 			}
 
+            User user = (User) request.getSession().getAttribute("User");  //get user from session
+            saveProposalState(awardForm,user.getUserId());
+
 			model.addAttribute("semester",semester);
 
 			model.addAttribute("contentPage", "proposalAwardType.jsp");
@@ -324,21 +335,18 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/budget", method=RequestMethod.POST)
-    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage)
+    public String saveProposalBudget(@ModelAttribute @Valid BudgetForm detailForm, BindingResult result,Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
     {
         if(result.hasErrors())
         {
             model.addAttribute("contentPage", "proposalBudget.jsp");
             return "projectIndex";
         }
-
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
     }
-
-
-
-
 
     @RequestMapping(value="/eRSPG/proposal/body", method=RequestMethod.GET)
     public String bodyForm(@ModelAttribute AwardTypeForm awardForm,Model model){
@@ -364,10 +372,8 @@ public class ProposalController {
     }
 
     @RequestMapping(value="/eRSPG/proposal/body", method=RequestMethod.POST)
-    public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage)
+    public String saveBodyForm(@ModelAttribute AwardTypeForm awardForm,@ModelAttribute @Valid BodyForm bodyForm, BindingResult result, Model model, @RequestParam("nextPage") String nextPage, HttpServletRequest request)
     {
-        //System.out.println(result.hasErrors());
-        // System.out.println(result);
         if(result.hasErrors())
         {
             boolean collaborative = false;
@@ -384,10 +390,11 @@ public class ProposalController {
             model.addAttribute("collaborative",collaborative);
 
             model.addAttribute("contentPage", "proposalBody.jsp");
+
+            User user = (User) request.getSession().getAttribute("User");  //get user from session
+            saveProposalState(awardForm,user.getUserId());
             return "projectIndex";
         }
-
-        //return "redirect:/proposal/bodyDetails";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -395,6 +402,7 @@ public class ProposalController {
     public String bodyDetailsForm(Model model){
         String contentPage = "proposalBodyDetails.jsp";
         model.addAttribute("contentPage", contentPage);
+
         return "projectIndex";
     }
 
@@ -406,8 +414,6 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBodyDetails.jsp");
             return "projectIndex";
         }
-
-        //return "redirect:/proposal/bodyQuestions";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -426,8 +432,6 @@ public class ProposalController {
             model.addAttribute("contentPage", "proposalBodyQuestions.jsp");
             return "projectIndex";
         }
-
-        //return "redirect:/proposal/upload";
         return "redirect:/eRSPG/" + nextPage;
     }
 
@@ -446,21 +450,16 @@ public class ProposalController {
             try {
                 byte[] bytes = file.getBytes();
 
-
                 uploadForm.setName(file.getOriginalFilename());
 
                 uploadForm.setBytes(bytes);
 
-                //return "redirect:/proposal/review";
-                //return "redirect:/proposal/submit";
                 return "redirect:/eRSPG/" + nextPage;
             } catch (Exception e) {
 
                 model.addAttribute("failedUpload","failed to upload file!");
                 model.addAttribute("contentPage","proposalUpload.jsp");
                 return "redirect:/eRSPG/" + nextPage;
-                //return "projectIndex";
-
             }
         }
         else {
@@ -473,29 +472,87 @@ public class ProposalController {
     }
 
     @RequestMapping("/eRSPG/proposal/review")
-    public String reviewForm(Model model){
+    public String reviewForm(
+            @ModelAttribute("budgetForm") BudgetForm budgetForm,
+            @ModelAttribute("uploadForm") UploadForm uploadForm,
+            @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestionsForm,
+            @ModelAttribute("bodyForm") BodyForm bodyForm,
+            @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+            @ModelAttribute("awardTypeForm") AwardTypeForm awardTypeForm,
+            @ModelAttribute("departmentForm") DepartmentForm departmentForm,
+            Model model){
         String contentPage = "proposalReview.jsp";
+        model.addAttribute("departmentName", departmentDAO.findDepartment(departmentForm.getDepartmentID()).getDepartmentName());
+        model.addAttribute("semesterName", semesterDAO.findSemesterById(departmentForm.getSemesterID()).getSemesterName());
+        model.addAttribute("awardTypeList", awardTypeDAO
+                .findAwardTypesById(awardTypeForm.getAwardTypes())
+                .stream()
+                .map(AwardType::getAwardName)
+                .collect(Collectors.toList()));
+
+        model.addAttribute("bodyAnswers",
+                ImmutableMap.builder()
+                        .put("1", getAnswerText(bodyForm, 1))
+                        .put("2", getAnswerText(bodyForm, 2))
+                        .put("3", getAnswerText(bodyForm, 3))
+                        .put("4", getAnswerText(bodyForm, 4))
+                        .put("5", getAnswerText(bodyDetailsForm, 5))
+                        .put("6", getAnswerText(bodyDetailsForm, 6))
+                        .put("7", getAnswerText(bodyDetailsForm, 7))
+                        .put("8", getAnswerText(bodyDetailsForm, 8))
+                        .put("9", getAnswerText(bodyQuestionsForm,9))
+                        .put("10", getAnswerText(bodyQuestionsForm,10))
+                        .put("11", getAnswerText(bodyQuestionsForm, 11))
+                        .put("12", getAnswerText(bodyQuestionsForm,12))
+                        .put("13", getAnswerText(bodyQuestionsForm, 13))
+                        .put("14", getAnswerText(bodyQuestionsForm, 14))
+                        .put("15", getAnswerText(bodyQuestionsForm, 15)).build());
+        model.addAttribute("projectTypeName", projectTypeDAO.findProjectType(awardTypeForm.getProjectTypeID()).getProjectTypeName());
         model.addAttribute("contentPage",contentPage);
         return "projectIndex";
     }
 
 
     @RequestMapping("/eRSPG/proposal/submit")
-    public @ResponseBody String submit(@ModelAttribute("detailForm") DetailForm detailForm,
-                                       @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
-                                       @ModelAttribute("bodyForm") BodyForm bodyForm,
-                                       @ModelAttribute("budgetForm") BudgetForm budgetForm,
-                                       @ModelAttribute("departmentForm") DepartmentForm deptForm,
-                                       @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
-                                       @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
-                                       @ModelAttribute("userForm") UserForm userForm,
-                                       @ModelAttribute("uploadForm") UploadForm uploadForm)
+    public String submit(@ModelAttribute("detailForm") DetailForm detailForm,
+                         @ModelAttribute("awardTypeForm") AwardTypeForm awardForm,
+                         @ModelAttribute("bodyForm") BodyForm bodyForm,
+                         @ModelAttribute("budgetForm") BudgetForm budgetForm,
+                         @ModelAttribute("departmentForm") DepartmentForm deptForm,
+                         @ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyQuestForm,
+                         @ModelAttribute("bodyDetailsForm") BodyDetailsForm bodyDetailsForm,
+                         @ModelAttribute("uploadForm") UploadForm uploadForm,
+                         HttpServletRequest request)
     {
 
         processSubmission(detailForm, awardForm, bodyForm, budgetForm,deptForm, bodyQuestForm, bodyDetailsForm
-                , userForm, uploadForm);
-        return "Successfully Submitted";
+                , uploadForm, request);
+        return "proposalSubmit";
 
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyQuestionsForm") BodyQuestionsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyForm") BodyForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
+    }
+
+    private String getAnswerText(@ModelAttribute("bodyDetailsForm")BodyDetailsForm bodyForm,
+                                 Integer questionId) {
+        return bodyForm.generateEssayAnswers().stream()
+                .filter(essayAnswer -> essayAnswer.getQuestionId() == questionId)
+                .map(EssayAnswer::getAnswer)
+                .reduce((s, s2) -> s).orElse("No Answer");
     }
 
 	@RequestMapping(value = "/eRSPG/proposal/list", method = RequestMethod.GET)
@@ -554,23 +611,17 @@ public class ProposalController {
 					DepartmentForm deptForm,
 					BodyQuestionsForm bodyQuestForm,
 					BodyDetailsForm bodyDetailsForm,
-					UserForm userForm,
-					UploadForm uploadForm)
+					UploadForm uploadForm,
+                    HttpServletRequest request)
 	{
 	
 		LocalDateTime time = LocalDateTime.now();
 
-		Proposal proposal = new Proposal();
+		Proposal proposal = new Proposal();// find incomplete proposal by user id
 
-		// weird work around for user data
-        userForm.setUserEmail(detailForm.getProposalEmail());
-        User user = checkIfUserAlreadyExists(userForm);
-        if(user != null){
-            int userID = user.getUserId();
-            // added code to get user id
-            proposal.setUserId(userID);
-        }
-
+        // user is now in the session at login
+        User user = (User) request.getSession().getAttribute("User");  //get user from session
+        proposal.setUserId(user.getUserId());
 		proposal.setProjectDirector(detailForm.getProjectDirector());
 		//proposal.setProposalComplete(true);
 		proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
@@ -680,23 +731,10 @@ public class ProposalController {
 		
 	}
 
-	private User checkIfUserAlreadyExists(UserForm userForm){
-        // user added if doesn't exist
-        User user = null;
-        try{
-            user = userDAO.findUserByEmail(userForm.getUserEmail());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return user;
+    //stores whats in the form into the proposal then saves it into the database
+    private void saveProposalState(BaseForm bf,Integer userId) {
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(userId);
+        bf.LoadFormIntoProposal(proposal);
+        proposalDao.addNewOrUpdateProposal(proposal);
     }
-
-    private void addNewUserToDatabase(UserForm userForm) {
-        User newUser = new User();
-        newUser.setEmail(userForm.getUserEmail());
-        newUser.setFirstName(userForm.getFirstName());
-        newUser.setLastName(userForm.getLastName());
-        userDAO.addNewOrUpdateUser(newUser);
-    }
-	
 }

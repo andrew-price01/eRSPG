@@ -19,14 +19,29 @@ public class User {
 	@Column(name="userLastName")
 	private String lastName;
 
-//	@Column(name="userLoginName")
-//	private String loginName;
-	
+	@Column(name="username")
+	private String username;
+
+	@Column(name="wNumber")
+	private String wNumber;
+
 	public User(){
 		
 	}
 
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	public User(String email, String firstName, String lastName) {
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public User(int userId, String email, String firstName, String lastName) {
+		this.userId = userId;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -64,11 +79,19 @@ public class User {
 		this.lastName = lastName;
 	}
 
-//	public String getLoginName() {
-//		return loginName;
-//	}
-//
-//	public void setLoginName(String loginName) {
-//		this.loginName = loginName;
-//	}
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getwNumber() {
+		return wNumber;
+	}
+
+	public void setwNumber(String wNumber) {
+		this.wNumber = wNumber;
+	}
 }

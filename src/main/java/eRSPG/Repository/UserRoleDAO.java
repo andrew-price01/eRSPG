@@ -12,7 +12,7 @@ public interface UserRoleDAO {
 
 	List<UserRole> findUserRoleByRoleTypeId(int roleTypeId);
 
-	List<UserRole> findUserRoleByUserId(int userId);
+	UserRole findUserRoleByUserId(int userId);
 
 	void addNewOrUpdateUserRole(UserRole ra);
 

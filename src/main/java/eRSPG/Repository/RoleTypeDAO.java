@@ -12,6 +12,8 @@ public interface RoleTypeDAO {
 
 	RoleType findRoleTypeByUserId(int pid);
 
+	RoleType findRoleTypeByRoleTypeId(int roleTypeId);
+
 	void addNewOrUpdateRoleType(RoleType ra);
 
 	void deleteRoleType(RoleType ra);

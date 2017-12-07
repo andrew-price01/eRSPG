@@ -249,27 +249,23 @@ public class ChairmanController {
     public String addNewCommittee(@RequestParam("fEmail") String email) {
 
         User facultyMember = userDAO.findUserByEmail(email);
-        List<UserRole> list = userRoleDAO.findUserRoleByUserId(facultyMember.getUserId());
-        UserRole newCommittee = list.get(0);
+        UserRole newCommittee = userRoleDAO.findUserRoleById(facultyMember.getUserId());
         newCommittee.setRoleTypeId(2);
         userRoleDAO.addNewOrUpdateUserRole(newCommittee);
 
         return "manageCommittee";
     }
 
-    // TODO Add new user and set to committee member (Add)
     @RequestMapping(value = "/eRSPG/chairman/addnewuser")
     public String addNewUser(@RequestParam("firstName") String firstName,
                              @RequestParam("lastName") String lastName,
                              @RequestParam("email") String email) {
 
-        // TODO Add new user
         User newUser = new User(email, firstName, lastName);
         userDAO.addNewOrUpdateUser(newUser);
 
         User user = userDAO.findUserByEmail(email);
 
-        // TODO Set new user RoleType to 2
         UserRole userRole = new UserRole(user.getUserId(), 2, null, null);
 
         userRoleDAO.addNewOrUpdateUserRole(userRole);

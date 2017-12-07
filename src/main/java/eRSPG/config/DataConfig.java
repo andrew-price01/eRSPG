@@ -1,31 +1,22 @@
 package eRSPG.config;
 
-import eRSPG.model.*;
+
 import eRSPG.Repository.*;
 import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
-import org.jasig.cas.client.authentication.AuthenticationFilter;
-import org.jasig.cas.client.session.SingleSignOutFilter;
-import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
-import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
-import org.jasig.cas.client.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
-
 import javax.sql.DataSource;
 
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.sql.DataSource;
 import java.util.Properties;
-import eRSPG.Repository.*;
 
 @Configuration
 @EnableTransactionManagement
@@ -143,82 +134,9 @@ public class DataConfig {
     }
 
     @Autowired
-    @Bean(name="reviewerDAO")
-    public ReviewerDAO getReviewerDAO(SessionFactory sessionFactory) {
-        return new ReviewerImpl(sessionFactory);
-    }
-
-    @Bean
-    public AuthenticationFilter authenticationFilter(){
-        AuthenticationFilter mAuthenticationFilter = new AuthenticationFilter();
-        mAuthenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
-        mAuthenticationFilter.setRenew(false);
-        mAuthenticationFilter.setGateway(false);
-        //mAuthenticationFilter.setServerName(Constants.APP_SERVER);
-        mAuthenticationFilter.setService(Constants.CAS_SERVICE_URL);
-        return mAuthenticationFilter;
-    }
-
-    @Bean
-    public Cas10TicketValidationFilter cas10TicketValidationFilter(){
-        Cas10TicketValidationFilter mCas10TicketValidationFilter = new Cas10TicketValidationFilter();
-        mCas10TicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas10TicketValidationFilter.setUseSession(true);
-        mCas10TicketValidationFilter.setRedirectAfterValidation(true);
-        mCas10TicketValidationFilter.setTicketValidator(cas10TicketValidator());
-        return mCas10TicketValidationFilter;
-    }
-
-    @Bean
-    public Cas10TicketValidator cas10TicketValidator(){
-        return  new Cas10TicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Saml11TicketValidationFilter saml11TicketValidationFilter(){
-        Saml11TicketValidationFilter mSaml11TicketValidationFilter = new Saml11TicketValidationFilter();
-        mSaml11TicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mSaml11TicketValidationFilter.setUseSession(true);
-        mSaml11TicketValidationFilter.setRedirectAfterValidation(true);
-        mSaml11TicketValidationFilter.setTicketValidator(saml11TicketValidator());
-        return mSaml11TicketValidationFilter;
-    }
-
-    @Bean
-    public Saml11TicketValidator saml11TicketValidator(){
-        return  new Saml11TicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Cas20ProxyReceivingTicketValidationFilter cas20ProxyReceivingTicketValidationFilter(){
-        Cas20ProxyReceivingTicketValidationFilter mCas20ProxyReceivingTicketValidationFilter = new Cas20ProxyReceivingTicketValidationFilter();
-        //mCas20ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
-        mCas20ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas20ProxyReceivingTicketValidationFilter.setUseSession(true);
-        mCas20ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
-        mCas20ProxyReceivingTicketValidationFilter.setTicketValidator(cas20ProxyTicketValidator());
-        return mCas20ProxyReceivingTicketValidationFilter;
-    }
-
-    @Bean
-    public Cas20ProxyTicketValidator cas20ProxyTicketValidator(){
-        return new Cas20ProxyTicketValidator(Constants.CAS_URL_PREFIX);
-    }
-
-    @Bean
-    public Cas30ProxyReceivingTicketValidationFilter cas30ProxyReceivingTicketValidationFilter(){
-        Cas30ProxyReceivingTicketValidationFilter mCas30ProxyReceivingTicketValidationFilter = new Cas30ProxyReceivingTicketValidationFilter();
-        mCas30ProxyReceivingTicketValidationFilter.setServerName(Constants.APP_SERVER);
-        mCas30ProxyReceivingTicketValidationFilter.setService(Constants.CAS_SERVICE_URL);
-        mCas30ProxyReceivingTicketValidationFilter.setRedirectAfterValidation(true);
-        mCas30ProxyReceivingTicketValidationFilter.setUseSession(true);
-        mCas30ProxyReceivingTicketValidationFilter.setTicketValidator(cas30ProxyTicketValidator());
-        return mCas30ProxyReceivingTicketValidationFilter;
-    }
-
-    @Bean
-    public Cas30ProxyTicketValidator cas30ProxyTicketValidator(){
-        return new Cas30ProxyTicketValidator(Constants.CAS_URL_PREFIX);
+    @Bean(name="projectTypeDAO")
+    public ProjectTypeDAO getProjectTypeDao(SessionFactory sessionFactory) {
+        return new ProjectTypeImpl(sessionFactory);
     }
 
     @Bean

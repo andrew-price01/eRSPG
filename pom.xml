@@ -243,6 +243,7 @@
 			<version>${java.cas.client.version}</version>
 		</dependency>
 
+<<<<<<< HEAD
 		 <!--CAS integration for tomcat v 8.5-->
 		<dependency>
 			<groupId>org.jasig.cas.client</groupId>
@@ -250,6 +251,8 @@
 			<version>${java.cas.client.version}</version>
 		</dependency>
 
+=======
+>>>>>>> develop
 		 <!--CAS Support for SAML functionality-->
 		<dependency>
 			<groupId>org.jasig.cas.client</groupId>

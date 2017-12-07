@@ -52,13 +52,9 @@ public class UserRoleImpl implements UserRoleDAO {
 	}
 
 	@Transactional
-	public List<UserRole> findUserRoleByUserId(int userId) {
-		List<UserRole> userRoleList = sessionFactory.getCurrentSession()
-				.createCriteria(UserRole.class)
-				.add(Restrictions.eq("userId", userId))
-				.list();
-
-		return userRoleList;
+	public UserRole findUserRoleByUserId(int userId){
+		UserRole ur = (UserRole)sessionFactory.getCurrentSession().createQuery("from UserRole ur where ur.userId = :userId").setParameter("userId", userId).uniqueResult();
+		return ur;
 	}
 	
 	@Transactional

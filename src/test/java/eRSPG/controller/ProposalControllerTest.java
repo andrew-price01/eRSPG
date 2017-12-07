@@ -23,7 +23,9 @@ public class ProposalControllerTest {
     private ProposalStatusDAO proposalStatusDAOMock;
 
     private static final Integer TEST_USER_ID = 1;
-    private static final User TEST_USER = new User("email","testFirst","testLast");
+
+    private static final User TEST_USER = new User(TEST_USER_ID, "email","testFirst","testLast");
+
     private static final Proposal TEST_PROPOSAL =
             new Proposal(
                     "title",1,2017,1, LocalDateTime.now(),

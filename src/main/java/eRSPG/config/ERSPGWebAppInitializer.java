@@ -1,21 +1,17 @@
 package eRSPG.config;
 
-import org.jasig.cas.client.authentication.AuthenticationFilter;
-import org.jasig.cas.client.session.SingleSignOutFilter;
-import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
-import org.jasig.cas.client.util.AssertionThreadLocalFilter;
-import org.jasig.cas.client.util.HttpServletRequestWrapperFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import java.util.EnumSet;
 
 public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
 
-
+    private final Logger log = LoggerFactory.getLogger(ERSPGWebAppInitializer.class);
 
     @Override
     protected String[] getServletMappings()
@@ -41,43 +37,17 @@ public class ERSPGWebAppInitializer extends AbstractAnnotationConfigDispatcherSe
 
     @Order(Ordered.HIGHEST_PRECEDENCE)
     @Override
+    protected void registerDispatcherServlet(ServletContext servletContext) {
+        super.registerDispatcherServlet(servletContext);
+    }
+
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+
+        servletContext.setInitParameter("webAppRootKey", "cas.root");
+
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
-
-//        FilterRegistration.Dynamic validFilter = servletContext.addFilter("CAS Validation Filter", delegatingFilterProxyValidation());
-//        validFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
-//
-//        FilterRegistration.Dynamic authFilter = servletContext.addFilter("CAS Authentication Filter", delegatingFilterProxyAuthenitication());
-//        authFilter.addMappingForUrlPatterns(dispatcherTypes, false, "/eRSPG/*");
-
-    }
-
-
-    public SingleSignOutFilter singleSignOutFilter(){
-        SingleSignOutFilter mSingleSignOutFilter = new SingleSignOutFilter();
-        mSingleSignOutFilter.setCasServerUrlPrefix(Constants.CAS_URL_PREFIX);
-        return mSingleSignOutFilter;
-    }
-
-    public DelegatingFilterProxy delegatingFilterProxyAuthenitication() {
-        DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
-        mDelegatingFilterProxy.setTargetBeanName("authenticationFilter");
-        return mDelegatingFilterProxy;
-    }
-
-    public DelegatingFilterProxy delegatingFilterProxyValidation() {
-        DelegatingFilterProxy mDelegatingFilterProxy = new DelegatingFilterProxy();
-        mDelegatingFilterProxy.setTargetBeanName("cas10TicketValidationFilter");
-        return mDelegatingFilterProxy;
-    }
-
-    public HttpServletRequestWrapperFilter httpServletRequestWrapperFilter(){
-        return new HttpServletRequestWrapperFilter();
-    }
-
-    public AssertionThreadLocalFilter assertionThreadLocalFilter(){
-        AssertionThreadLocalFilter mAssertionThreadLocalFilter = new AssertionThreadLocalFilter();
-        return new AssertionThreadLocalFilter();
     }
 }
