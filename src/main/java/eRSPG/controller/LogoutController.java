@@ -22,6 +22,6 @@ public class LogoutController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         request.getSession().invalidate();
-        return "redirect:"+ Constants.CAS_URL_LOGOUT;
+        return "redirect:"+ Constants.CAS_URL_LOGOUT_SUCCESS;
     }
 }

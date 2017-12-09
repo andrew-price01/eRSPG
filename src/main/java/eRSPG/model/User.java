@@ -1,14 +1,12 @@
 package eRSPG.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="User")
 public class User {
 	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="userID")
 	private int userId;
 	
@@ -32,6 +30,12 @@ public class User {
 	}
 
 	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public User(String email, String firstName, String lastName) {
+		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}

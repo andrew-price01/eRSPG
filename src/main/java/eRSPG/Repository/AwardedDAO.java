@@ -3,6 +3,7 @@ package eRSPG.Repository;
 import java.util.List;
 
 import eRSPG.model.Awarded;
+import org.springframework.stereotype.Repository;
 
 public interface AwardedDAO {
 

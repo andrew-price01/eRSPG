@@ -25,7 +25,12 @@ public class RequestAward {
 		
 	}
 
-	public int getRequestAwardId() {
+    public RequestAward(String award1, int propId) {
+		awardTypeId = Integer.valueOf(award1);
+		proposalId = propId;
+    }
+
+    public int getRequestAwardId() {
 		return requestAwardId;
 	}
 

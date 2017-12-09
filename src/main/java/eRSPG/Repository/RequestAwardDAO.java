@@ -15,4 +15,5 @@ public interface RequestAwardDAO {
 
 	void deleteRequestAward(RequestAward ra);
 
+	List<RequestAward> findRequestAwardByProposalId(int id);
 }

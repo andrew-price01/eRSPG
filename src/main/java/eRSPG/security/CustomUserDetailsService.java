@@ -34,6 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         String roleUser = "ROLE_USER";
+        String roleCommittee = "ROLE_COMMITTEE";
         String roleAdmin = "ROLE_ADMIN";
         String roleChair = "ROLE_CHAIRMAN";
         String lowercaseUsername = username.toLowerCase();
@@ -60,14 +61,23 @@ public class CustomUserDetailsService implements UserDetailsService {
                 grantedAuthority = new SimpleGrantedAuthority(roleUser);
                 grantedAuthorities.add(grantedAuthority);
                 break;
+            case "committee":
+                grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
+                grantedAuthorities.add(grantedAuthority);
             case "admin":
                 grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
                 grantedAuthorities.add(grantedAuthority);
                 break;
             case "chairman":
                 grantedAuthority = new SimpleGrantedAuthority(roleUser);
+                grantedAuthorities.add(grantedAuthority);
+                grantedAuthority = new SimpleGrantedAuthority(roleCommittee);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
                 grantedAuthorities.add(grantedAuthority);

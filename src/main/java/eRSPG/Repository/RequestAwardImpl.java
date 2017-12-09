@@ -48,4 +48,15 @@ public class RequestAwardImpl implements RequestAwardDAO {
 	public void deleteRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().delete(ra);
 	}
+
+	@Transactional
+	public List<RequestAward> findRequestAwardByProposalId(int id){
+
+		List<RequestAward> requestAwardList = sessionFactory.getCurrentSession()
+				.createCriteria(RequestAward.class)
+				.add(Restrictions.eq("proposalId", id))
+				.list();
+
+		return requestAwardList;
+	}
 }

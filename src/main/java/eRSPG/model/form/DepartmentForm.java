@@ -48,5 +48,12 @@ public class DepartmentForm extends BaseForm{
 		proposal.setSemesterId(semesterID);
 		proposal.setProposalYear(year);
 	}
+
+	@Override
+	public void LoadProposalIntoForm(Proposal proposal){
+		year = proposal.getProposalYear();
+		semesterID = proposal.getSemesterId();
+		departmentID = getDepartmentID();
+	}
 	
 }
