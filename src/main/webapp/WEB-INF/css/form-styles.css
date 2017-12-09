@@ -15,6 +15,11 @@ form .required-field::after {
     content: " *";
 }
 
+.form-error {
+    color: #f00;
+    margin-left: 30%;
+}
+
 td .budget-cell {
     text-align: right;
     vertical-align: middle;

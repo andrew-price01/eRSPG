@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,5 +52,14 @@ public class AwardTypeImpl implements AwardTypeDAO {
 		sessionFactory.getCurrentSession().delete(a);
 		boolean success = false;
 		return success;
+	}
+
+	@Transactional
+	@SuppressWarnings("unchecked")
+	public List<AwardType> findAwardTypesById(List<Integer> awardTypeIds) {
+		return (List<AwardType>) sessionFactory.getCurrentSession()
+				.createCriteria(AwardType.class)
+				.add(Restrictions.in("awardTypeId", awardTypeIds))
+				.list();
 	}
 }

@@ -8,12 +8,18 @@ CREATE TABLE RoleType (
         roleTypeID              smallint        not null AUTO_INCREMENT PRIMARY KEY,
     roleDesc                text not null
 );
+
+INSERT INTO roletype (roleDesc) VALUES ('user');
+INSERT INTO roletype (roleDesc) VALUES ('admin');
+INSERT INTO roletype (roleDesc) VALUES ('chairman');
     
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
     email                       nvarchar(100)       not null,
     userFirstName       nvarchar(50)        not null,
-    userLastName        nvarchar(50)        not null
+    userLastName        nvarchar(50)        not null,
+    username            nvarchar(50),
+    wNumber             nvarchar(9)
 );
     
 CREATE TABLE UserRole (
@@ -75,6 +81,12 @@ CREATE TABLE FundCategory (
     fundCategoryName        varchar(100)
 );
 
+CREATE TABLE ProposalStatus (
+  proposalStatusID          smallint not null AUTO_INCREMENT      PRIMARY KEY,
+  proposalDescription       varchar(50) not null
+);
+
+alter table proposalstatus add CONSTRAINT UNIQUE (proposalDescription);
 
 CREATE TABLE Proposal (
     proposalID              int not null AUTO_INCREMENT     PRIMARY KEY,
@@ -89,11 +101,10 @@ CREATE TABLE Proposal (
     proposalMailCode        char(20),
     proposalExtension       char(10),
     proposalReqStudentAssistance bit not null,
-    proposalComplete        bit not null,
+    proposalStatusID        SMALLINT not null,
     proposalParticipants nvarchar(400),
-	userID               int,
+	  userID               int,
     updatedDate             datetime not null
-    
 );
 
 
@@ -115,6 +126,9 @@ ALTER TABLE Proposal
         ADD CONSTRAINT fk_user_UserID FOREIGN KEY(userID) REFERENCES User(userID)
 ;
 
+ALTER TABLE Proposal
+        ADD CONSTRAINT fk_ProposalStatus_ProposalStatusID FOREIGN KEY(proposalStatusID) REFERENCES ProposalStatus(proposalStatusID)
+;
  
 CREATE TABLE Fund (
         fundID                      int not null AUTO_INCREMENT PRIMARY KEY,
@@ -202,6 +216,13 @@ path            nvarchar(1000),
     constraint fk_Proposal_FileUpload FOREIGN KEY(proposalID) REFERENCES Proposal(proposalID)
 
 );
+
+INSERT INTO ProposalStatus (proposalDescription) values ('DRAFT');
+INSERT INTO ProposalStatus (proposalDescription) VALUES ('SUBMITTED');
+INSERT INTO ProposalStatus (proposalDescription) VALUES ('IN REVIEW');
+INSERT INTO ProposalStatus (proposalDescription) VALUES ('APPROVED');
+INSERT INTO ProposalStatus (proposalDescription) VALUES ('REJECTED');
+
 
 INSERT INTO Department(departmentName)
 VALUES('Computer Science');

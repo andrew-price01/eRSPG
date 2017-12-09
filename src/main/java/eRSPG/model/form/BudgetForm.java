@@ -7,15 +7,21 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import eRSPG.model.Fund;
+import eRSPG.model.Proposal;
 
 
-public class BudgetForm {
+public class BudgetForm extends BaseForm {
 	
 	@NotNull(message="Please select if you wish to fund student assistants for this proposal")
 	private boolean studentAssistants;
 	
 	public boolean getStudentAssistants() {
 		return studentAssistants;
+	}
+
+	@Override
+	public void LoadFormIntoProposal(Proposal proposal){
+		proposal.setProposalReqStdAsst(studentAssistants);
 	}
 
 	public void setStudentAssistants(boolean studentAssistants) {

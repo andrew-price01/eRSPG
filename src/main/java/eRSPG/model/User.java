@@ -20,9 +20,27 @@ public class User {
 	
 	@Column(name="userLastName")
 	private String lastName;
-	
+
+	@Column(name="username")
+	private String username;
+
+	@Column(name="wNumber")
+	private String wNumber;
+
 	public User(){
 		
+	}
+
+	public User(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public User(int userId, String email, String firstName, String lastName) {
+		this.userId = userId;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public int getUserId() {
@@ -56,5 +74,20 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getwNumber() {
+		return wNumber;
+	}
+
+	public void setwNumber(String wNumber) {
+		this.wNumber = wNumber;
+	}
 }

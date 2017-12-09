@@ -1,4 +1,6 @@
 function setNextPage(dest, prefix) {
+    console.log(dest);
+    console.log(prefix);
 	document.getElementById("nextPage").value = dest;
     window.location.href = prefix + dest;
     

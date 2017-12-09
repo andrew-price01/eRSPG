@@ -1,39 +1,21 @@
 package eRSPG.config;
 
+import eRSPG.Repository.*;
+import eRSPG.model.*;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
-
-import javax.sql.DataSource;
-
-import eRSPG.model.AwardType;
-import eRSPG.model.Awarded;
-import eRSPG.model.Department;
-import eRSPG.model.EssayAnswer;
-import eRSPG.model.EssayQuestion;
-import eRSPG.model.Fund;
-import eRSPG.model.FundCategory;
-import eRSPG.model.FundType;
-import eRSPG.model.Participant;
-import eRSPG.model.ProjectType;
-import eRSPG.model.Proposal;
-import eRSPG.model.RequestAward;
-import eRSPG.model.Reviewer;
-import eRSPG.model.RoleType;
-import eRSPG.model.Semester;
-import eRSPG.model.SourceType;
-import eRSPG.model.UploadFile;
-import eRSPG.model.User;
-import eRSPG.model.UserRole;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.sql.DataSource;
 import java.util.Properties;
-import eRSPG.Repository.*;
 
 @Configuration
 @EnableTransactionManagement
@@ -58,7 +40,7 @@ public class DataConfig {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 
         sessionBuilder.addAnnotatedClasses(Awarded.class, AwardType.class, Department.class, EssayAnswer.class, EssayQuestion.class, Fund.class, FundCategory.class,
-                FundType.class, Participant.class, ProjectType.class, Proposal.class, RequestAward.class, RoleType.class,
+                FundType.class, Participant.class, ProjectType.class, Proposal.class, ProposalStatus.class, RequestAward.class, RoleType.class,
                 Semester.class, Reviewer.class, SourceType.class, UploadFile.class, User.class, UserRole.class);
         //sessionBuilder.scanPackages("eRPSG.model");
         sessionBuilder.addProperties(getHibernateProperties());
@@ -140,4 +122,22 @@ public class DataConfig {
     @Bean(name= "userDAO")
     public UserDAO getUserDao(SessionFactory sessionFactory){ return new UserImpl(sessionFactory); }
 
+    @Autowired
+    @Bean(name="proposalStatusDAO")
+    public ProposalStatusDAO getProposalStatus(SessionFactory sessionFactory) {
+        return new ProposalStatusImpl(sessionFactory);
+    }
+
+    @Autowired
+    @Bean(name="projectTypeDAO")
+    public ProjectTypeDAO getProjectTypeDao(SessionFactory sessionFactory) {
+        return new ProjectTypeImpl(sessionFactory);
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver mCommonsMultipartResolver = new CommonsMultipartResolver();
+        mCommonsMultipartResolver.setMaxUploadSize(268435456);
+        return mCommonsMultipartResolver;
+    }
 }

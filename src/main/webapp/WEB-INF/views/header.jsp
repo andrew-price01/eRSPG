@@ -12,8 +12,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="http://weber.edu">WSU</a></li>
-     		 <li><a href="http://weber.edu/rspg">RSPG</a></li>
+            <li><a href="/eRSPG/home">Home</a></li>
+            <li><a href="/eRSPG/logout">Logout</a></li>
           </ul>
         </div>
       </div>

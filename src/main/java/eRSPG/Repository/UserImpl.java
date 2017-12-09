@@ -39,6 +39,12 @@ public class UserImpl implements UserDAO {
 		User ra = sessionFactory.getCurrentSession().get(User.class, raid);
 		return ra;
 	}
+
+	@Transactional
+	public User findUserByUsername(String username){
+		User ra = (User)sessionFactory.getCurrentSession().createQuery("from User u where u.username = :username").setParameter("username", username).uniqueResult();
+		return ra;
+	}
 	
 	@Transactional
 	public User findUserByEmail(String email){
@@ -70,4 +76,6 @@ public class UserImpl implements UserDAO {
 	public void deleteUser(User ra){
 		sessionFactory.getCurrentSession().delete(ra);
 	}
+
+
 }

@@ -86,7 +86,6 @@ public class ProposalTest {
     public void testDepartmentId() throws Exception {
         int id = 5;
         fixture.setDepartmentId(id);
-
         assertNotNull(fixture);
         assertEquals(id, fixture.getDepartmentId());
     }
@@ -127,11 +126,11 @@ public class ProposalTest {
     }
 
     @Test
-    public void testProposalComplete() throws Exception {
-        fixture.setProposalComplete(false);
+    public void testProposalStatus() throws Exception {
+        fixture.setProposalStatus(1);
 
         assertNotNull(fixture);
-        assertFalse(fixture.isProposalComplete());
+        assertNotNull(fixture.getProposalStatus());
     }
 
     @Test

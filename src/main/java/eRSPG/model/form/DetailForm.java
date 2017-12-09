@@ -1,32 +1,15 @@
 package eRSPG.model.form;
 
-import javax.validation.constraints.NotNull;
-
+import eRSPG.model.Proposal;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import eRSPG.model.Proposal;
+public class DetailForm extends BaseForm {
 
-public class DetailForm {
-
-	
-	//@Autowired
-	/*private Proposal proposal;
-	
-	public Proposal getProposal() {
-		return proposal;
-	}
-	public void setProposal(Proposal proposal) {
-		this.proposal = proposal;
-	}
-	*/
 	@NotEmpty(message="Please enter a proposal title")
 	private String proposalTitle;
 	
 	@NotEmpty(message="Please enter a proposal email")
 	private String proposalEmail;
-	//TODO: add to Form private int proposalYear;
-	//TODO: add to Form private int semesterID;
-	
 	private String proposalMailCode;
 	private String proposalExtension;
 	
@@ -74,5 +57,22 @@ public class DetailForm {
 	}
 
 
+	@Override
+	public void LoadFormIntoProposal(Proposal proposal){
+		proposal.setProposalEmail(proposalEmail);
+		proposal.setProjectDirector(projectDirector);
+		proposal.setProposalMailCode(proposalMailCode);
+		proposal.setProposalExtension(proposalExtension);
+		proposal.setProposalTitle(proposalTitle);
+	}
+
+	@Override
+	public void LoadProposalIntoForm(Proposal proposal){
+		this.proposalTitle = proposal.getProposalTitle();
+		this.proposalEmail = proposal.getProposalEmail();
+		this.proposalMailCode = proposal.getProposalMailCode();
+		this.proposalExtension = proposal.getProposalExtension();
+		this.projectDirector = proposal.getProjectDirector();
+	}
 	
 }
