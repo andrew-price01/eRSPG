@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="proposal")
+@Table(name="Proposal")
 public class Proposal implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -15,11 +15,11 @@ CREATE TABLE RoleType (
     roleDesc                text not null
 );
 
-INSERT INTO roletype (roleDesc) VALUES ('user');
-INSERT INTO roletype (roleDesc) VALUES ('committee');
-INSERT INTO roletype (roleDesc) VALUES ('admin');
-INSERT INTO roletype (roleDesc) VALUES ('chairman');
-    
+INSERT INTO RoleType (roleDesc) VALUES ('user');
+INSERT INTO RoleType (roleDesc) VALUES ('committee');
+INSERT INTO RoleType (roleDesc) VALUES ('admin');
+INSERT INTO RoleType (roleDesc) VALUES ('chairman');
+
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
     email                       nvarchar(100)       not null,
