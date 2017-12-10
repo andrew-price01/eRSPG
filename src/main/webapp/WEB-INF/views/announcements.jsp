@@ -5,9 +5,6 @@
 
 	<h1>Announcements</h1>
 
-	<%-- Only show this button for the chairman --%>
-	<button class="btn my-btn" onclick="window.location.href = '/erspg/chairman/createAnnouncement'">Create Announcement</button>
-
 	<%--Put a foreach here to display all the announcements--%>
 
 	<%--Start of announcement--%>
