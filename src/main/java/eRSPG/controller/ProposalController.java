@@ -659,9 +659,10 @@ public class ProposalController {
 	public String proposalList(
 	        HttpServletRequest request,
             Model model) {
+
 		String contentPage = "proposalList.jsp";
 		model.addAttribute("contentPage", contentPage);
-		model.addAttribute("proposalList", proposalListByUserId(userId));
+		model.addAttribute("proposalList", proposalListByUserId(request));
         return "projectIndex";
 	}
 
