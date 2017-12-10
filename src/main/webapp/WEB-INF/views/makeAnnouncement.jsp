@@ -51,28 +51,20 @@
     <!-- Page Content -->
     <div id="content" class="main">
 
-        <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h2 align="left">Create Announcement</h2>
 
-            <form:form method="post" action="/eRSPG/chairman/makeAnnouncement" modelAttribute="announcement">
-                <div class="input-group-lg">
-                    <form:input path="title" class="form-control" id="title" placeholder="Title" />
+			<form:form class="form-horizontal" method="post" action="/eRSPG/chairman/makeAnnouncement" modelAttribute="announcement">
+                <div class="form-group col-xs-10" style="margin-bottom:0px;">
+                    <form:input path="title" class="form-control input-xs-5 input-lg" id="title" placeholder="Title" />
                 </div>
-
-                <br>
-
-                <div class="input-group-lg">
-                    ​<form:textarea path="message" style="resize: none" id="message" rows="5" cols="80" />
+                <div class="form-group col-xs-10">
+                    ​<form:textarea path="message" class="form-control input-xs-8" style="resize: none" id="message" rows="5" placeholder="Enter announcement text here..." />
                 </div>
-
-                <br>
-
-                <div class="form-actions">
-                    <input type="submit"
-                           class="btn btn-success" value="Save">
+                <div class="form-group col-xs-10 clearfix">
+                    <button id="saveButton" class="btn my-btn pull-right">Publish</button>
                 </div>
-
-            </form:form>
-
+			</form:form>
         </div>
 
 
