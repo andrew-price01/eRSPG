@@ -6,11 +6,10 @@ import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
 import eRSPG.util.PersistProposal;
-
 import org.apache.commons.logging.Log;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -104,6 +103,12 @@ public class ProposalController {
 	protected UserDAO userDAO;
 
 	@Autowired
+    protected UserRoleDAO userRoleDAO;
+
+	@Autowired
+    protected RoleTypeDAO roleTypeDAO;
+
+	@Autowired
 	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
@@ -115,13 +120,23 @@ public class ProposalController {
 
 
 	@RequestMapping(value = "/eRSPG/proposal", method = RequestMethod.GET)
+    @SuppressWarnings("unchecked")
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
-			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
-		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
-        //Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		List<Proposal> proposals = id == null ?
-				proposalDao.findAllProposals() :
-				proposalDao.findProposalByUserId(id);
+            HttpServletRequest request) {
+
+        User user = (User) request.getSession().getAttribute("User");
+
+        UserRole userRole = userRoleDAO.findUserRoleByUserId(user.getUserId());
+        if (userRole == null) {
+            return Collections.emptyList();
+        }
+        RoleType roleType = roleTypeDAO.findRoleTypeById(userRole.getRoleTypeId());
+        if (roleType == null) {
+            return Collections.emptyList();
+        }
+        List<Proposal> proposals = roleType.getRoleDesc().equals("user") ?
+                proposalDao.findProposalByUserId(user.getUserId()) :
+                proposalDao.findAllProposals();
 
 		return proposals.stream()
 				.map(p -> new
@@ -248,7 +263,7 @@ public class ProposalController {
     //depends on selected semester
     @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.GET)
     public @ResponseBody List<String> GetRequestedAwardAjax(HttpServletRequest request){
-        
+
         User user = (User) request.getSession().getAttribute("User");
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
         List<RequestAward> requestAwardList = requestAwardDao
@@ -642,10 +657,10 @@ public class ProposalController {
 
 	@RequestMapping(value = "/eRSPG/proposal/list", method = RequestMethod.GET)
 	public String proposalList(
-	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
+	        HttpServletRequest request,
             Model model) {
 
-		model.addAttribute("proposalList", proposalListByUserId(userId));
+		model.addAttribute("proposalList", proposalListByUserId(request));
         return "proposalList";
 	}
 
