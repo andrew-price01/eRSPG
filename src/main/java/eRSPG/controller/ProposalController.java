@@ -659,9 +659,10 @@ public class ProposalController {
 	public String proposalList(
 	        HttpServletRequest request,
             Model model) {
-
-		model.addAttribute("proposalList", proposalListByUserId(request));
-        return "proposalList";
+		String contentPage = "proposalList.jsp";
+		model.addAttribute("contentPage", contentPage);
+		model.addAttribute("proposalList", proposalListByUserId(userId));
+        return "projectIndex";
 	}
 
 	@RequestMapping(value = "/eRSPG/proposalStatus", method = RequestMethod.GET)
