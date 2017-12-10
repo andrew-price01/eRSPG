@@ -35,63 +35,6 @@ public class ProposalControllerTest {
     private static final Department TEST_DEPARTMENT = new Department(1,"department");
     private static final ProposalStatus TEST_PROPOSAL_STATUS = new ProposalStatus(2,"DRAFT");
 
-
-    @Test
-    public void list_proposal_user_empty() {
-        proposalDAOMock = mock(ProposalDAO.class);
-        departmentDAOMock = mock(DepartmentDAO.class);
-        userDAOMock = mock(UserDAO.class);
-        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
-        proposalController.proposalStatusDAO = proposalStatusDAOMock;
-        proposalController.departmentDAO = departmentDAOMock;
-        proposalController.proposalDao = proposalDAOMock;
-        proposalController.userDAO = userDAOMock;
-
-        when(proposalStatusDAOMock.findProposalStatus(anyInt())).thenReturn(TEST_PROPOSAL_STATUS);
-        when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
-        when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
-        when(proposalDAOMock.findAllProposals()).thenReturn(ImmutableList.of(TEST_PROPOSAL, TEST_PROPOSAL));
-        List<ProposalDTO> proposals = proposalController.proposalListByUserId("");
-        assert proposals.size() == 2;
-    }
-
-    @Test
-    public void list_proposal_user_null() {
-        proposalDAOMock = mock(ProposalDAO.class);
-        departmentDAOMock = mock(DepartmentDAO.class);
-        userDAOMock = mock(UserDAO.class);
-        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
-        proposalController.userDAO = userDAOMock;
-        proposalController.departmentDAO = departmentDAOMock;
-        proposalController.proposalDao = proposalDAOMock;
-        proposalController.proposalStatusDAO = proposalStatusDAOMock;
-        when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
-        when(proposalStatusDAOMock.findProposalStatus(any())).thenReturn(TEST_PROPOSAL_STATUS);
-        when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
-        when(proposalDAOMock.findAllProposals()).thenReturn(ImmutableList.of(TEST_PROPOSAL, TEST_PROPOSAL));
-        List<ProposalDTO> proposals = proposalController.proposalListByUserId(null);
-        assert proposals.size() == 2;
-    }
-
-    @Test
-    public void list_proposal_user() {
-        proposalDAOMock = mock(ProposalDAO.class);
-        departmentDAOMock = mock(DepartmentDAO.class);
-        proposalStatusDAOMock = mock(ProposalStatusDAO.class);
-        proposalController.departmentDAO = departmentDAOMock;
-        proposalController.proposalDao = proposalDAOMock;
-        proposalController.proposalStatusDAO = proposalStatusDAOMock;
-        userDAOMock = mock(UserDAO.class);
-        proposalController.userDAO = userDAOMock;
-        when(proposalStatusDAOMock.findProposalStatus(anyInt())).thenReturn(TEST_PROPOSAL_STATUS);
-        when(userDAOMock.findUserById(anyInt())).thenReturn(TEST_USER);
-        when(departmentDAOMock.findDepartment(anyInt())).thenReturn(TEST_DEPARTMENT);
-        when(proposalDAOMock.findProposalByUserId(TEST_USER_ID))
-                .thenReturn(ImmutableList.of(TEST_PROPOSAL,TEST_PROPOSAL,TEST_PROPOSAL));
-        List<ProposalDTO> proposals = proposalController.proposalListByUserId(TEST_USER_ID.toString());
-        assert proposals.size() == 3;
-    }
-
     @Test
     public void list_proposal_status_empty() {
         proposalStatusDAOMock = mock(ProposalStatusDAO.class);

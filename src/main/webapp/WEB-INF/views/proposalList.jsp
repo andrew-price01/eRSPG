@@ -1,46 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap.min.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/bootstrap-theme.min.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/form-styles.css"/>"/>
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/breadcrumb.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/navbar.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/button-design.css"/>" />
-    <link rel="stylesheet" type="text/css" href="<s:url value="/css/table.css" />" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-    <meta name="viewport" content="width=device-width">
-    <meta name="viewport" content="width=320, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <script type="text/javascript" src="<s:url value="/js/jquery-2.1.4.min.js"/>"></script>
-    <script type="text/javascript" src="<s:url value="/js/moment.js"/>"></script>
-    <script type="text/javascript" src="<s:url value="/js/navigation.js"/>"></script>
-    <title>eRSPG Proposals</title>
-</head>
-<body>
-<jsp:include page="/WEB-INF/views/header.jsp"/>
-<div class="container">
-    <legend><h2 style="text-align:center;">Proposals</h2></legend>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Submitter</th>
-                <th>Project Director</th>
-                <th>Department</th>
-                <th>Proposal Year</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+<div class="container">
+
+	<h2>List of Proposals</h2>
+
+	<table id="proposalTable" class="table">
+		<tr>
+			<th>Submitted By</th>
+			<th>Project Title</th>
+			<th>Project Director</th>
+			<th>Department</th>
+			<th>Award Type</th>
+			<th>Status</th>
+			<th>Submission Date</th>
+			<th>Actions</th>
+		</tr>
+		<%-- Put a foreach here to display all the proposals --%>
+		<tr>
+			<td>Benjamin Benson</td>
+			<td>Neuroscience Research</td>
+			<td>John Johnson</td>
+			<td>Biology</td>
+			<td>Research Grant</td>
+			<td>In Review</td>
+			<td>11/29/2017</td>
+			<td>
+				<button class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/reviewProposal?1'">Review</button>
+			</td>
+		</tr>
+		<tr>
+			<td>Christian Christiansen</td>
+			<td>Experimental Chemistry Course</td>
+			<td>John Johnson</td>
+			<td>Chemistry</td>
+			<td>Instructional Improvement Grant</td>
+			<td>Submitted</td>
+			<td>12/02/2017</td>
+			<td>
+				<button class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/reviewProposal?2'">Review</button>
+			</td>
+		</tr>
+	</table>
+
+	<hr/>
 </div>
-<jsp:include page="/WEB-INF/views/footer.jsp"/>
-<script type="text/javascript" src="<s:url value="/js/proposalList.js"/>"></script>
-</body>
-</html>

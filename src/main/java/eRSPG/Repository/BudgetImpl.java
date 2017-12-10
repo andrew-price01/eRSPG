@@ -42,9 +42,9 @@ public class BudgetImpl implements BudgetDAO {
     @Transactional
     public ArrayList<BudgetDetails> getBudgetDetails() {
         final String sql = "select p.proposalID, p.proposalTitle, fc.fundCategoryName, sum(f.fundAmount) as fundAmount\n" +
-                "                from fund f join proposal p \n" +
+                "                from Fund f join Proposal p \n" +
                 "\t\t\t\t\ton f.proposalID = p.proposalID \n" +
-                "                join proposalstatus ps \n" +
+                "                join ProposalStatus ps \n" +
                 "\t\t\t\t\ton ps.proposalStatusID = p.proposalStatusID\n" +
                 "\t\t\t\tjoin FundCategory fc\n" +
                 "\t\t\t\t\ton f.fundCategoryID = fc.fundCategoryID\n" +

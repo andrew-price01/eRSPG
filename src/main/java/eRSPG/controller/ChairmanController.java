@@ -52,6 +52,21 @@ public class ChairmanController {
     @Autowired
     private BudgetDAO budgetDAO;
 
+//TODO wak!
+    @RequestMapping("/eRSPG/chairman/changeChairman")
+    public String changeChairman(Model model) {
+        String contentPage = "changeChairman.jsp";
+        model.addAttribute("contentPage",contentPage);
+        return "projectIndex";
+    }
+//
+//    @RequestMapping("/chairman/createAnnouncement")
+//    public String createAnnouncement(Model model) {
+//        String contentPage = "createAnnouncement.jsp";
+//        model.addAttribute("contentPage", contentPage);
+//        return "projectIndex";
+//    }
+
     @RequestMapping("/eRSPG/chairman/home")
     public String chairmanHome() {
         return "chairmanHome";

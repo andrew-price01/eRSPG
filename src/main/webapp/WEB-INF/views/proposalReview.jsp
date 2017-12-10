@@ -196,7 +196,7 @@
                     <h3>File Upload</h3>
                 </div>
                 <div class="card-text">
-                    <p>File Name: ${uploadForm.name.isEmpty() ? uploadForm.name : "None"}</p>
+                    <p>File Name: ${uploadForm.name.isEmpty() ? "None" : uploadForm.name}</p>
                 </div>
             </div>
 
@@ -204,7 +204,6 @@
                 <button type="button" class="btn my-btn pull-left"
                         onclick='window.location.href="<s:url value="/eRSPG/proposal/upload"/>"'>Back
                 </button>
-                <%--<button type="button" class="btn my-btn pull-center" onclick='window.location.href="<s:url value="/proposal/review" />"'>Save</button>--%>
                 <button type="button" class="btn my-btn pull-right"
                         onclick='window.location.href="<s:url value="/eRSPG/proposal/submit"/>"'>Submit
                 </button>
