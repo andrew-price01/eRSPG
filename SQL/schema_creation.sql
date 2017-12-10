@@ -236,13 +236,13 @@ VALUES('Computer Science');
 
 
 INSERT INTO Semester( semesterName)
-VALUES("Fall");
+VALUES('Fall');
 
 INSERT INTO Semester( semesterName)
-VALUES("Spring");
+VALUES('Spring');
 
 INSERT INTO Semester( semesterName)
-VALUES("Summer");
+VALUES('Summer');
 
 
 INSERT INTO SourceType(sourceTypeName)
@@ -252,104 +252,104 @@ INSERT INTO SourceType(sourceTypeName)
 VALUES('Source 1');
 
 INSERT INTO SourceType(sourceTypeName)
-VALUES("Source 2");
+VALUES('Source 2');
 
 INSERT INTO SourceType(sourceTypeName)
-VALUES("Source 3");
+VALUES('Source 3');
 
 INSERT INTO ProjectType(projectTypeName)
-VALUES("Travel to attend");
+VALUES('Travel to attend');
 
 INSERT INTO ProjectType(projectTypeName)
-VALUES("Travel to present");
+VALUES('Travel to present');
 
 INSERT INTO ProjectType(projectTypeName)
-VALUES("Research, creative endeavor, or service oriented project");
+VALUES('Research, creative endeavor, or service oriented project');
 
 
 INSERT INTO AwardType(awardName)
-VALUES("Research Grant");
+VALUES('Research Grant');
 
 INSERT INTO AwardType(awardName)
-VALUES("Instructional Improvement Grant");
+VALUES('Instructional Improvement Grant');
 
 INSERT INTO AwardType(awardName)
-VALUES("Hemingway Faculty Vitality Grant");
+VALUES('Hemingway Faculty Vitality Grant');
 INSERT INTO AwardType(awardName)
-VALUES("Hemingway New Faculty Grant");
+VALUES('Hemingway New Faculty Grant');
 INSERT INTO AwardType(awardName)
-VALUES("Hemingway Excellence Award");
+VALUES('Hemingway Excellence Award');
 INSERT INTO AwardType(awardName)
-VALUES("Hemingway Collaborative Award");
+VALUES('Hemingway Collaborative Award');
 INSERT INTO AwardType(awardName)
-VALUES("Hemingway Adjunct Faculty Grant");
+VALUES('Hemingway Adjunct Faculty Grant');
 
 
 INSERT INTO FundCategory(fundCategoryName)
-VALUES("Personnel Resources");
+VALUES('Personnel Resources');
 
 INSERT INTO FundCategory(fundCategoryName)
-VALUES("Benefits for personnel resources");
+VALUES('Benefits for personnel resources');
 
 INSERT INTO FundCategory(fundCategoryName)
-VALUES("equipment and resources");
+VALUES('equipment and resources');
 
 INSERT INTO FundCategory(fundCategoryName)
-VALUES("travel");
+VALUES('travel');
 
 INSERT INTO FundCategory(fundCategoryName)
-VALUES("other");
+VALUES('other');
 
 INSERT INTO FundType(fundTypeName)
-VALUES("committed");
+VALUES('committed');
 
 INSERT INTO FundType(fundTypeName)
-VALUES("requested");
+VALUES('requested');
 
 INSERT INTO EssayQuestion(question)
-VALUES("PROJECT SUMMARY (ABSTRACT)");
+VALUES('PROJECT SUMMARY (ABSTRACT)');
 
 INSERT INTO EssayQuestion(question)
-VALUES("BACKGROUND AND OBJECTIVES OF RESEARCH/PROJECT. (Describe the nature and significance of the problem and provide a brief review of the relevant literature and expected outcomes. Include a bibliography as an appendix, if appropriate.)");
+VALUES('BACKGROUND AND OBJECTIVES OF RESEARCH/PROJECT. (Describe the nature and significance of the problem and provide a brief review of the relevant literature and expected outcomes. Include a bibliography as an appendix, if appropriate.)');
 
 INSERT INTO EssayQuestion(question)
-VALUES("If applying for a Hemingway award for Faculty Excellence, please describe what the impact of your project will be on the larger community. In short, what makes this project qualify for a Hemingway Award?");
+VALUES('If applying for a Hemingway award for Faculty Excellence, please describe what the impact of your project will be on the larger community. In short, what makes this project qualify for a Hemingway Award?');
 
 INSERT INTO EssayQuestion(question)
-VALUES("If applying for a Hemingway Collaborative Award, explain the collaborative nature of the project. What faculty and disciplines are involved?");
+VALUES('If applying for a Hemingway Collaborative Award, explain the collaborative nature of the project. What faculty and disciplines are involved?');
 
 INSERT INTO EssayQuestion(question)
-VALUES("PROCEDURES AND METHODS. (Indicate how the goals and objectives will be met. Include a discussion of the steps involved in the design, development and implementation of the project).");
+VALUES('PROCEDURES AND METHODS. (Indicate how the goals and objectives will be met. Include a discussion of the steps involved in the design, development and implementation of the project).');
 
 INSERT INTO EssayQuestion(question)
-VALUES("TIME-LINE. (Provide a time frame for the completion of the project.)");
+VALUES('TIME-LINE. (Provide a time frame for the completion of the project.)');
 
 INSERT INTO EssayQuestion(question)
-VALUES("EVALUATION AND DISSEMINATION. (Include a plan for evaluating or documenting outcomes as well as a plan for the dissemination of project results.");
+VALUES('EVALUATION AND DISSEMINATION. (Include a plan for evaluating or documenting outcomes as well as a plan for the dissemination of project results.');
 
 INSERT INTO EssayQuestion(question)
-VALUES("PROVIDE A BUDGET NARRATIVE that clearly explains any budget items that are not self-explanatory, including justification for the number of hours requested (if any) as reassigned time or stipend.");
+VALUES('PROVIDE A BUDGET NARRATIVE that clearly explains any budget items that are not self-explanatory, including justification for the number of hours requested (if any) as reassigned time or stipend.');
 
 INSERT INTO EssayQuestion(question)
-VALUES("What RSPG funding have you applied for or have been awarded in the past 5 years. For awarded projects, please provide information regarding these projects including (1) the project title, (2) the status of the project, and (3) the outcome(s) of the project. Please indicate whether a final report has been submitted for each RSPG award. (It is recommended that a copy of the final report be included as an appendix.)");
+VALUES('What RSPG funding have you applied for or have been awarded in the past 5 years. For awarded projects, please provide information regarding these projects including (1) the project title, (2) the status of the project, and (3) the outcome(s) of the project. Please indicate whether a final report has been submitted for each RSPG award. (It is recommended that a copy of the final report be included as an appendix.)');
 
 INSERT INTO EssayQuestion(question)
-VALUES("What other sources of funding have you sought for this project?");
+VALUES('What other sources of funding have you sought for this project?');
 
 INSERT INTO EssayQuestion(question)
-VALUES("Have you checked with the Office of Sponsored Projects (URL: http://weber.edu/osp/) to determine if this office is an appropriate place to seek additional funding? Please explain.");
+VALUES('Have you checked with the Office of Sponsored Projects (URL: http://weber.edu/osp/) to determine if this office is an appropriate place to seek additional funding? Please explain.');
 
 INSERT INTO EssayQuestion(question)
-VALUES("Is this the type of project your department or college would normally fund? Please explain.");
+VALUES('Is this the type of project your department or college would normally fund? Please explain.');
 
 INSERT INTO EssayQuestion(question)
-VALUES("Would completion of this project create opportunities for external funding (for example, is this proposal a request for a pilot study or seed money that may lead to a larger project)?");
+VALUES('Would completion of this project create opportunities for external funding (for example, is this proposal a request for a pilot study or seed money that may lead to a larger project)?');
 
 INSERT INTO EssayQuestion(question)
-VALUES("If you are applying for release time or a stipend, please list what your course load would be if you received the reassigned time. You MUST include any overload courses which you plan on teaching.");
+VALUES('If you are applying for release time or a stipend, please list what your course load would be if you received the reassigned time. You MUST include any overload courses which you plan on teaching.');
 
 INSERT INTO EssayQuestion(question)
-VALUES("For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.");
+VALUES('For instructional improvement proposals, are course fees an appropriate place to seek additional funding? Please explain.');
 
 
 create table Budget(
