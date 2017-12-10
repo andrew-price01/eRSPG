@@ -23,9 +23,6 @@
 	<legend><h2 style="text-align:center;">eRSPG Home</h2></legend>
 	
 	<div style="text-align: center;">
-		<input class="btn my-btn" onclick="window.location.href = '/erspg/chairman/userManagement'" value="Manage Committee" />
-		<input class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/announcements'" value="Announcements" />
-		<input class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/proposalList'" value="Review Proposals" />
 		<input class="btn my-btn" onclick="window.location.href = '/eRSPG/proposal/list'" style= "margin-right:15px" type="button" value="View Proposals"/>
 		<input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/start'" value="Submit Proposal" />
 	</div>
