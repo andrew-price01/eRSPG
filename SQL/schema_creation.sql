@@ -17,8 +17,8 @@ CREATE TABLE RoleType (
 
 INSERT INTO RoleType (roleDesc) VALUES ('user');
 INSERT INTO RoleType (roleDesc) VALUES ('committee');
-INSERT INTO RoleType (roleDesc) VALUES ('admin');
 INSERT INTO RoleType (roleDesc) VALUES ('chairman');
+INSERT INTO RoleType (roleDesc) VALUES ('admin');
 
 CREATE TABLE User(
         userID                      int     not null AUTO_INCREMENT     PRIMARY KEY,
