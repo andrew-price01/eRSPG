@@ -211,6 +211,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setServerName(Constants.CAS_SERVER);
         authenticationFilter.setRenew(false);
         authenticationFilter.setGateway(false);
+
         return authenticationFilter;
     }
 

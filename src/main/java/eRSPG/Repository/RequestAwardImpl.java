@@ -44,7 +44,8 @@ public class RequestAwardImpl implements RequestAwardDAO {
 	public void addNewOrUpdateRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().saveOrUpdate(ra);
 	}
-	
+
+	@Transactional
 	public void deleteRequestAward(RequestAward ra){
 		sessionFactory.getCurrentSession().delete(ra);
 	}

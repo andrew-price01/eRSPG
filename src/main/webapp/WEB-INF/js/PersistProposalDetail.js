@@ -16,11 +16,7 @@ function updateProposalDetail() {
                 datatype: 'json',
                 cache: false,
                 success: (data) => {
-                    $('#proposalTitle').val(data.title);
-                    $('#projectDirector').val(data.director);
-                    $('#proposalEmail').val(data.email);
-                    $('#proposalMailCode').val(data.mailCode);
-                    $('#proposalExtension').val(data.extension);
+                    console.log("Proposal detail updated")
                 }
             })
             return false;
