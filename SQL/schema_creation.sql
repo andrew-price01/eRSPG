@@ -93,7 +93,7 @@ CREATE TABLE ProposalStatus (
   proposalDescription       varchar(50) not null
 );
 
-alter table proposalstatus add CONSTRAINT UNIQUE (proposalDescription);
+alter table ProposalStatus add CONSTRAINT UNIQUE (proposalDescription);
 
 CREATE TABLE Proposal (
     proposalID              int not null AUTO_INCREMENT     PRIMARY KEY,
