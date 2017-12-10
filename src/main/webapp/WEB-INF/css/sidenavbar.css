@@ -61,3 +61,7 @@ a, a:hover, a:focus {
     text-align: center;
     padding-left: 250px;
 }
+
+td {
+    text-align: left;
+}
