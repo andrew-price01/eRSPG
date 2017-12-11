@@ -116,12 +116,7 @@ public class LogoutController {
                         }else{
                             //user is not staff and not in database then logout
                             // decided to go with redirect to logout and invalidate the session
-                            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                            if(authentication != null){
-                                new SecurityContextLogoutHandler().logout(request, response, authentication);
-                            }
-                            request.getSession().invalidate();
-                            return "redirect:"+ Constants.CAS_URL_LOGOUT;
+                            return "redirect:/eRSPG/logout";
                         }
                     }
                     else{
