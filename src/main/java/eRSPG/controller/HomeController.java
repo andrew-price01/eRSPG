@@ -105,7 +105,7 @@ public class HomeController {
         }
 
 		// actually redirect to error page or welcome
-		return "redirect:/welcome";
+		return "redirect:/eRSPG/logout";
 	}
 
     private void addNewUserToDatabase(String email, String fName, String lName, String userName) {
