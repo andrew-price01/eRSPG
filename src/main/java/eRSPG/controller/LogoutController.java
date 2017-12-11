@@ -27,8 +27,12 @@ public class LogoutController {
     protected UserDAO userDAO;
     @Autowired
     protected UserRoleDAO userRoleDAO;
-    // what I think the staff affiliation might look like / may be removed later
-    private static String STAFF_AFFILIATION = "staff:weber.edu";
+    /* example of an employees memberOf attribute
+        memebrOf : ["CN=WSU Employees,OU=groups,DC=ad,DC=weber,DC=edu" , "CN=WSU_Faculty,OU=groups,DC=ad,DC=weber,DC=edu"]
+     */
+
+    // what the staff affiliation looks like in attributes
+    private static String STAFF_AFFILIATION = "CN=WSU_Faculty";
 
     @RequestMapping("/eRSPG/logout")
     public String logout(HttpServletRequest request,
@@ -66,7 +70,23 @@ public class LogoutController {
                     : principal.getAttributes();
 
             if(!attributes.isEmpty() && username != null){
-                List affiliations = (List)attributes.get(Constants.CAS_ATTRIBUTE_MEMBEROF);
+                List affiliations = (List)attributes.get(Constants.CAS_ATTRIBUTE_MEMBEROF); // from example above each index in this list is a string of comma separated values
+                // maybe make another List<sting> affils
+                /* ex.
+                    boolean isStaff = false;
+                    foreach(String s: affiliations){
+                        List<sting> subAffiliations = Arrays.asList(s.split("\\s*,\\s*"));
+                        foreach(String s2: subAffiliations){
+                            if(s2.contains(STAFF_AFFILITATION){
+                                isStaff = true
+                                break;
+                             }
+                         }
+                         if(isStaff){
+                            break;
+                         }
+                     }
+                 */
                 boolean isStaff = affiliations.contains(STAFF_AFFILIATION); // Still need to see what this memberOf looks like
                 // if the user logging in is staff and they are not already in the database add the user to the database
                 User user = getNewUserFromDatabaseByUsername(username);
