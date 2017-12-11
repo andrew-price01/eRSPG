@@ -27,26 +27,26 @@ public final class Constants {
     public static final String CAS_ATTRIBUTE_WNUMBER = "WNumber";               // W Number
 
     /*  These Constants Are for use with the application when using Weber's CAS Development */
-    public static final String APP_SERVER = "http://localhost:8080";                    // Change to our URL
+    public static final String APP_SERVER = "http://localhost:8081";                    // Change to our URL
     public static final String CAS_URL_LOGIN = "https://casdev.weber.edu/login";
     public static final String CAS_URL_LOGOUT = "https://casdev.weber.edu/logout";
     public static final String CAS_URL_PREFIX = "https://casdev.weber.edu";
     public static final String CAS_SERVER = "https://casdev.weber.edu";
-    public static final String CAS_SERVICE_URL = "http://localhost:8080/eRSPG/home";    // Change to our URL
+    public static final String CAS_SERVICE_URL = "http://localhost:8081/eRSPG/home";    // Change to our URL
     public static final String CAS_URL_LOGOUT_SUCCESS = CAS_URL_LOGOUT+"?service="+APP_SERVER;
 
     /*  These Constants Are for use with the application when using Weber's CAS  When Live*/
-//    public static final String APP_SERVER = "http://localhost:8080";                  // Change to our URL
+//    public static final String APP_SERVER = "http://localhost:8081";                  // Change to our URL
 //    public static final String CAS_URL_LOGIN = "https://cas.weber.edu/login";
 //    public static final String CAS_URL_LOGOUT = "https://cas.weber.edu/logout";
 //    public static final String CAS_URL_PREFIX = "https://cas.weber.edu";
 //    public static final String CAS_SERVER = "https://cas.weber.edu";
-//    public static final String CAS_SERVICE_URL = "http://localhost:8080/eRSPG/home";  // Change to our URL
+//    public static final String CAS_SERVICE_URL = "http://localhost:8081/eRSPG/home";  // Change to our URL
 //    public static final String CAS_URL_LOGOUT_SUCCESS = CAS_URL_LOGOUT+"?service="+APP_SERVER;
 
     /*  These Constants Are for use with the CAS-SERVER-WEBAPP-3.5.1 */
-//    public static final String APP_SERVER = "http://localhost:8080";
-//    public static final String CAS_SERVICE_URL = "http://localhost:8080/eRSPG/home";
+//    public static final String APP_SERVER = "http://localhost:8081";
+//    public static final String CAS_SERVICE_URL = "http://localhost:8081/eRSPG/home";
 //    public static final String CAS_URL_LOGIN = "https://localhost:8443/cas-server-webapp-3.5.1/login";
 //    public static final String CAS_URL_LOGOUT = "https://localhost:8443/cas-server-webapp-3.5.1/logout";
 //    public static final String CAS_URL_PREFIX = "https://localhost:8443/cas-server-webapp-3.5.1";
