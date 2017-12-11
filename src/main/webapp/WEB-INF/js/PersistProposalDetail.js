@@ -1,6 +1,7 @@
 /**
  * Created by iNaS2 on 12/1/2017.
  */
+
 function updateProposalDetail() {
     $(function () {
             $.ajax({

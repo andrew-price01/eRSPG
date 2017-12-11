@@ -35,9 +35,6 @@ function getRequestedAwardData() {
     });
 }
 
-//$('input:checkbox').prop('checked', true)
-//console.log($('input:checkbox')[0]);
-
 function updateProposalRequestAward() {
     manageArray();
     $(function () {
@@ -60,6 +57,7 @@ function updateProposalRequestAward() {
 
 $( document ).ready(function() {
     $('input:checkbox').on("click", updateProposalRequestAward);
-    $('input:radio').on("click", ()=>{this.checked = true; updateProposalRequestAward();});
     getRequestedAwardData();
+    $('input:radio').on("click", ()=>{this.checked = true; updateProposalRequestAward();});
+
 });

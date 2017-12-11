@@ -11,6 +11,8 @@ import org.apache.commons.logging.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import javax.xml.soap.Detail;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -162,11 +165,9 @@ public class ProposalController {
 
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
-            awardForm.LoadProposalIntoForm(proposal);
             budgetForm.LoadProposalIntoForm(proposal);
-          //bodyForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
-          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
 
         } else {
             proposal = PersistProposal.getDummyProposal(user.getUserId());
@@ -243,7 +244,6 @@ public class ProposalController {
         proposal.setSemesterId(Integer.valueOf(semester));
         proposal.setProposalYear(Integer.valueOf(year));
 
-
         proposalDao.addNewOrUpdateProposal(proposal);
 
         return proposal;
@@ -297,7 +297,6 @@ public class ProposalController {
             requestAwardDao.deleteRequestAward(req);
         }
 
-
         for (String award:
                 selected) {
 
@@ -309,11 +308,53 @@ public class ProposalController {
         return selected;
     }
 
+    @RequestMapping(value = "/eRSPG/getProposalBudgetData", method = RequestMethod.GET)
+    public @ResponseBody List<Fund> GetBudgetAjax(HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<Fund> savedFunds = fundDAO.findFundsByProposalId(proposal.getProposalId());
+
+        return savedFunds;
+    }
+
     @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
-    public @ResponseBody void UpdateBudgetAjax(List<String> fund1, HttpServletRequest request){
+    public @ResponseBody String[] UpdateBudgetAjax(HttpServletRequest request){
+
         User user = (User) request.getSession().getAttribute("User");
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
+        int[] fundType = new int[]{1,1,1,2};
+        String[] fundsList = request.getParameterValues("fundsList[]");
+        String[] descsList = request.getParameterValues("descsList[]");
+
+        List<Fund> savedFunds = fundDAO.findFundsByProposalId(proposal.getProposalId());
+
+        if(savedFunds == null) {
+            for (int i = 0; i < fundsList.length; i++) {
+                Fund fund = new Fund();
+                fund.setProposalId(proposal.getProposalId());
+                fund.setFundAmount(Double.valueOf(fundsList[i]));
+                fund.setDescription(descsList[i / 4]);
+                fund.setFundTypeId(fundType[i % 4]);
+                fund.setSourceTypeId(1 + ((i + 1) % 4));
+                fund.setFundCategoryId(1 + (i / 12));
+                fundDAO.addNewOrUpdateFund(fund);
+            }
+        } else{ //more lines but less time
+            for (int i = 0; i < fundsList.length; i++) {
+                Fund fund = new Fund();
+                fund.setFundId(savedFunds.get(i).getFundId());
+                fund.setProposalId(proposal.getProposalId());
+                fund.setFundAmount(Double.valueOf(fundsList[i]));
+                fund.setDescription(descsList[i / 4]);
+                fund.setFundTypeId(fundType[i % 4]);
+                fund.setSourceTypeId(1 + ((i + 1) % 4));
+                fund.setFundCategoryId(1 + (i / 12));
+                fundDAO.addNewOrUpdateFund(fund);
+            }
+        }
+          return fundsList;
     }
 
     @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
@@ -443,11 +484,7 @@ public class ProposalController {
             return "projectIndex";
         }
         User user = (User) request.getSession().getAttribute("User");  //get user from session
-        //saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
-
-        Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
-        if (fundDAO.findFundsByProposalId(proposal.getProposalId()) == null) // prevent dupes until ajax is complete
-        budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
+        saveProposalState(budgetForm,user.getUserId()); //the Form should be named budgetForm
 
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
