@@ -57,5 +57,3 @@
     </form:form>
 
 </div>
-
-<script type="text/javascript" src="<s:url value="/js/PersistProposalDetail.js"/>"></script>

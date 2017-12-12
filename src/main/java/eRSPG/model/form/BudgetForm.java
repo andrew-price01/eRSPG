@@ -27,63 +27,13 @@ public class BudgetForm extends BaseForm {
 	}
 
 
-	public BudgetForm loadBudgetForm(int proposalID,FundDAO fundDao){
-		ArrayList<Fund> fundList = new ArrayList<>();
-		fundList = fundDao.findFundsByProposalId(proposalID);
-		BudgetForm budgetForm = new BudgetForm();
-		for (Fund fund:
-			 fundList) {
-			System.out.println(fund.getFundId());
-			//load into a BudgetForm object
-		}
-
-
-		//return that object
-		return null;
-	}
-
-	public void saveBudgetForm(int proposalID,FundDAO fundDAO){
-		try {
-			int fundIndex = 0; //helps locate fund fields
-			ArrayList<Fund> fundList = new ArrayList<>();
-			ArrayList<String> descList = new ArrayList<>();
-			for (Field field : this.getClass().getDeclaredFields()) {
-				Fund fund = new Fund();
-				if (field.getType().toString().equals(double.class.getTypeName())) {
-					fund.setProposalId(proposalID);
-					fund.setFundAmount(field.getDouble(this));
-					fund.setFundTypeId(2);
-					fund.setSourceTypeId(((fundIndex+1)%4)+1);
-					fund.setComments("");
-					if(fundIndex<60){ //indicates the end of the fund fields and the beginning of the totals
-						fund.setFundCategoryId( (int)Math.floor(fundIndex/12 +1));
-					}
-					else{
-						fund.setFundCategoryId(5);
-					}
-					if(!descList.isEmpty() && descList.size() > fundIndex/5) {
-						fund.setDescription(descList.get(fundIndex / 5));
-					}
-					fundList.add(fund);
-					fundIndex++;
-				} else if (field.getType().toString().equals("class java.lang.String")) {
-					descList.add((String) field.get(this));
-				}
-				//adds the funds to the database
-				if(!field.getName().contains("Total"))
-				fundDAO.addFundList(fundList);
-			}
-		}
-		catch (IllegalAccessException e){
-			//do nothing
-		}
-	}
-
-
 	@Override
 	public void LoadFormIntoProposal(Proposal proposal){
 		proposal.setProposalReqStdAsst(studentAssistants);
-
+	}
+	@Override
+	public  void LoadProposalIntoForm(Proposal proposal){
+		studentAssistants = proposal.isProposalReqStdAsst();
 	}
 
 

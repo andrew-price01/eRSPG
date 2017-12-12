@@ -1,59 +1,63 @@
 /**
  * Created by iNaS2 on 12/1/2017.
  */
+var checkboxesArray = [];
+
+function manageArray() {
+    checkboxesArray = [];
+    let userSelection = $('input:checkbox');
+    for(i=0;i<userSelection.length;i++){
+        if(userSelection[i].checked){
+            checkboxesArray.push(userSelection[i].value);
+        }
+    }
+}
+
 function getRequestedAwardData() {
     $(function () {
         $.ajax({
             type: "GET",
-            url: '/eRSPG/proposalAwardData',
+            url: '/eRSPG/getProposalAwardData',
             datatype: 'json',
             cache: false,
             success: (data) => {
-                data.forEach(checkBoxes);
-                updateProposalRequestAward();
+                $('input:checkbox').prop('checked', false);
+
+                let typeId = Object.keys(data)[0];
+                $('input#projectTypeID'+typeId)[0].checked = true;
+                data[typeId].forEach((selectedBoxValue) => {
+                    $('input:checkbox')[parseInt(selectedBoxValue)-1].checked = true;
+                })
+                console.log("Award data loaded : SUCCESS");
             }
         })
         return false;
     });
 }
 
-function checkBoxes(boxName){
-    $('#awardTypes'+boxName).prop('checked', true);
-}
-
-
 function updateProposalRequestAward() {
+    manageArray();
     $(function () {
         $.ajax({
             type: "POST",
             url: '/eRSPG/proposalAwardData',
             data: {
-                'awardTypes1': $('#awardTypes1').val(),
-                'awardTypes2': $('#awardTypes2').val(),
-                'awardTypes3': $('#awardTypes3').val()
-
+                'awards': checkboxesArray.toString(),
+                'projectTypeID': parseInt($('input:radio[checked]')[0].value)
             },
             datatype: 'json',
             cache: false,
-            success: (data) => {
-                console.log($('#awardTypes3').val());
-                console.log($('#awardTypes3').val())
+            success: () => {
+            console.log("Request updated, Proposal updated : SUCCESS");
             }
         })
         return false;
     });
 }
 
+$( document ).ready(function() {
+    $('input:checkbox').on("click", updateProposalRequestAward);
+    getRequestedAwardData();
+    $('input:radio').on("click", ()=>{this.checked = true; updateProposalRequestAward();});
 
-
-$(function () {
-    $('#awardTypes1').on("blur", updateProposalRequestAward);
-    $('#awardTypes2').on("blur", updateProposalRequestAward);
-    $('#awardTypes3').on("blur", updateProposalRequestAward);
-  //  $('#projectTypeID1').on("blur", updateProposalRequestAward);
-  //  $('#projectTypeID2').on("blur", updateProposalRequestAward);
-  //  $('#projectTypeID3').on("blur", updateProposalRequestAward);
-    $( document ).ready(function() {
-        getRequestedAwardData();
-    });
 });

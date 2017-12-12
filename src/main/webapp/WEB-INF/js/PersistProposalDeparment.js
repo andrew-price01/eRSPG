@@ -15,9 +15,8 @@ function updateProposalDepartment() {
             datatype: 'json',
             cache: false,
             success: (data) => {
-                $('#departmentID').val(data.department);
                 $('#semesterID').selectedIndex = data.semester -1;
-                $('#year').val(data.year);
+                console.log("Proposal department updated")
             }
         })
         return false;

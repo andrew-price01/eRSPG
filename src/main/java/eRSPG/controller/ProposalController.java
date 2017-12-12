@@ -6,10 +6,13 @@ import eRSPG.Repository.*;
 import eRSPG.model.*;
 import eRSPG.model.form.*;
 import eRSPG.util.PersistProposal;
+
 import org.apache.commons.logging.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,7 @@ import javax.xml.soap.Detail;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +62,8 @@ import eRSPG.model.form.DepartmentForm;
 import eRSPG.model.form.DetailForm;
 import eRSPG.model.form.UploadForm;
 import eRSPG.model.form.UserForm;
+
+
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -103,12 +109,6 @@ public class ProposalController {
 	protected UserDAO userDAO;
 
 	@Autowired
-    protected UserRoleDAO userRoleDAO;
-
-	@Autowired
-    protected RoleTypeDAO roleTypeDAO;
-
-	@Autowired
 	protected ProposalStatusDAO proposalStatusDAO;
 	
 	final String uploadDirectory = "C:/eRSPG/fileAttachments/"; //directory that store file attachments
@@ -120,23 +120,13 @@ public class ProposalController {
 
 
 	@RequestMapping(value = "/eRSPG/proposal", method = RequestMethod.GET)
-    @SuppressWarnings("unchecked")
 	public @ResponseBody List<ProposalDTO> proposalListByUserId(
-            HttpServletRequest request) {
-
-        User user = (User) request.getSession().getAttribute("User");
-
-        UserRole userRole = userRoleDAO.findUserRoleByUserId(user.getUserId());
-        if (userRole == null) {
-            return Collections.emptyList();
-        }
-        RoleType roleType = roleTypeDAO.findRoleTypeById(userRole.getRoleTypeId());
-        if (roleType == null) {
-            return Collections.emptyList();
-        }
-        List<Proposal> proposals = roleType.getRoleDesc().equals("user") ?
-                proposalDao.findProposalByUserId(user.getUserId()) :
-                proposalDao.findAllProposals();
+			@RequestParam(value = "userId", defaultValue = "", required = false) String userId) {
+		Integer id = userId == null || userId.equals("") ? null : Integer.parseInt(userId);
+        //Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		List<Proposal> proposals = id == null ?
+				proposalDao.findAllProposals() :
+				proposalDao.findProposalByUserId(id);
 
 		return proposals.stream()
 				.map(p -> new
@@ -175,11 +165,9 @@ public class ProposalController {
 
             deptForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
-            awardForm.LoadProposalIntoForm(proposal);
             budgetForm.LoadProposalIntoForm(proposal);
-          //bodyForm.LoadProposalIntoForm(proposal);
             detailForm.LoadProposalIntoForm(proposal);
-          //bodyQuestionsForm.LoadProposalIntoForm(proposal);
+
 
         } else {
             proposal = PersistProposal.getDummyProposal(user.getUserId());
@@ -230,7 +218,8 @@ public class ProposalController {
 
     @RequestMapping(value = "/eRSPG/proposalDetailData", method = RequestMethod.POST)
     public @ResponseBody Proposal UpdateDetailsAjax(String title,String director,
-                                                    String email,String mailCode,String extension, HttpServletRequest request){
+                                                    String email,String mailCode,
+                                                    String extension, HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("User");  //get user from session
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
 
@@ -261,53 +250,121 @@ public class ProposalController {
     }
 
     //depends on selected semester
-    @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.GET)
-    public @ResponseBody List<String> GetRequestedAwardAjax(HttpServletRequest request){
-
+    @RequestMapping(value = "/eRSPG/getProposalAwardData", method = RequestMethod.GET)
+    public @ResponseBody Map<Integer, List<String>> GetRequestedAwardAjax(HttpServletRequest request){
+        
         User user = (User) request.getSession().getAttribute("User");
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        int[]semesterAllows = new int[]{7,3,0};
+
         List<RequestAward> requestAwardList = requestAwardDao
                 .findRequestAwardByProposalId(proposal.getProposalId());
         List<String> awardTypeslist = new ArrayList<>();
+
         for (RequestAward req:
              requestAwardList) {
-            awardTypeslist.add(String.valueOf(req.getAwardTypeId()));
+            if (semesterAllows[proposal.getSemesterId() - 1] >= req.getAwardTypeId()) {
+                awardTypeslist.add(String.valueOf(req.getAwardTypeId()));
+            }else {
+                requestAwardDao.deleteRequestAward(req);
+            }
         }
-        return awardTypeslist;
+
+        Map<Integer,List<String>> proposalListMap = new HashMap<>();
+        proposalListMap.put(proposal.getProjectTypeId(),awardTypeslist);
+        return proposalListMap;
     }
 
-    @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
-    public @ResponseBody String[] UpdateBudgetAjax(String[] fund1, HttpServletRequest request){
-        User user = (User) request.getSession().getAttribute("User");
-        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
-        return null;
-
-    }
 
     // depends on semester
     @RequestMapping(value = "/eRSPG/proposalAwardData", method = RequestMethod.POST)
-    public @ResponseBody void UpdateRequestedAwardAjax(String award1,
-                                                               String award2,
-                                                               String award3,
+    public @ResponseBody String[] UpdateRequestedAwardAjax(String awards,Integer projectTypeID,
                                                        HttpServletRequest request){
 
+        String[] selected = awards.split(",");
         User user = (User) request.getSession().getAttribute("User");
         Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
         List<RequestAward> requestAwardList = requestAwardDao
                 .findRequestAwardByProposalId(proposal.getProposalId());
 
+        proposal.setProjectTypeId(projectTypeID);
+        proposalDao.addNewOrUpdateProposal(proposal);
+
+        List<String> reqStringList = new ArrayList<>();
         for (RequestAward req:
              requestAwardList) {
+            reqStringList.add(String.valueOf(req.getAwardTypeId()));
             requestAwardDao.deleteRequestAward(req);
         }
 
-        if(award1 != "")
-            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award1,proposal.getProposalId()));
-        if(award2 != "")
-            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award2,proposal.getProposalId()));
-        if(award3 != "")
-            requestAwardDao.addNewOrUpdateRequestAward(new RequestAward(award3,proposal.getProposalId()));
+        for (String award:
+                selected) {
 
+                RequestAward req = new RequestAward();
+                req.setProposalId(proposal.getProposalId());
+                req.setAwardTypeId(Integer.valueOf(Integer.valueOf(award)));
+                requestAwardDao.addNewOrUpdateRequestAward(req);
+        }
+        return selected;
+    }
+
+    @RequestMapping(value = "/eRSPG/getProposalBudgetData", method = RequestMethod.GET)
+    public @ResponseBody List<Fund> GetBudgetAjax(HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        List<Fund> savedFunds = fundDAO.findFundsByProposalId(proposal.getProposalId());
+
+        return savedFunds;
+    }
+
+    @RequestMapping(value = "/eRSPG/proposalBodyData", method = RequestMethod.POST)
+    public @ResponseBody String[] updateBodyAjax(HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        String[] savedFunds = new String[2];
+
+        return savedFunds;
+    }
+
+    @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
+    public @ResponseBody String[] UpdateBudgetAjax(HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+
+        int[] fundType = new int[]{1,1,1,2};
+        String[] fundsList = request.getParameterValues("fundsList[]");
+        String[] descsList = request.getParameterValues("descsList[]");
+
+        List<Fund> savedFunds = fundDAO.findFundsByProposalId(proposal.getProposalId());
+
+        if(savedFunds == null) {
+            for (int i = 0; i < fundsList.length; i++) {
+                Fund fund = new Fund();
+                fund.setProposalId(proposal.getProposalId());
+                fund.setFundAmount(Double.valueOf(fundsList[i]));
+                fund.setDescription(descsList[i / 4]);
+                fund.setFundTypeId(fundType[i % 4]);
+                fund.setSourceTypeId(1 + ((i + 1) % 4));
+                fund.setFundCategoryId(1 + (i / 12));
+                fundDAO.addNewOrUpdateFund(fund);
+            }
+        } else{ //more lines but less time
+            for (int i = 0; i < fundsList.length; i++) {
+                Fund fund = new Fund();
+                fund.setFundId(savedFunds.get(i).getFundId());
+                fund.setProposalId(proposal.getProposalId());
+                fund.setFundAmount(Double.valueOf(fundsList[i]));
+                fund.setDescription(descsList[i / 4]);
+                fund.setFundTypeId(fundType[i % 4]);
+                fund.setSourceTypeId(1 + ((i + 1) % 4));
+                fund.setFundCategoryId(1 + (i / 12));
+                fundDAO.addNewOrUpdateFund(fund);
+            }
+        }
+          return fundsList;
     }
 
     @RequestMapping(value="/eRSPG/proposal/department", method=RequestMethod.GET)
@@ -437,11 +494,7 @@ public class ProposalController {
             return "projectIndex";
         }
         User user = (User) request.getSession().getAttribute("User");  //get user from session
-        //saveProposalState(detailForm,user.getUserId()); //the Form should be named budgetForm
-
-        Proposal proposal = proposalDao.findIncompleteProposalByUserId(user.getUserId());
-        if (fundDAO.findFundsByProposalId(proposal.getProposalId()) == null) // prevent dupes until ajax is complete
-        budgetForm.saveBudgetForm(proposal.getProposalId(),fundDAO);
+        saveProposalState(budgetForm,user.getUserId()); //the Form should be named budgetForm
 
         //return "redirect:/proposal/body";
         return "redirect:/eRSPG/" + nextPage;
@@ -659,12 +712,12 @@ public class ProposalController {
 
 	@RequestMapping(value = "/eRSPG/proposal/list", method = RequestMethod.GET)
 	public String proposalList(
-	        HttpServletRequest request,
+	        @RequestParam(value = "userId", defaultValue = "", required = false) String userId,
             Model model) {
 
 		String contentPage = "proposalList.jsp";
 		model.addAttribute("contentPage", contentPage);
-		model.addAttribute("proposalList", proposalListByUserId(request));
+		model.addAttribute("proposalList", proposalListByUserId(userId));
         return "projectIndex";
 	}
 

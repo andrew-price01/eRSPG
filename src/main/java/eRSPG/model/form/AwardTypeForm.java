@@ -40,5 +40,6 @@ public class AwardTypeForm extends BaseForm{
 	public void LoadFormIntoProposal(Proposal proposal){
 		proposal.setProjectTypeId(projectTypeID);
 	}
-
+	@Override
+	public void LoadProposalIntoForm(Proposal proposal){projectTypeID = proposal.getProjectTypeId();}
 }
