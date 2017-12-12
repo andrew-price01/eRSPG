@@ -33,16 +33,16 @@
 <nav id="sidebar" class="sidebar">
     <!-- Sidebar Header -->
     <div class="sidebar-header">
-        <h3>Chairman Dashboard</h3>
+        <h3>Chair Dashboard</h3>
     </div>
 
     <!-- Sidebar Links -->
     <ul class="list-unstyled components">
-        <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/home'" value="Chairman Home">Home</a></li>
-        <li class="active"><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/committee'" value="Manage Committee">Manage Committee</a></li>
-        <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/manageBudget'" value="Manage Budget">Manage Budget</a></li>
-        <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/proposal'" value="Chairman Proposals">Proposals</a></li>
-        <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chairman/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
+        <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chair/home'" value="Chair Home">Home</a></li>
+        <li class="active"><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/committee'" value="Manage Committee">Manage Committee</a></li>
+        <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chair/manageBudget'" value="Manage Budget">Manage Budget</a></li>
+        <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/proposal'" value="Chair Proposals">Proposals</a></li>
+        <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chair/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
     </ul>
 </nav>
 
@@ -64,7 +64,7 @@
 <!-- Page Content -->
 <div id="content" class="main">
     <div class="form-group col-lg-12">
-        <form:form method="get" action="/eRSPG/chairman/budgetDetails" modelAttribute="BudgetDetails">
+        <form:form method="get" action="/eRSPG/chair/budgetDetails" modelAttribute="BudgetDetails">
             <table>
                 <tr>
                     <th>Accept</th>

@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/eRSPG/proposal/**").hasAuthority("ROLE_USER")
                     .antMatchers("/eRSPG/comittee/**").hasAuthority("ROLE_COMMITTEE")
                     .antMatchers("/eRSPG/admin/**").hasAuthority("ROLE_ADMIN")
-                    .antMatchers("/eRSPG/chairman/**").hasAuthority("ROLE_CHAIRMAN")
+                    .antMatchers("/eRSPG/chair/**").hasAuthority("ROLE_CHAIR")
                     .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
@@ -204,7 +204,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         requestMap.put(new AntPathRequestMatcher("/eRSPG/proposal/**"), SecurityConfig.createList("hasRole('ROLE_USER')"));
         requestMap.put(new AntPathRequestMatcher("/eRSPG/committee**"), SecurityConfig.createList("hasRole('ROLE_COMMITTEE')"));
         requestMap.put(new AntPathRequestMatcher("/eRSPG/admin/**"),SecurityConfig.createList("hasRole('ROLE_ADMIN')"));
-        requestMap.put(new AntPathRequestMatcher("/eRSPG/chairman/**"),SecurityConfig.createList("hasRole('ROLE_CHAIRMAN')"));
+        requestMap.put(new AntPathRequestMatcher("/eRSPG/chair/**"),SecurityConfig.createList("hasRole('ROLE_CHAIR')"));
         FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource = new ExpressionBasedFilterInvocationSecurityMetadataSource(requestMap, new DefaultWebSecurityExpressionHandler());
         return filterInvocationSecurityMetadataSource;
     }

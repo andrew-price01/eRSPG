@@ -179,7 +179,7 @@ public class LogoutController {
 
     private void addNewUserRoleToDatabase(int userID, int roleType) {
         UserRole ur = new UserRole();
-        ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chairman
+        ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chair
         ur.setUserId(userID);
         userRoleDAO.addNewOrUpdateUserRole(ur);
     }

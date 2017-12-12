@@ -12,13 +12,13 @@ public final class Constants {
     public static final String SPRING_ROLE_USER = "ROLE_USER";
     public static final String SPRING_ROLE_COMMITTEE = "ROLE_COMMITTEE";
     public static final String SPRING_ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String SPRING_ROLE_CHAIRMAN = "ROLE_CHAIRMAN";
+    public static final String SPRING_ROLE_CHAIRMAN = "ROLE_CHAIR";
 
     /* This Enum is for User Role Types*/
     public static final int USERROLE_USER = 1;
     public static final int USERROLE_COMMITTEE = 2;
     public static final int USERROLE_ADMIN = 2;
-    public static final int USERROLE_CHAIRMAN = 3;
+    public static final int USERROLE_CHAIR = 3;
 
     /* These Constants are for attribute keys required to get attributes from CAS */
     public static final String CAS_ATTRIBUTE_MEMBEROF = "memberOf";             // affiliation's in cas  NOTE: concern not all staff will have Staff affiliation in memberOf
