@@ -209,8 +209,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
         authenticationFilter.setService(Constants.CAS_SERVICE_URL);
         authenticationFilter.setServerName(Constants.CAS_SERVER);
-        authenticationFilter.setRenew(true);
-        authenticationFilter.setGateway(true);
+        authenticationFilter.setRenew(false);
+        authenticationFilter.setGateway(false);
 
         return authenticationFilter;
     }
@@ -221,8 +221,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         mAuthenticationFilter.setCasServerLoginUrl(Constants.CAS_URL_LOGIN);
         mAuthenticationFilter.setService(Constants.CAS_SERVICE_URL);
         mAuthenticationFilter.setServerName(Constants.CAS_SERVER);
-        mAuthenticationFilter.setRenew(true);
-        mAuthenticationFilter.setGateway(true);
+        mAuthenticationFilter.setRenew(false);
+        mAuthenticationFilter.setGateway(false);
         return mAuthenticationFilter;
     }
 
