@@ -581,6 +581,7 @@ public class ProposalController {
             @ModelAttribute("awardTypeForm") AwardTypeForm awardTypeForm,
             @ModelAttribute("departmentForm") DepartmentForm departmentForm,
             Model model){
+
         String contentPage = "proposalReview.jsp";
         model.addAttribute("departmentName", departmentDAO.findDepartment(departmentForm.getDepartmentID()).getDepartmentName());
         model.addAttribute("semesterName", semesterDAO.findSemesterById(departmentForm.getSemesterID()).getSemesterName());
@@ -609,6 +610,7 @@ public class ProposalController {
                         .put("15", getAnswerText(bodyQuestionsForm, 15)).build());
         model.addAttribute("projectTypeName", projectTypeDAO.findProjectType(awardTypeForm.getProjectTypeID()).getProjectTypeName());
         model.addAttribute("contentPage",contentPage);
+
         return "projectIndex";
     }
 
@@ -659,9 +661,10 @@ public class ProposalController {
 	public String proposalList(
 	        HttpServletRequest request,
             Model model) {
+
 		String contentPage = "proposalList.jsp";
 		model.addAttribute("contentPage", contentPage);
-		model.addAttribute("proposalList", proposalListByUserId(userId));
+		model.addAttribute("proposalList", proposalListByUserId(request));
         return "projectIndex";
 	}
 
@@ -716,38 +719,6 @@ public class ProposalController {
                     HttpServletRequest request) {
 
         LocalDateTime time = LocalDateTime.now();
-//
-//        // user is now in the session at login
-//        User user = (User) request.getSession().getAttribute("User");  //get user from session
-//
-//        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
-//
-//        proposal.setUserId(user.getUserId());
-//        proposal.setProjectDirector(detailForm.getProjectDirector());
-//        proposal.setProposalStatus(proposalStatusDAO.findProposalStatusByName(SUBMITTED_STATUS).getProposalStatusId());
-//        proposal.setProposalMailCode(detailForm.getProposalMailCode());
-//        proposal.setProposalExtension(detailForm.getProposalExtension());
-//        proposal.setProposalEmail(detailForm.getProposalEmail());
-//        proposal.setProposalReqStdAsst(budgetForm.getStudentAssistants());
-//        proposal.setProposalTitle(detailForm.getProposalTitle());
-//        proposal.setSemesterId(deptForm.getSemesterID());
-//        proposal.setProjectTypeId(awardForm.getProjectTypeID());
-//        proposal.setDepartmentId(deptForm.getDepartmentID());
-//        proposal.setProposalYear(deptForm.getYear());
-//        proposal.setSubmissionDate(time);
-//        proposal.setUpdatedDate(time);
-//
-//        //save proposal to database
-//        proposalDao.addNewOrUpdateProposal(proposal);
-//        int proposalID = proposal.getProposalId();
-//
-//        for (int i = 0; i < awardForm.getAwardTypes().size(); i++) {
-//            RequestAward requestAward = new RequestAward();
-//            requestAward.setProposalId(proposalID);
-//            requestAward.setAwardTypeId(awardForm.getAwardTypes().get(i));
-//            requestAwardDao.addNewOrUpdateRequestAward(requestAward);
-//        }
-//
         List<Fund> fundList = budgetForm.generateFundObjects();
 
         User user = (User) request.getSession().getAttribute("User");  //get user from session
@@ -829,7 +800,6 @@ public class ProposalController {
             if (uploadForm.getBytes() != null) {
                 output.write(uploadForm.getBytes());
             }
-
             output.close();
 
             List<UploadFile> uploadFiles = uploadForm.generateUploadFiles();
@@ -846,7 +816,6 @@ public class ProposalController {
                 }
 
                 EmailEvent emailEvent = new EmailEvent();
-
                 try {
                     emailEvent.sendEmail(detailForm, bodyForm, file, detailForm.getProposalEmail());
                 } catch (MessagingException me) {
