@@ -26,7 +26,7 @@
 			<td>In Review</td>
 			<td>11/29/2017</td>
 			<td>
-				<button class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/reviewProposal?1'">Review</button>
+				<button class="btn my-btn" onclick="window.location.href = '/eRSPG/reviewer/reviewProposal?1'">Review</button>
 			</td>
 		</tr>
 		<tr>
@@ -38,7 +38,7 @@
 			<td>Submitted</td>
 			<td>12/02/2017</td>
 			<td>
-				<button class="btn my-btn" onclick="window.location.href = '/erspg/reviewer/reviewProposal?2'">Review</button>
+				<button class="btn my-btn" onclick="window.location.href = '/eRSPG/reviewer/reviewProposal?2'">Review</button>
 			</td>
 		</tr>
 	</table>
