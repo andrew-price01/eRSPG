@@ -36,7 +36,7 @@
 
 	<hr/>
 
-	<button class="btn my-btn" onclick="window.location.href = '/erspg/chairman/changeChairman'">Assign New Chairman</button>
+	<button class="btn my-btn" onclick="window.location.href = '/erspg/chair/changeChair'">Assign New Chair</button>
 
 </div>
 

@@ -14,8 +14,8 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/eRSPG/home">Home</a></li>
-                <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chairman/home'"
-                       value="Chairman">Chairman View</a></li>
+                <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chair/home'"
+                       value="Chairman">Chair View</a></li>
                 <li><a href="http://weber.edu">WSU</a></li>
                 <li><a href="http://weber.edu/rspg">RSPG</a></li>
                 <li><a href="/eRSPG/logout">Logout</a></li>
