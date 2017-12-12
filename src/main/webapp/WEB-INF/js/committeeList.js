@@ -10,7 +10,7 @@ function autoComplete(list) {
     $("#searchEmail").autocomplete({source: arr});
 }
 
-// dialog for chairman to add members to committee
+// dialog for chair to add members to committee
 function addMemberDialog() {
     $('#dialogTabForm').dialog({
         resizable: false,
@@ -69,7 +69,7 @@ function addNewUser(first, last, email) {
     };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/addnewuser',
+        url: '/eRSPG/chair/addnewuser',
         type: "POST",
         data: user,
         success: function(response) {
@@ -101,7 +101,7 @@ const committeeTableBuilder = (committeeList) => {
     }
 };
 
-// dialog for chairman to edit current committee members
+// dialog for chair to edit current committee members
 function editMemberDialog(firstName, lastName, email, id) {
     var dialog, form,
 
@@ -158,7 +158,7 @@ function saveEdit(id, firstname, lastname, email) {
     };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/editcommittee',
+        url: '/eRSPG/chair/editcommittee',
         type:"POST",
         data: data,
         success: function(response){
@@ -180,7 +180,7 @@ function confirmDelete(user_id) {
     if(confirm("Are you sure you want to remove this member from the committee?"))
     {
         jQuery.ajax({
-            url: '/eRSPG/chairman/committee',
+            url: '/eRSPG/chair/committee',
             type:"POST",
             data: data,
             success: function(response){
@@ -203,7 +203,7 @@ function addNewMember(email) {
     var e = { fEmail : email };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/addcommittee',
+        url: '/eRSPG/chair/addcommittee',
         type:"POST",
         data: e,
         success: function(response) {
