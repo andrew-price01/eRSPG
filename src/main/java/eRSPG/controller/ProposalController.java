@@ -318,6 +318,16 @@ public class ProposalController {
         return savedFunds;
     }
 
+    @RequestMapping(value = "/eRSPG/proposalBodyData", method = RequestMethod.POST)
+    public @ResponseBody String[] updateBodyAjax(HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("User");
+        Proposal proposal =  proposalDao.findIncompleteProposalByUserId(user.getUserId());
+        String[] savedFunds = new String[2];
+
+        return savedFunds;
+    }
+
     @RequestMapping(value = "/eRSPG/proposalBudgetData", method = RequestMethod.POST)
     public @ResponseBody String[] UpdateBudgetAjax(HttpServletRequest request){
 
