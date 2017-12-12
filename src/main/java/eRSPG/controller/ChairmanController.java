@@ -53,60 +53,60 @@ public class ChairmanController {
     private BudgetDAO budgetDAO;
 
 //TODO wak!
-    @RequestMapping("/eRSPG/chairman/changeChairman")
+    @RequestMapping("/eRSPG/chair/changeChair")
     public String changeChairman(Model model) {
         String contentPage = "changeChairman.jsp";
         model.addAttribute("contentPage",contentPage);
         return "projectIndex";
     }
 //
-//    @RequestMapping("/chairman/createAnnouncement")
+//    @RequestMapping("/chair/createAnnouncement")
 //    public String createAnnouncement(Model model) {
 //        String contentPage = "createAnnouncement.jsp";
 //        model.addAttribute("contentPage", contentPage);
 //        return "projectIndex";
 //    }
 
-    @RequestMapping("/eRSPG/chairman/home")
+    @RequestMapping("/eRSPG/chair/home")
     public String chairmanHome() {
         return "chairmanHome";
     }
 
-    @RequestMapping("/eRSPG/chairman/makeAnnouncement")
+    @RequestMapping("/eRSPG/chair/makeAnnouncement")
     public String makeAnnouncement() {
         return "makeAnnouncement";
     }
 
-    @RequestMapping("/eRSPG/chairman/proposal")
+    @RequestMapping("/eRSPG/chair/proposal")
     public String chairmanProposal() {
         return "chairmanProposalHome";
     }
 
-    @RequestMapping("/eRSPG/chairman/committee")
+    @RequestMapping("/eRSPG/chair/committee")
     public String chairmanCommittee() {
         return "manageCommittee";
     }
 
-    @RequestMapping("/eRSPG/chairman/assignproposal")
+    @RequestMapping("/eRSPG/chair/assignproposal")
     public String chairmanAssignProposal() {
         return "assignProposal";
     }
 
-    @RequestMapping("/eRSPG/chairman/announcementSuccess")
+    @RequestMapping("/eRSPG/chair/announcementSuccess")
     public String chairmanAnnouncmentSuccess() { return "announcementSuccess"; };
 
-    @RequestMapping("/eRSPG/chairman/reviewproposal")
+    @RequestMapping("/eRSPG/chair/reviewproposal")
     public String chairmanReviewProposal() { return "chairmanReviewProposal"; };
 
 
-    @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.GET)
+    @RequestMapping(value = "/eRSPG/chair/makeAnnouncement", method = RequestMethod.GET)
     public ModelAndView announcementForm() {
         return new ModelAndView("makeAnnouncement", "announcement", new AnnouncementForm());
     }
 
 
     // Creates new announcement
-    @RequestMapping(value = "/eRSPG/chairman/makeAnnouncement", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chair/makeAnnouncement", method = RequestMethod.POST)
     public String saveAnnouncement(@Valid @ModelAttribute Announcement announcement,
                                    BindingResult result, Model model) {
 
@@ -184,7 +184,7 @@ public class ChairmanController {
     }
 
     // Assigns Submitted proposals to each committee member as a Reviewer object
-    @RequestMapping(value = "/eRSPG/chairman/assignproposal", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chair/assignproposal", method = RequestMethod.POST)
     public String assignProposalsToAll(@Valid @ModelAttribute Reviewer reviewer,
                                        BindingResult result, Model model) {
 
@@ -221,7 +221,7 @@ public class ChairmanController {
         return "assignProposal";
     }
 
-    @RequestMapping(value = "/eRSPG/chairman/manageBudget", method = RequestMethod.GET)
+    @RequestMapping(value = "/eRSPG/chair/manageBudget", method = RequestMethod.GET)
     public String manageBudget(Model model){
         ManageBudgetForm manageBudgetForm = new ManageBudgetForm();
 
@@ -248,7 +248,7 @@ public class ChairmanController {
     }
 
 
-    @RequestMapping(value = "/eRSPG/chairman/budgetDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "/eRSPG/chair/budgetDetails", method = RequestMethod.GET)
     public String budgetDetails(Model model){
         ArrayList<BudgetDetails> budgetDetails = new ArrayList<BudgetDetails>();
 
@@ -260,7 +260,7 @@ public class ChairmanController {
     }
 
     // Changes Committee to Faculty UserRole
-    @RequestMapping(value = "/eRSPG/chairman/committee", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chair/committee", method = RequestMethod.POST)
     public String changeCommitteeToFaculty(@RequestParam("userId") String userId) {
 
         UserRole user = userRoleDAO.findUserRoleById(parseInt(userId));
@@ -271,7 +271,7 @@ public class ChairmanController {
     }
 
     // Edit Committee Member info
-    @RequestMapping(value = "/eRSPG/chairman/editcommittee", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chair/editcommittee", method = RequestMethod.POST)
     public String editCommittee(@RequestParam("userRoleId") String userRoleId,
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
@@ -307,7 +307,7 @@ public class ChairmanController {
     }
 
     // Searches for a faculty member by email, then sets that Users Role to Committee
-    @RequestMapping(value = "/eRSPG/chairman/addcommittee", method = RequestMethod.POST)
+    @RequestMapping(value = "/eRSPG/chair/addcommittee", method = RequestMethod.POST)
     public String addNewCommittee(@RequestParam("fEmail") String email) {
 
         User facultyMember = userDAO.findUserByEmail(email);
@@ -318,7 +318,7 @@ public class ChairmanController {
         return "manageCommittee";
     }
 
-    @RequestMapping(value = "/eRSPG/chairman/addnewuser")
+    @RequestMapping(value = "/eRSPG/chair/addnewuser")
     public String addNewUser(@RequestParam("firstName") String firstName,
                              @RequestParam("lastName") String lastName,
                              @RequestParam("email") String email) {

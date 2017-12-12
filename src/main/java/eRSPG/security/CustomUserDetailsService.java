@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         String roleUser = "ROLE_USER";
         String roleCommittee = "ROLE_COMMITTEE";
         String roleAdmin = "ROLE_ADMIN";
-        String roleChair = "ROLE_CHAIRMAN";
+        String roleChair = "ROLE_CHAIR";
         String lowercaseUsername = username.toLowerCase();
 
         User userFromDatabase = userDAO.findUserByUsername(lowercaseUsername);
@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
                 grantedAuthorities.add(grantedAuthority);
                 break;
-            case "chairman":
+            case "chair":
                 grantedAuthority = new SimpleGrantedAuthority(roleUser);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(roleCommittee);

@@ -11,7 +11,7 @@ public class RoleType {
 
 	/*1 Faculty
 	* 2 Committee
-	* 3 Chairman*/
+	* 3 Chair*/
 
 	/*--TODO: Insert Roles--*/
 

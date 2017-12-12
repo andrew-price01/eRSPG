@@ -37,16 +37,16 @@
     <nav id="sidebar" class="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <h3>Chairman Dashboard</h3>
+            <h3>Chair Dashboard</h3>
         </div>
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled components">
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/home'" value="Chairman Home">Home</a></li>
-            <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/committee'" value="Manage Committee">Manage Committee</a></li>
-            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chairman/manageBudget'" value="Manage Budget">Manage Budget</a></li>
-            <li class="active"><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/proposal'" value="Chairman Proposals">Proposals</a></li>
-            <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chairman/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chair/home'" value="Chair Home">Home</a></li>
+            <li><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/committee'" value="Manage Committee">Manage Committee</a></li>
+            <li><a class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/chair/manageBudget'" value="Manage Budget">Manage Budget</a></li>
+            <li class="active"><a class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/proposal'" value="Chair Proposals">Proposals</a></li>
+            <li><a class="btn my-btn" type="button" onclick="window.location.href = '/eRSPG/chair/makeAnnouncement'" value="Announcement">Make Announcement</a></li>
         </ul>
     </nav>
 
@@ -79,13 +79,13 @@
 
         <br>
 
-        <form action="/eRSPG/chairman/assignproposal" method="post">
+        <form action="/eRSPG/chair/assignproposal" method="post">
             <input class="btn my-btn" type="submit" value="Assign To All"/>
         </form>
 
         <br>
 
-        <%--<input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign To All" />--%>
+        <%--<input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/assignproposal'" value="Assign To All" />--%>
 
         <br>
         <div id="window">
