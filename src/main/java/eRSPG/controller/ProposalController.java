@@ -675,7 +675,7 @@ public class ProposalController {
                 EmailEvent emailEvent = new EmailEvent();
 
                 try {
-                    emailEvent.sendEmail(detailForm, bodyForm, file, "nicholaslindquist@mail.weber.edu");
+                    emailEvent.sendEmail(detailForm, userForm.getUserEmail());
                 }catch(MessagingException me){
                     me.printStackTrace();
                 }

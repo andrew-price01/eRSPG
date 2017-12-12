@@ -25,7 +25,7 @@ public class EmailEvent {
 
 	
 	
-	public void sendEmail(DetailForm detailForm, BodyForm bodyForm, File file, String toUser) throws MessagingException {
+	public void sendEmail(DetailForm detailForm, String toUser) throws MessagingException {
 		final String username = "erspgdonotreply@gmail.com";
 		final String password = "msumlslqfyqdoekt";
 		
@@ -50,8 +50,8 @@ public class EmailEvent {
 		        Message message = new MimeMessage(session);
 		        message.setFrom(new InternetAddress(username));
 		        message.setRecipients(Message.RecipientType.TO,
-		                InternetAddress.parse("nicholaslindquist@mail.weber.edu"));
-		        message.setSubject("Message from eRSPG");
+		                InternetAddress.parse(toUser));
+		        message.setSubject("Proposal Submitted for Review");
 		        //message.setText("<li><ul>Test</ul></li>","utf-8", "html");
 		        
 
@@ -60,12 +60,9 @@ public class EmailEvent {
 		        Multipart multipart = new MimeMultipart();
 
 		        messageBodyPart = new MimeBodyPart();
-		        String fileSource = file.getAbsolutePath();
-		        String fileName = file.getName();
-		        DataSource source = new FileDataSource(fileSource);
-		        messageBodyPart.setDataHandler(new DataHandler(source));
-		        messageBodyPart.setFileName(fileName);
-		        messageBodyPart.setContent("<html><li><ul>Test</ul></li></html>","text/html");
+		        messageBodyPart.setContent("<html><li><ul>Proposal: " + detailForm.getProposalTitle() + " has been submitted for review. " +
+						"You can view the proposal by going to the home menu and selecting view proposals. To review a proposal, select the " +
+						"chairman view button located in the header of the page, from there you can select Proposals then Review a proposal to review the submitted proposal.</ul></li></html>","text/html");
 		        //message.setText("<html><ul><li>Test</li></ul></html>");
 		        multipart.addBodyPart(messageBodyPart);
 		        message.setContent(multipart);

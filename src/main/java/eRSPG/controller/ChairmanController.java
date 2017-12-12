@@ -191,14 +191,14 @@ public class ChairmanController {
         ManageBudgetForm manageBudgetForm = new ManageBudgetForm();
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        Budget budget = budgetDAO.getBudgetForYear(year);
+        BudgetAmount budget = budgetDAO.getBudgetForYear(year);
 
-        int remainingBudget = 0;
-        int totalBudget = 0;
+        double remainingBudget = 0;
+        double totalBudget = 0;
 
         if(budget != null){
-            remainingBudget = budget.getTotalBudget();
-            totalBudget = budget.getTotalBudget();
+            remainingBudget = budget.getTotalFunds() - budget.getRemainingFunds();
+            totalBudget = budget.getTotalFunds();
         }
 
         manageBudgetForm.setTotalBudget(totalBudget);

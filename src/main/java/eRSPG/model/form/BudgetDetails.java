@@ -2,23 +2,44 @@ package eRSPG.model.form;
 
 
 public class BudgetDetails {
-    private int proposalID;
-    private String proposalTitle;
-    private String description;
+    private String submittedBy;
+    private String projectTitle;
+    private String projectDirector;
+    private String department;
     private String fundCategoryName;
     private double fundAmount;
 
-    public void setProposalID(int proposalID) { this.proposalID = proposalID; }
+    public String getDepartment() {
+        return department;
+    }
 
-    public int getProposalID() { return proposalID; }
+    public String getProjectDirector() {
+        return projectDirector;
+    }
 
-    public void setProposalTitle(String proposalTitle) { this.proposalTitle = proposalTitle; }
+    public String getProjectTitle() {
+        return projectTitle;
+    }
 
-    public String getProposalTitle() { return proposalTitle; }
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
-    public String getDescription() { return description; }
+    public void setProjectDirector(String projectDirector) {
+        this.projectDirector = projectDirector;
+    }
+
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
 
     public void setFundCategoryName(String fundCategoryName) { this.fundCategoryName = fundCategoryName; }
 

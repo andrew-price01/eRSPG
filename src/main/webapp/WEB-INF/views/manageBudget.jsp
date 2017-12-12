@@ -66,27 +66,44 @@
         <form:form method="get" action="/eRSPG/chairman/budgetDetails" modelAttribute="BudgetDetails">
             <table>
                 <tr>
-                    <th>Accept</th>
-                    <th>Decline</th>
-                    <th>Proposal ID</th>
-                    <th>Proposal Title</th>
+                    <th>Submitted By</th>
+                    <th>Project Title</th>
+                    <th>Project Director</th>
+                    <th>Department</th>
                     <th>Fund Category</th>
                     <th>Funds Requested</th>
+                    <th>Actions</th>
                 </tr>
                 <c:forEach items="${BudgetDetails}" var="budget">
                     <tr>
-                        <td><input type="checkbox" style="background-color: green"/></td>
-                        <td><input type="checkbox" style="background-color: red"/></td>
-                        <td>${budget.proposalID}</td>
-                        <td>${budget.proposalTitle}</td>
+                        <td>${budget.submittedBy}</td>
+                        <td>${budget.projectTitle}</td>
+                        <td>${budget.projectDirector}</td>
+                        <td>${budget.department}</td>
                         <td>${budget.fundCategoryName}</td>
                         <td>${budget.fundAmount}</td>
+                        <td>
+                            <input type="radio" name="action" value="accept" onClick="acceptRow(this)"> Accept<br/>
+                            <input type="radio" name="action" value="decline" onClick="deleteRow(this)"> Decline
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
         </form:form>
     </div>
 </div>
+
+<script>
+    function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+    function acceptRow(btn){
+        var row = btn.parentNode.parentNode;
+
+    }
+</script>
 
 <jsp:include page="/WEB-INF/views/manageBudgetFooter.jsp"/>
 </body>
