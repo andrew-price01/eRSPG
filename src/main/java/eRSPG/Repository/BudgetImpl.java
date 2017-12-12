@@ -1,6 +1,7 @@
 package eRSPG.Repository;
 
 import eRSPG.model.Budget;
+import eRSPG.model.BudgetAmount;
 import eRSPG.model.form.BudgetDetails;
 import eRSPG.model.form.ManageBudgetForm;
 import org.hibernate.Hibernate;
@@ -28,10 +29,30 @@ public class BudgetImpl implements BudgetDAO {
     }
 
     @Transactional
-    public Budget getBudgetForYear(int budgetYear){
-        Budget budget = sessionFactory.getCurrentSession().get(Budget.class, budgetYear);
+    public BudgetAmount getBudgetForYear(int budgetYear){
 
-        return budget;
+        final String sql = "\n" +
+                "select b.totalBudget as totalFunds,\n" +
+                "           sum(f.fundAmount) as remainingFunds\n" +
+                "                from fund f join proposal p \n" +
+                "\t\t\t\t\ton f.proposalID = p.proposalID \n" +
+                "                join proposalstatus ps \n" +
+                "\t\t\t\t\ton ps.proposalStatusID = p.proposalStatusID\n" +
+                "\t\t\t\tjoin FundCategory fc\n" +
+                "\t\t\t\t\ton f.fundCategoryID = fc.fundCategoryID\n" +
+                "\t\t\t\tjoin User u\n" +
+                "\t\t\t\t\ton p.userID = u.userID\n" +
+                "\t\t\t\tjoin Department d \n" +
+                "\t\t\t\t\ton d.departmentID = p.departmentID,\n" +
+                "\t\t\t\tBudget b\n" +
+                "group by p.proposalTitle, p.projectDirector, d.departmentName, \n" +
+                "\t\t\t\tu.userFirstName, u.userLastName, fc.fundCategoryName, b.totalBudget";
+
+
+        BudgetAmount budgetAmount = (BudgetAmount) sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setResultTransformer(Transformers.aliasToBean(BudgetAmount.class)).list().get(0);
+
+        return budgetAmount;
     }
 
     @Transactional
@@ -41,15 +62,24 @@ public class BudgetImpl implements BudgetDAO {
 
     @Transactional
     public ArrayList<BudgetDetails> getBudgetDetails() {
-        final String sql = "select p.proposalID, p.proposalTitle, fc.fundCategoryName, sum(f.fundAmount) as fundAmount\n" +
-                "                from Fund f join Proposal p \n" +
+        final String sql = "select concat(u.userFirstName, ' ', u.userLastName) as  submittedBy, \n" +
+                "\t\t   p.proposalTitle as projectTitle, \n" +
+                "           p.projectDirector, \n" +
+                "           d.departmentName as department, \n" +
+                "           fc.fundCategoryName, \n" +
+                "           sum(f.fundAmount) as fundAmount\n" +
+                "                from fund f join proposal p \n" +
                 "\t\t\t\t\ton f.proposalID = p.proposalID \n" +
                 "                join ProposalStatus ps \n" +
                 "\t\t\t\t\ton ps.proposalStatusID = p.proposalStatusID\n" +
                 "\t\t\t\tjoin FundCategory fc\n" +
                 "\t\t\t\t\ton f.fundCategoryID = fc.fundCategoryID\n" +
-                "group by p.proposalID, p.proposalTitle, fc.fundCategoryName\n" +
-                "order by p.proposalID";
+                "\t\t\t\tjoin User u\n" +
+                "\t\t\t\t\ton p.userID = u.userID\n" +
+                "\t\t\t\tjoin Department d \n" +
+                "\t\t\t\t\ton d.departmentID = p.departmentID\n" +
+                "group by p.proposalTitle, p.projectDirector, d.departmentName, \n" +
+                "\t\t\t\tu.userFirstName, u.userLastName, fc.fundCategoryName";
 
 
         ArrayList<BudgetDetails> budgetDetailsList = (ArrayList<BudgetDetails>) sessionFactory.getCurrentSession().createSQLQuery(sql)

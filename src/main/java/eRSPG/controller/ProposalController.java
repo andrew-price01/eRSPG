@@ -817,8 +817,8 @@ public class ProposalController {
 
                 EmailEvent emailEvent = new EmailEvent();
                 try {
-                    emailEvent.sendEmail(detailForm, bodyForm, file, detailForm.getProposalEmail());
-                } catch (MessagingException me) {
+                    emailEvent.sendEmail(detailForm, detailForm.getProposalEmail());
+                }catch(MessagingException me){
                     me.printStackTrace();
                 }
             }
