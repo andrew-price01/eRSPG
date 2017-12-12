@@ -30,7 +30,7 @@
     <div class="footer navbar-fixed-bottom">
         <div id="content" class="main">
             <div class="form-group">
-                <form:form method="get" action="/eRSPG/chairman/manageBudget" modelAttribute="ManageBudgetForm">
+                <form:form method="get" action="/eRSPG/chair/manageBudget" modelAttribute="ManageBudgetForm">
                     <label class="col-sm-4 control-label form-inline">Started Balance:
                         <form:input path="totalBudget"  placeholder="Please input budget..."/>
                     </label>

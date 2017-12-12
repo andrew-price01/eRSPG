@@ -53,7 +53,7 @@
         <h2> My Proposals</h2>
         <br>
         <div>
-            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/index'" value="New Proposal" />
+            <input class="btn my-btn" type="button"  onclick="window.location.href = '/eRSPG/proposal/start'" value="New Proposal" />
         </div>
         <br>
 

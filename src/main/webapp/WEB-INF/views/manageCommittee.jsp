@@ -93,7 +93,7 @@
 
             <hr/>
 
-            <button class="btn my-btn" onclick="window.location.href = '/eRSPG/chair/changeChairman'">Assign New Chairman</button>
+            <button class="btn my-btn" onclick="window.location.href = '/eRSPG/chair/changeChair'">Assign New Chair</button>
 
             <script>
 

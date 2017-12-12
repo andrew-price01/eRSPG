@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 grantedAuthority = new SimpleGrantedAuthority(roleAdmin);
                 grantedAuthorities.add(grantedAuthority);
                 break;
-            case "chairman":
+            case "chair":
                 grantedAuthority = new SimpleGrantedAuthority(roleUser);
                 grantedAuthorities.add(grantedAuthority);
                 grantedAuthority = new SimpleGrantedAuthority(roleCommittee);

@@ -79,13 +79,13 @@
 
         <br>
 
-        <form action="/eRSPG/chairman/assignproposal" method="post">
+        <form action="/eRSPG/chair/assignproposal" method="post">
             <input class="btn my-btn" type="submit" value="Assign To All"/>
         </form>
 
         <br>
 
-        <%--<input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chairman/assignproposal'" value="Assign To All" />--%>
+        <%--<input class="btn my-btn" type="button" onclick="window.location.href= '/eRSPG/chair/assignproposal'" value="Assign To All" />--%>
 
         <br>
         <div id="window">

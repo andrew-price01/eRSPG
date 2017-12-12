@@ -148,7 +148,7 @@ function editMemberDialog(firstName, lastName, email, id) {
 
 };
 
-// sends user information to ChairmanController to perform edit functionality
+// sends user information to ChairController to perform edit functionality
 function saveEdit(id, firstname, lastname, email) {
     var data = {
         userRoleId : id,
@@ -198,7 +198,7 @@ function confirmDelete(user_id) {
     return true;
 }
 
-// sends email to ChairmanController to search and add faculty to committee
+// sends email to ChairController to search and add faculty to committee
 function addNewMember(email) {
     var e = { fEmail : email };
 

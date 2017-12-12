@@ -74,7 +74,7 @@ public class HomeController {
                         user = getNewUserFromDatabase(username);
                         int userID = user.getUserId();
                         // add the user role to the DB for new user   NOTE: MAKE SURE TO CHANGE ROLETYPE TO 1 AFTER TESTING IS DONE
-                        addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman , the default will actually be 1 for lowest authorities
+                        addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chair, the default will actually be 1 for lowest authorities
 
                     }
                     addUserInformationToSession(request, response, user);
@@ -94,7 +94,7 @@ public class HomeController {
                     user = getNewUserFromDatabase(username);
                     int userID = user.getUserId();
                     // add the user role to the DB for new user
-                    addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chairman
+                    addNewUserRoleToDatabase(userID, 3); // roletype = 3 means chair
                 }
                 addUserInformationToSession(request, response, user);
                 return "home";
@@ -120,7 +120,7 @@ public class HomeController {
 
     private void addNewUserRoleToDatabase(int userID, int roleType) {
         UserRole ur = new UserRole();
-        ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chairman
+        ur.setRoleTypeId(roleType); // 1 = user , 2=admin, 3 = chair
         ur.setUserId(userID);
         userRoleDAO.addNewOrUpdateUserRole(ur);
     }
