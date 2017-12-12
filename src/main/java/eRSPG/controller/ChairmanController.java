@@ -60,7 +60,7 @@ public class ChairmanController {
         return "projectIndex";
     }
 //
-//    @RequestMapping("/chairman/createAnnouncement")
+//    @RequestMapping("/chair/createAnnouncement")
 //    public String createAnnouncement(Model model) {
 //        String contentPage = "createAnnouncement.jsp";
 //        model.addAttribute("contentPage", contentPage);

@@ -10,7 +10,7 @@ function autoComplete(list) {
     $("#searchEmail").autocomplete({source: arr});
 }
 
-// dialog for chairman to add members to committee
+// dialog for chair to add members to committee
 function addMemberDialog() {
     $('#dialogTabForm').dialog({
         resizable: false,
@@ -69,7 +69,7 @@ function addNewUser(first, last, email) {
     };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/addnewuser',
+        url: '/eRSPG/chair/addnewuser',
         type: "POST",
         data: user,
         success: function(response) {
@@ -101,7 +101,7 @@ const committeeTableBuilder = (committeeList) => {
     }
 };
 
-// dialog for chairman to edit current committee members
+// dialog for chair to edit current committee members
 function editMemberDialog(firstName, lastName, email, id) {
     var dialog, form,
 
@@ -148,7 +148,7 @@ function editMemberDialog(firstName, lastName, email, id) {
 
 };
 
-// sends user information to ChairmanController to perform edit functionality
+// sends user information to ChairController to perform edit functionality
 function saveEdit(id, firstname, lastname, email) {
     var data = {
         userRoleId : id,
@@ -158,7 +158,7 @@ function saveEdit(id, firstname, lastname, email) {
     };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/editcommittee',
+        url: '/eRSPG/chair/editcommittee',
         type:"POST",
         data: data,
         success: function(response){
@@ -180,7 +180,7 @@ function confirmDelete(user_id) {
     if(confirm("Are you sure you want to remove this member from the committee?"))
     {
         jQuery.ajax({
-            url: '/eRSPG/chairman/committee',
+            url: '/eRSPG/chair/committee',
             type:"POST",
             data: data,
             success: function(response){
@@ -198,12 +198,12 @@ function confirmDelete(user_id) {
     return true;
 }
 
-// sends email to ChairmanController to search and add faculty to committee
+// sends email to ChairController to search and add faculty to committee
 function addNewMember(email) {
     var e = { fEmail : email };
 
     jQuery.ajax({
-        url: '/eRSPG/chairman/addcommittee',
+        url: '/eRSPG/chair/addcommittee',
         type:"POST",
         data: e,
         success: function(response) {

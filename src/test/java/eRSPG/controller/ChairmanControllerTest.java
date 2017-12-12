@@ -16,7 +16,7 @@ public class ChairmanControllerTest {
 		MockMvc mockMvc = standaloneSetup(controller)
 				.setSingleView(new InternalResourceView("/WEB-INF/views/userManagement.jsp"))
 				.build();
-		mockMvc.perform(get("/chairman/userManagement")).andExpect(view().name("projectIndex"));
+		mockMvc.perform(get("/chair/userManagement")).andExpect(view().name("projectIndex"));
 	}
 
 	@Test
@@ -25,7 +25,7 @@ public class ChairmanControllerTest {
 		MockMvc mockMvc = standaloneSetup(controller)
 				.setSingleView(new InternalResourceView("/WEB-INF/views/changeChairman.jsp"))
 				.build();
-		mockMvc.perform(get("/chairman/changeChairman")).andExpect(view().name("projectIndex"));
+		mockMvc.perform(get("/chair/changeChair")).andExpect(view().name("projectIndex"));
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class ChairmanControllerTest {
 		MockMvc mockMvc = standaloneSetup(controller)
 				.setSingleView(new InternalResourceView("/WEB-INF/views/createAnnouncement.jsp"))
 				.build();
-		mockMvc.perform(get("/chairman/createAnnouncement")).andExpect(view().name("projectIndex"));
+		mockMvc.perform(get("/chair/createAnnouncement")).andExpect(view().name("projectIndex"));
 	}
 
 }
